@@ -45,9 +45,6 @@ func _ready() -> void:
 	weighted_title_patterns = calculate_weighted_dict(TITLE_PATTERNS)
 	
 	randomize()
-	
-	for i in range(10):
-		print(generate())
 
 
 func wordlist_to_array(filename: String) -> Array[String]:
@@ -102,7 +99,7 @@ func generate_title_part() -> String:
 	})
 
 
-func generate() -> String:
+func generate_title() -> String:
 	var pattern = pick_weighted_random(weighted_title_patterns)
 	var part1 = generate_title_part()
 	var part2 = ""

@@ -1,0 +1,91 @@
+[gd_scene load_steps=5 format=3 uid="uid://buvn3ek0okr6s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0u6u"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_rg4bn"]
+color = Color(1, 1, 1, 1)
+grow_begin = -4.0
+grow_end = -4.0
+thickness = 4
+vertical = true
+
+[sub_resource type="SystemFont" id="SystemFont_faqxm"]
+font_names = PackedStringArray("Cinzel")
+generate_mipmaps = true
+subpixel_positioning = 0
+oversampling = 4.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_pha1n"]
+line_spacing = 0.0
+font = SubResource("SystemFont_faqxm")
+font_size = 28
+
+[node name="Spine" type="HBoxContainer"]
+offset_right = 630.0
+offset_bottom = 84.0
+
+[node name="Top Margin1" type="Control" parent="."]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Top Dot" type="Panel" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_a0u6u")
+
+[node name="Top Margin2" type="Control" parent="."]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Top Line1" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
+
+[node name="Top Line2" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
+
+[node name="Top Line3" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "The Titleeeeee of the Books"
+label_settings = SubResource("LabelSettings_pha1n")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Bottom Line1" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
+
+[node name="Bottom Line2" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
+
+[node name="Bottom Line3" type="VSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
+
+[node name="Bottom Margin1" type="Control" parent="."]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Bottom Dot" type="Panel" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_a0u6u")
+
+[node name="Bottom Margin2" type="Control" parent="."]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
