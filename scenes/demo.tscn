@@ -2,20 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyxge"]
-sky_top_color = Color(1, 0.92549, 0.803922, 1)
-ground_bottom_color = Color(0.32549, 0.27451, 0.215686, 1)
-
-[sub_resource type="Sky" id="Sky_1a4wc"]
-sky_material = SubResource("ProceduralSkyMaterial_pyxge")
-
-[sub_resource type="Environment" id="Environment_jl0n7"]
-background_mode = 2
-sky = SubResource("Sky_1a4wc")
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
 
@@ -32,13 +18,35 @@ noise = SubResource("FastNoiseLite_28sp3")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilv47"]
 albedo_color = Color(0.133333, 0.419608, 0.47451, 1)
 normal_enabled = true
+normal_scale = 0.25
 normal_texture = SubResource("NoiseTexture2D_ningb")
 uv1_scale = Vector3(5, 5, 5)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyxge"]
+sky_top_color = Color(1, 0.92549, 0.803922, 1)
+ground_bottom_color = Color(0.32549, 0.27451, 0.215686, 1)
+
+[sub_resource type="Sky" id="Sky_1a4wc"]
+sky_material = SubResource("ProceduralSkyMaterial_pyxge")
+
+[sub_resource type="Environment" id="Environment_jl0n7"]
+background_mode = 2
+sky = SubResource("Sky_1a4wc")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
 
 [node name="Demo" type="Node3D"]
 
 [node name="Shelf" parent="." instance=ExtResource("1_r5k3l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="Wall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.125)
+mesh = SubResource("PlaneMesh_6xsok")
+surface_material_override/0 = SubResource("StandardMaterial3D_ilv47")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.448537, 0.708)
@@ -54,8 +62,3 @@ omni_range = 1.76125
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_jl0n7")
-
-[node name="Wall" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.125)
-mesh = SubResource("PlaneMesh_6xsok")
-surface_material_override/0 = SubResource("StandardMaterial3D_ilv47")
