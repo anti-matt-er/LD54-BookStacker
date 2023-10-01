@@ -1,9 +1,13 @@
-[gd_scene format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=2 format=3 uid="uid://dkal2h2dwlesw"]
+
+[ext_resource type="PackedScene" uid="uid://d2s3p3ssht6qb" path="res://assets/prefabs/book.tscn" id="1_qwunw"]
 
 [node name="Demo" type="Node3D"]
 
+[node name="Book" parent="." instance=ExtResource("1_qwunw")]
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.393162)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.325954)
 current = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]

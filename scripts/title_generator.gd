@@ -43,8 +43,6 @@ func _ready() -> void:
 	
 	weighted_noun_patterns = calculate_weighted_dict(NOUN_PATTERNS)
 	weighted_title_patterns = calculate_weighted_dict(TITLE_PATTERNS)
-	
-	randomize()
 
 
 func wordlist_to_array(filename: String) -> Array[String]:

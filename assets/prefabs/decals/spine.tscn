@@ -15,26 +15,28 @@ thickness = 4
 vertical = true
 
 [sub_resource type="SystemFont" id="SystemFont_faqxm"]
-font_names = PackedStringArray("Cinzel")
+font_names = PackedStringArray("Georgia")
 generate_mipmaps = true
+hinting = 2
 subpixel_positioning = 0
+multichannel_signed_distance_field = true
 oversampling = 4.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_pha1n"]
 line_spacing = 0.0
 font = SubResource("SystemFont_faqxm")
-font_size = 28
+font_size = 36
 
 [node name="Spine" type="HBoxContainer"]
-offset_right = 630.0
-offset_bottom = 84.0
+offset_right = 574.0
+offset_bottom = 62.0
 
 [node name="Top Margin1" type="Control" parent="."]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
 [node name="Top Dot" type="Panel" parent="."]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_a0u6u")
@@ -56,13 +58,16 @@ layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_rg4bn")
 
 [node name="Title" type="Label" parent="."]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
 text = "The Titleeeeee of the Books"
 label_settings = SubResource("LabelSettings_pha1n")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+clip_text = true
 
 [node name="Bottom Line1" type="VSeparator" parent="."]
 layout_mode = 2
@@ -81,7 +86,7 @@ custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
 [node name="Bottom Dot" type="Panel" parent="."]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_a0u6u")

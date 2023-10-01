@@ -2,11 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://v6jgmpra3xg0" path="res://assets/models/hardcover.glb" id="1_mpeb3"]
 [ext_resource type="Material" uid="uid://c2upiir03lkkw" path="res://assets/materials/book_hardcover_leather.material" id="2_05fh8"]
+[ext_resource type="Script" path="res://scripts/book.gd" id="2_jmb4d"]
 [ext_resource type="Material" uid="uid://dyst70q7muxxn" path="res://assets/materials/book_pages.material" id="3_3h4nf"]
 [ext_resource type="PackedScene" uid="uid://buvn3ek0okr6s" path="res://assets/prefabs/decals/spine.tscn" id="4_6ssbb"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_jlbu3"]
-viewport_path = NodePath("SpineAlbedo")
 
 [sub_resource type="Gradient" id="Gradient_bxx7l"]
 offsets = PackedFloat32Array(0)
@@ -17,7 +15,7 @@ gradient = SubResource("Gradient_bxx7l")
 width = 1
 
 [node name="Book" instance=ExtResource("1_mpeb3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("2_jmb4d")
 
 [node name="Book" parent="." index="0"]
 blend_shapes/Height = 1.0
@@ -26,20 +24,19 @@ blend_shapes/Width = 1.0
 surface_material_override/0 = ExtResource("2_05fh8")
 surface_material_override/1 = ExtResource("3_3h4nf")
 
-[node name="SpineAlbedo" type="SubViewport" parent="." index="1"]
+[node name="SpineVP" type="SubViewport" parent="." index="1"]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(630, 84)
-size_2d_override = Vector2i(630, 84)
+size = Vector2i(630, 80)
+size_2d_override = Vector2i(630, 80)
 size_2d_override_stretch = true
-render_target_update_mode = 4
+render_target_update_mode = 1
 
-[node name="Spine" parent="SpineAlbedo" index="0" instance=ExtResource("4_6ssbb")]
+[node name="Spine" parent="SpineVP" index="0" instance=ExtResource("4_6ssbb")]
 
-[node name="Decal" type="Decal" parent="." index="2"]
+[node name="SpineDecal" type="Decal" parent="." index="2"]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0.111)
-size = Vector3(0.315, 0.001, 0.042)
-texture_albedo = SubResource("ViewportTexture_jlbu3")
+size = Vector3(0.315, 0.001, 0.04)
 texture_orm = SubResource("GradientTexture1D_ytqja")
 modulate = Color(1, 0.815686, 0.215686, 1)
 upper_fade = 1e-05
