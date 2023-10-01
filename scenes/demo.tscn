@@ -41,12 +41,13 @@ uv1_scale = Vector3(5, 5, 5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.937008, 0.349308, 0, -0.349308, 0.937008, 0, 0.329, 0.708)
+transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.448537, 0.708)
 current = true
 fov = 60.0
+far = 5.0
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.440571, 1.08477)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.731, 1.085)
 light_energy = 2.5
 shadow_enabled = true
 omni_range = 1.76125
