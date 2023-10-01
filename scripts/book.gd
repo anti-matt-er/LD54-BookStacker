@@ -6,6 +6,7 @@ const MAX_DIMENSIONS := Vector3(0.05, 0.315, 0.222)
 const MIN_DIMENSIONS := Vector3(0.01, 0.105, 0.074)
 const MIN_RANGE := Vector3(-0.5, -1, -1)
 const MAX_RANGE := Vector3(1.5, 1, 1)
+const WIDTH_VARIANCE := 0.25
 const MAX_MARGIN := 32
 const DPI := 4000
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
@@ -35,11 +36,10 @@ func generate() -> void:
 	randomize()
 	
 	title = TitleGenerator.generate_title()
-	size = Vector3(
-		randf_range(MIN_RANGE.x, MAX_RANGE.x),
-		randf_range(MIN_RANGE.y, MAX_RANGE.y),
-		randf_range(MIN_RANGE.z, MAX_RANGE.z)
-	)
+	var thickness = randf_range(MIN_RANGE.x, MAX_RANGE.x)
+	var height = randf_range(MIN_RANGE.y, MAX_RANGE.y)
+	var width = clampf((height + randf_range(-WIDTH_VARIANCE, WIDTH_VARIANCE)), MIN_RANGE.z, MAX_RANGE.z)
+	size = Vector3(thickness, height, width)
 	dimensions = Vector3(
 		remap(size.x, MIN_RANGE.x, MAX_RANGE.x, MIN_DIMENSIONS.x, MAX_DIMENSIONS.x),
 		remap(size.y, MIN_RANGE.y, MAX_RANGE.y, MIN_DIMENSIONS.y, MAX_DIMENSIONS.y),
