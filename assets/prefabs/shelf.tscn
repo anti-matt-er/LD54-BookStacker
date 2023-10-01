@@ -1,0 +1,60 @@
+[gd_scene load_steps=11 format=3 uid="uid://b8nf4p7sc8oj2"]
+
+[ext_resource type="Script" path="res://scripts/shelf.gd" id="1_ap64c"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mtrg7"]
+size = Vector3(1, 0.015, 0.25)
+
+[sub_resource type="Gradient" id="Gradient_pod1t"]
+offsets = PackedFloat32Array(0.168224, 0.514019, 1)
+colors = PackedColorArray(0.171875, 0.0888021, 0, 1, 0.304688, 0.197798, 0.105574, 1, 0.679688, 0.553165, 0.317278, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qds8f"]
+frequency = 0.0021
+fractal_type = 2
+fractal_gain = 1.155
+fractal_weighted_strength = 0.23
+domain_warp_enabled = true
+domain_warp_amplitude = 88.27
+domain_warp_frequency = 0.02
+domain_warp_fractal_octaves = 7
+domain_warp_fractal_gain = 0.945
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qwxh8"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_pod1t")
+noise = SubResource("FastNoiseLite_qds8f")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hfw43"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+bump_strength = 0.8
+noise = SubResource("FastNoiseLite_qds8f")
+
+[sub_resource type="Gradient" id="Gradient_o16de"]
+colors = PackedColorArray(0.144531, 0.144531, 0.144531, 1, 0.453125, 0.453125, 0.453125, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rgyag"]
+frequency = 0.0497
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qvxwk"]
+seamless = true
+color_ramp = SubResource("Gradient_o16de")
+noise = SubResource("FastNoiseLite_rgyag")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ut4w"]
+albedo_texture = SubResource("NoiseTexture2D_qwxh8")
+roughness_texture = SubResource("NoiseTexture2D_qvxwk")
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_hfw43")
+uv1_scale = Vector3(0.305, 2, 1.875)
+uv1_triplanar = true
+
+[node name="Shelf" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_mtrg7")
+surface_material_override/0 = SubResource("StandardMaterial3D_5ut4w")
+script = ExtResource("1_ap64c")

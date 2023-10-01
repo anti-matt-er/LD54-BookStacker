@@ -1,20 +1,15 @@
 [gd_scene load_steps=2 format=3 uid="uid://dkal2h2dwlesw"]
 
-[ext_resource type="PackedScene" uid="uid://d2s3p3ssht6qb" path="res://assets/prefabs/book.tscn" id="1_qwunw"]
+[ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 
 [node name="Demo" type="Node3D"]
 
-[node name="Book" parent="." instance=ExtResource("1_qwunw")]
-
-[node name="Book2" parent="." instance=ExtResource("1_qwunw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0610658, 0, 0)
-
-[node name="Book3" parent="." instance=ExtResource("1_qwunw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0587801, 0, 0)
+[node name="Shelf" parent="." instance=ExtResource("1_r5k3l")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.325954)
+transform = Transform3D(1, 0, 0, 0, 0.937008, 0.349308, 0, -0.349308, 0.937008, 0, 0.328859, 0.437764)
 current = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.08477)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.440571, 1.08477)
+omni_range = 1.76125

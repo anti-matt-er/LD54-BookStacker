@@ -1,4 +1,5 @@
 extends Node3D
+class_name Book
 
 
 const MAX_DIMENSIONS := Vector3(0.05, 0.315, 0.222)
@@ -11,23 +12,21 @@ const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
 
 
-@onready var mesh := $Book
-@onready var spineVP := $SpineVP
-@onready var spineDesign := $SpineVP/Spine
-@onready var spineDecal := $SpineDecal
-
+var mesh: MeshInstance3D
+var spineVP: SubViewport
+var spineDesign: Container
+var spineDecal: Decal
 var title := ""
 var size: Vector3
 var dimensions: Vector3
 var coverMaterial: StandardMaterial3D
 
 
-func _ready() -> void:
-	setup_materials()
-	generate()
-
-
-func setup_materials() -> void:
+func setup() -> void:
+	mesh = $Book
+	spineVP = $SpineVP
+	spineDesign = $SpineVP/Spine
+	spineDecal = $SpineDecal
 	coverMaterial = mesh.get_surface_override_material(0).duplicate()
 	mesh.set_surface_override_material(0, coverMaterial)
 
