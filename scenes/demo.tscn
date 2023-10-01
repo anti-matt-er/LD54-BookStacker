@@ -6,6 +6,12 @@
 
 [node name="Book" parent="." instance=ExtResource("1_qwunw")]
 
+[node name="Book2" parent="." instance=ExtResource("1_qwunw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0610658, 0, 0)
+
+[node name="Book3" parent="." instance=ExtResource("1_qwunw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0587801, 0, 0)
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.325954)
 current = true

@@ -19,10 +19,17 @@ const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
 var title := ""
 var size: Vector3
 var dimensions: Vector3
+var coverMaterial: StandardMaterial3D
 
 
 func _ready() -> void:
+	setup_materials()
 	generate()
+
+
+func setup_materials() -> void:
+	coverMaterial = mesh.get_surface_override_material(0).duplicate()
+	mesh.set_surface_override_material(0, coverMaterial)
 
 
 func generate() -> void:
@@ -57,7 +64,7 @@ func modify_mesh() -> void:
 		mesh.find_blend_shape_by_name("Width"),
 		size.z
 	)
-	mesh.get_surface_override_material(0).albedo_color = Color.from_hsv(
+	coverMaterial.albedo_color = Color.from_hsv(
 		randf(),
 		randf_range(COLOR_SATURATION_RANGE.x, COLOR_SATURATION_RANGE.y),
 		randf_range(COLOR_VALUE_RANGE.x, COLOR_VALUE_RANGE.y)
