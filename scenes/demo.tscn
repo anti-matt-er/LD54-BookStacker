@@ -58,6 +58,7 @@ far = 5.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.731, 1.085)
 light_energy = 2.5
 shadow_enabled = true
+shadow_bias = 0.01
 omni_range = 1.76125
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
