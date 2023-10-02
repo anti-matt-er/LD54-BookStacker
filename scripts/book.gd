@@ -9,6 +9,7 @@ const MAX_RANGE := Vector3(1.5, 0.5, 0.5)
 const WIDTH_VARIANCE := 0.25
 const MAX_MARGIN := 32
 const DPI := 4000
+const TITLE_YMARGIN := 10
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
 
@@ -70,13 +71,50 @@ func modify_mesh() -> void:
 	)
 
 
+func get_text_bounds(text: String, font_size: int, style: Dictionary, width: float) -> Vector2:
+	return style.font.get_multiline_string_size(
+		text, style.halign, width, font_size, -1, style.breaks, style.justify
+	)
+
+
 func modify_spine() -> void:
 	var res = Vector2i(dimensions.y * DPI, dimensions.x * DPI)
 	spineVP.size = res
 	spineVP.size_2d_override = res
 	spineDesign.size = res
 	
-	spineDesign.get_node("Title").text = title
+	await get_tree().process_frame
+	
+	var titleLabel = spineDesign.get_node("Title")
+	var titleBoxSize = titleLabel.size
+	titleBoxSize.y -= TITLE_YMARGIN
+	var titleSettings = titleLabel.label_settings.duplicate()
+	var titleStyle = {
+		"font": titleSettings.font,
+		"halign": titleLabel.horizontal_alignment,
+		"breaks": TextServer.BREAK_WORD_BOUND, # Should get this from auto-wrap settings instead
+		"justify": titleLabel.justification_flags
+	}
+	var titleFontSize = titleSettings.font_size
+	var titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+	
+	if titleBounds.y > titleBoxSize.y:
+		while titleBounds.y > titleBoxSize.y:
+			titleFontSize -= 1
+			titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+			# When shrinking, we should know as soon as it fits
+	elif titleBounds.y < titleBoxSize.y:
+		while titleBounds.y < titleBoxSize.y:
+			titleFontSize += 1
+			titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+		
+		if titleBounds.y > titleBoxSize.y:
+			titleFontSize -= 1
+			# When growing, we need to check that it fits once more and adjust accordingly
+	
+	titleLabel.text = title
+	titleSettings.font_size = titleFontSize
+	titleLabel.label_settings = titleSettings
 	
 	if randi() % 2:
 		spineDesign.get_node("Top Dot").hide()

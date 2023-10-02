@@ -29,8 +29,8 @@ font_size = 36
 outline_size = 4
 
 [node name="Spine" type="HBoxContainer"]
-offset_right = 722.0
-offset_bottom = 192.0
+offset_right = 666.0
+offset_bottom = 170.0
 
 [node name="Top Margin1" type="Control" parent="."]
 custom_minimum_size = Vector2(32, 0)
