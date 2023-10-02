@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8wjdhe4dtgeh"]
+
+[ext_resource type="PackedScene" uid="uid://upc64ankdw4t" path="res://assets/models/box.glb" id="1_2q2a7"]
+[ext_resource type="Material" uid="uid://b8hu7yrt4y8wo" path="res://assets/materials/cardboard_surface.material" id="2_k8vc4"]
+[ext_resource type="Material" uid="uid://cvo6x3agwsorf" path="res://assets/materials/cardboard_edge.material" id="3_1g5pv"]
+
+[node name="box" instance=ExtResource("1_2q2a7")]
+
+[node name="Box" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_k8vc4")
+
+[node name="LidR" parent="." index="1"]
+transform = Transform3D(-0.983397, 0.181469, 0, -0.181469, -0.983397, 0, 0, 0, 1, 0.375, 0.25, 0)
+surface_material_override/0 = ExtResource("2_k8vc4")
+surface_material_override/1 = ExtResource("3_1g5pv")
+
+[node name="LidL" parent="." index="2"]
+transform = Transform3D(-0.949471, -0.313856, 0, 0.313856, -0.949471, 0, 0, 0, 1, -0.375, 0.25, 0)
+surface_material_override/0 = ExtResource("2_k8vc4")
+surface_material_override/1 = ExtResource("3_1g5pv")
+
+[node name="LidB" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, -0.956756, 0.290893, 0, -0.290893, -0.956756, 0, 0.25, -0.375)
+surface_material_override/0 = ExtResource("2_k8vc4")
+surface_material_override/1 = ExtResource("3_1g5pv")
+
+[node name="LidF" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, -0.983461, -0.181117, 0, 0.181117, -0.983461, 0, 0.25, 0.375)
+surface_material_override/0 = ExtResource("2_k8vc4")
+surface_material_override/1 = ExtResource("3_1g5pv")

@@ -1,6 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=12 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
+[ext_resource type="Material" uid="uid://t4l3d4esyg7" path="res://assets/materials/floor.material" id="2_43mn1"]
+[ext_resource type="PackedScene" uid="uid://c8wjdhe4dtgeh" path="res://assets/prefabs/box.tscn" id="3_m0d3o"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
@@ -22,6 +24,9 @@ normal_scale = 0.25
 normal_texture = SubResource("NoiseTexture2D_ningb")
 uv1_scale = Vector3(5, 5, 5)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_fg4nc"]
+size = Vector2(5, 5)
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyxge"]
 sky_top_color = Color(1, 0.92549, 0.803922, 1)
 ground_bottom_color = Color(0.32549, 0.27451, 0.215686, 1)
@@ -41,21 +46,29 @@ sdfgi_use_occlusion = true
 [node name="Demo" type="Node3D"]
 
 [node name="Shelf" parent="." instance=ExtResource("1_r5k3l")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 
 [node name="Wall" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.125)
 mesh = SubResource("PlaneMesh_6xsok")
 surface_material_override/0 = SubResource("StandardMaterial3D_ilv47")
 
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
+mesh = SubResource("PlaneMesh_fg4nc")
+surface_material_override/0 = ExtResource("2_43mn1")
+
+[node name="box" parent="." instance=ExtResource("3_m0d3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.580219)
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.448537, 0.708)
+transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
 current = true
-fov = 60.0
+fov = 51.7
 far = 5.0
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.731, 1.085)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.143951, 0.992361)
 light_energy = 2.5
 shadow_enabled = true
 shadow_bias = 0.01
