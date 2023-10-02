@@ -3,6 +3,7 @@ extends MeshInstance3D
 
 const BOOK_PREFAB := preload("res://assets/prefabs/book.tscn")
 const MARGIN := 0.002
+const DISTANCE_FROM_WALL := 0.02
 
 @onready var length: float = mesh.size.x
 @onready var remaining_length := length
@@ -24,7 +25,7 @@ func reset() -> void:
 
 
 func stack_until_full() -> void:
-	while remaining_length > Book.MAX_DIMENSIONS.x:
+	while remaining_length > Book.MAX_DIMENSIONS.x + MARGIN:
 		stack_new_book()
 	
 	for book in books:
@@ -42,6 +43,6 @@ func stack_new_book() -> void:
 	book.position = Vector3(
 		(length + book.dimensions.x - 2 * remaining_length + MARGIN) / 2,
 		(book.dimensions.y + mesh.size.y) / 2,
-		-mesh.size.z / 2 + book.dimensions.z / 2 + MARGIN 
+		-mesh.size.z / 2 + book.dimensions.z / 2 + DISTANCE_FROM_WALL 
 	)
 	remaining_length -= book.dimensions.x + MARGIN

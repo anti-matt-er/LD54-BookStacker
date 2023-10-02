@@ -26,10 +26,11 @@ oversampling = 4.0
 line_spacing = 0.0
 font = SubResource("SystemFont_faqxm")
 font_size = 36
+outline_size = 4
 
 [node name="Spine" type="HBoxContainer"]
-offset_right = 574.0
-offset_bottom = 62.0
+offset_right = 722.0
+offset_bottom = 192.0
 
 [node name="Top Margin1" type="Control" parent="."]
 custom_minimum_size = Vector2(32, 0)

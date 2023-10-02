@@ -4,8 +4,8 @@ class_name Book
 
 const MAX_DIMENSIONS := Vector3(0.05, 0.315, 0.222)
 const MIN_DIMENSIONS := Vector3(0.01, 0.105, 0.074)
-const MIN_RANGE := Vector3(-0.5, -1, -1)
-const MAX_RANGE := Vector3(1.5, 1, 1)
+const MIN_RANGE := Vector3(-0.5, -0.5, -0.5)
+const MAX_RANGE := Vector3(1.5, 0.5, 0.5)
 const WIDTH_VARIANCE := 0.25
 const MAX_MARGIN := 32
 const DPI := 4000
@@ -42,8 +42,8 @@ func generate() -> void:
 	size = Vector3(thickness, height, width)
 	dimensions = Vector3(
 		remap(size.x, MIN_RANGE.x, MAX_RANGE.x, MIN_DIMENSIONS.x, MAX_DIMENSIONS.x),
-		remap(size.y, MIN_RANGE.y, MAX_RANGE.y, MIN_DIMENSIONS.y, MAX_DIMENSIONS.y),
-		remap(size.z, MIN_RANGE.z, MAX_RANGE.z, MIN_DIMENSIONS.z, MAX_DIMENSIONS.z)
+		remap(size.y, -1.0, 1.0, MIN_DIMENSIONS.y, MAX_DIMENSIONS.y),
+		remap(size.z, -1.0, 1.0, MIN_DIMENSIONS.z, MAX_DIMENSIONS.z)
 	)
 	
 	modify_mesh()
