@@ -2,4 +2,4 @@
 .godot/
 
 # Blender autosaves
-.blend1
+*.blend1
