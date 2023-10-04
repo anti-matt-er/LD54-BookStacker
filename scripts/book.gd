@@ -1,4 +1,4 @@
-extends Node3D
+extends StaticBody3D
 class_name Book
 
 
@@ -12,25 +12,40 @@ const DPI := 4000
 const TITLE_YMARGIN := 10
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
+const ROTATION_TIME := 0.35
 
+@onready var game := find_parent("Game")
 
 var mesh: MeshInstance3D
+var collider: CollisionShape3D
 var spineVP: SubViewport
 var spineDesign: Container
 var spineDecal: Decal
 var title := ""
 var size: Vector3
 var dimensions: Vector3
+var initial_position: Vector3
 var coverMaterial: StandardMaterial3D
+var target_quaternion := Quaternion.IDENTITY
+var rotation_tween: Tween
+var picked_up := false
+var placed := false
+var can_place := false
 
 
 func setup() -> void:
 	mesh = $Book
+	collider = $Collider
 	spineVP = $SpineVP
 	spineDesign = $SpineVP/Spine
 	spineDecal = $SpineDecal
+	
+	collider.shape = collider.shape.duplicate()
+	
 	coverMaterial = mesh.get_surface_override_material(0).duplicate()
 	mesh.set_surface_override_material(0, coverMaterial)
+	
+	input_event.connect(pick_up)
 
 
 func generate() -> void:
@@ -64,6 +79,9 @@ func modify_mesh() -> void:
 		mesh.find_blend_shape_by_name("Width"),
 		size.z
 	)
+	
+	collider.shape.size = dimensions
+	
 	coverMaterial.albedo_color = Color.from_hsv(
 		randf(),
 		randf_range(COLOR_SATURATION_RANGE.x, COLOR_SATURATION_RANGE.y),
@@ -141,3 +159,91 @@ func modify_spine() -> void:
 	spineDecal.size.x = dimensions.y
 	spineDecal.size.z = dimensions.x
 	spineDecal.position.z = dimensions.z / 2.0
+
+
+func rotate_vector3(input: Vector3, rot: Vector3) -> Vector3:
+	return input.rotated(
+		Vector3.BACK, rot.z
+	).rotated(
+		Vector3.RIGHT, rot.x
+	).rotated(
+		Vector3.UP, rot.y
+	)
+
+
+func get_rotated_dimensions() -> Vector3:
+	return rotate_vector3(dimensions, rotation).abs()
+
+
+func set_picked_up(state: bool) -> void:
+	picked_up = state
+	game.placing = state
+	game.book_ray.enabled = state
+	can_place = false
+	
+	if picked_up:
+		collision_layer = 0
+		game.camera.switch_to_box()
+		set_shapecast()
+	else:
+		collision_layer = 1
+		game.camera.switch_to_idle()
+
+
+func set_shapecast() -> void:
+	var rotated_dimensions = get_rotated_dimensions()
+	game.book_bounds_limit = rotated_dimensions / 2
+	game.book_bounds_limit.y = 0
+	game.book_ray.shape = BoxShape3D.new()
+	game.book_ray.shape.size = rotated_dimensions
+
+
+func pick_up(camera: Node, event: InputEvent, pos: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if !game.placing && !picked_up && !placed && event.is_action_pressed("pick_up"):
+		set_picked_up(true)
+
+
+func rotate_by(axis: Vector3, angle: float) -> void:
+	if !picked_up:
+		return
+	
+	quaternion = target_quaternion
+	target_quaternion = basis.rotated(axis, angle).get_rotation_quaternion()
+	
+	if rotation_tween:
+		rotation_tween.kill()
+		
+	rotation_tween = create_tween()
+	rotation_tween.set_ease(Tween.EASE_IN_OUT)
+	rotation_tween.set_trans(Tween.TRANS_CIRC)
+	rotation_tween.tween_property(self, "quaternion", target_quaternion, ROTATION_TIME)
+	
+	await rotation_tween.finished
+	
+	set_shapecast()
+
+
+func _process(delta) -> void:
+	if !picked_up:
+		return
+		
+	global_position = game.book_ray.global_position + game.book_ray.target_position * game.book_ray.get_closest_collision_safe_fraction()
+	
+	if Input.is_action_just_pressed("cancel"):
+		set_picked_up(false)
+		global_position = initial_position
+		rotation = Vector3.ZERO
+	
+	if Input.is_action_just_pressed("place") && can_place:
+		set_picked_up(false)
+	
+	if Input.is_action_just_pressed("rotate_right"):
+		rotate_by(Vector3.UP, -PI / 2)
+	if Input.is_action_just_pressed("rotate_left"):
+		rotate_by(Vector3.UP, PI / 2)
+	if Input.is_action_just_pressed("rotate_up"):
+		rotate_by(Vector3.RIGHT, -PI / 2)
+	if Input.is_action_just_pressed("rotate_down"):
+		rotate_by(Vector3.RIGHT, PI / 2)
+	
+	can_place = true

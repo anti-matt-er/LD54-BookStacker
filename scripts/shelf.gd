@@ -30,6 +30,7 @@ func stack_until_full() -> void:
 	
 	for book in books:
 		book.position.x += remaining_length / 2
+		book.initial_position = book.global_position
 
 
 func stack_new_book() -> void:
@@ -40,7 +41,7 @@ func stack_new_book() -> void:
 	
 	book.setup()
 	book.generate()
-	book.position = Vector3(
+	book.global_position = Vector3(
 		(length + book.dimensions.x - 2 * remaining_length + MARGIN) / 2,
 		(book.dimensions.y + mesh.size.y) / 2,
 		-mesh.size.z / 2 + book.dimensions.z / 2 + DISTANCE_FROM_WALL 

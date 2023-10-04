@@ -1,8 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=14 format=3 uid="uid://dkal2h2dwlesw"]
 
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 [ext_resource type="Material" uid="uid://t4l3d4esyg7" path="res://assets/materials/floor.material" id="2_43mn1"]
 [ext_resource type="PackedScene" uid="uid://c8wjdhe4dtgeh" path="res://assets/prefabs/box.tscn" id="3_m0d3o"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="5_6m5sv"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
@@ -43,36 +45,65 @@ ssil_enabled = true
 sdfgi_enabled = true
 sdfgi_use_occlusion = true
 
-[node name="Demo" type="Node3D"]
+[node name="Game" type="Node3D"]
+script = ExtResource("1_mywg5")
 
-[node name="Shelf" parent="." instance=ExtResource("1_r5k3l")]
+[node name="Scenery" type="Node3D" parent="."]
+
+[node name="Shelf" parent="Scenery" instance=ExtResource("1_r5k3l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+skeleton = NodePath("../..")
 
-[node name="Wall" type="MeshInstance3D" parent="."]
+[node name="Wall" type="MeshInstance3D" parent="Scenery"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.125)
 mesh = SubResource("PlaneMesh_6xsok")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_ilv47")
 
-[node name="Floor" type="MeshInstance3D" parent="."]
+[node name="Floor" type="MeshInstance3D" parent="Scenery"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
 mesh = SubResource("PlaneMesh_fg4nc")
+skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_43mn1")
 
-[node name="box" parent="." instance=ExtResource("3_m0d3o")]
+[node name="box" parent="Scenery" instance=ExtResource("3_m0d3o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.580219)
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
-current = true
-fov = 51.7
-far = 5.0
+[node name="Environment" type="Node3D" parent="."]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.143951, 0.992361)
 light_energy = 2.5
 shadow_enabled = true
 shadow_bias = 0.01
 omni_range = 1.76125
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
 environment = SubResource("Environment_jl0n7")
+
+[node name="Camera Angles" type="Node3D" parent="."]
+
+[node name="Idle" type="Marker3D" parent="Camera Angles"]
+transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
+
+[node name="Box" type="Marker3D" parent="Camera Angles"]
+transform = Transform3D(1, 0, 0, 0, 0.21303, 0.977046, 0, -0.977046, 0.21303, 0, 0.589, 0.783)
+
+[node name="Complete" type="Marker3D" parent="Camera Angles"]
+transform = Transform3D(1, 0, 0, 0, 0.932954, 0.359997, 0, -0.359997, 0.932954, 0, 0.179, 1.913)
+
+[node name="BookRay" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0.58)
+enabled = false
+target_position = Vector3(0, -2, 0)
+max_results = 1
+
+[node name="PlaceCast" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -2)
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
+current = true
+fov = 51.7
+far = 5.0
+script = ExtResource("5_6m5sv")
