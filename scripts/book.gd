@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends RigidBody3D
 class_name Book
 
 
@@ -13,6 +13,7 @@ const TITLE_YMARGIN := 10
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
 const ROTATION_TIME := 0.35
+const CUBIC_WEIGHT := 1201.0
 
 @onready var game := find_parent("Game")
 
@@ -25,6 +26,7 @@ var title := ""
 var size: Vector3
 var dimensions: Vector3
 var initial_position: Vector3
+var shelf: Node3D
 var coverMaterial: StandardMaterial3D
 var target_quaternion := Quaternion.IDENTITY
 var rotation_tween: Tween
@@ -61,6 +63,7 @@ func generate() -> void:
 		remap(size.y, -1.0, 1.0, MIN_DIMENSIONS.y, MAX_DIMENSIONS.y),
 		remap(size.z, -1.0, 1.0, MIN_DIMENSIONS.z, MAX_DIMENSIONS.z)
 	)
+	mass = dimensions.x * dimensions.y * dimensions.z
 	
 	modify_mesh()
 	modify_spine()
@@ -175,7 +178,7 @@ func get_rotated_dimensions() -> Vector3:
 	return rotate_vector3(dimensions, rotation).abs()
 
 
-func set_picked_up(state: bool) -> void:
+func set_picked_up(state: bool, placing: bool = false) -> void:
 	picked_up = state
 	game.placing = state
 	game.book_ray.enabled = state
@@ -187,6 +190,20 @@ func set_picked_up(state: bool) -> void:
 		set_shapecast()
 	else:
 		collision_layer = 1
+		
+		placed = placing
+		if placed:
+
+			for book in shelf.books:
+				if book.placed:
+					book.freeze = false
+			
+			await sleeping_state_changed
+			
+			for book in shelf.books:
+				if book.placed:
+					book.freeze = true
+		
 		game.camera.switch_to_idle()
 
 
@@ -235,7 +252,7 @@ func _process(delta) -> void:
 		rotation = Vector3.ZERO
 	
 	if Input.is_action_just_pressed("place") && can_place:
-		set_picked_up(false)
+		set_picked_up(false, true)
 	
 	if Input.is_action_just_pressed("rotate_right"):
 		rotate_by(Vector3.UP, -PI / 2)

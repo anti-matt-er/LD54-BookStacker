@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=15 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -28,6 +28,10 @@ uv1_scale = Vector3(5, 5, 5)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fg4nc"]
 size = Vector2(5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g0n1l"]
+margin = 0.0
+size = Vector3(5, 1, 5)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyxge"]
 sky_top_color = Color(1, 0.92549, 0.803922, 1)
@@ -60,11 +64,17 @@ mesh = SubResource("PlaneMesh_6xsok")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_ilv47")
 
-[node name="Floor" type="MeshInstance3D" parent="Scenery"]
+[node name="Floor" type="StaticBody3D" parent="Scenery"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Scenery/Floor"]
 mesh = SubResource("PlaneMesh_fg4nc")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 surface_material_override/0 = ExtResource("2_43mn1")
+
+[node name="Collider" type="CollisionShape3D" parent="Scenery/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_g0n1l")
 
 [node name="box" parent="Scenery" instance=ExtResource("3_m0d3o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.580219)

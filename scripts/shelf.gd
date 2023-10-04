@@ -38,6 +38,7 @@ func stack_new_book() -> void:
 	
 	books.append(book)
 	add_child(book)
+	book.shelf = self
 	
 	book.setup()
 	book.generate()
