@@ -14,6 +14,8 @@ const CAMERA_RAY_LENGTH := 10.0
 )
 @onready var box_limit := $BoxLimit
 @onready var y_limit: float = box_limit.global_position.y
+@onready var shelf_arrow := %ShelfArrow
+@onready var box_arrow := %BoxArrow
 
 var placing := false
 var book_bounds_limit := Vector3.ZERO

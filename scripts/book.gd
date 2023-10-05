@@ -50,6 +50,9 @@ func setup() -> void:
 	mesh.set_surface_override_material(0, coverMaterial)
 	
 	input_event.connect(pick_up)
+	
+	await get_tree().process_frame
+	game.shelf_arrow.clicked.connect(cancel_placement)
 
 
 func generate() -> void:
@@ -229,9 +232,16 @@ func set_invalid(state: bool) -> void:
 
 
 func pick_up(camera: Node, event: InputEvent, pos: Vector3, normal: Vector3, shape_idx: int) -> void:
-	if !game.placing && !picked_up && !placed && event.is_action_pressed("pick_up"):
+	if !game.placing && !picked_up && event.is_action_pressed("pick_up"):
 		set_picked_up(true)
 		set_invalid(false)
+
+
+func cancel_placement() -> void:
+	set_picked_up(false)
+	set_invalid(false)
+	global_position = initial_position
+	rotation = Vector3.ZERO
 
 
 func rotate_by(axis: Vector3, angle: float) -> void:
@@ -262,10 +272,7 @@ func _process(delta) -> void:
 	set_invalid(global_position.y > game.y_limit - get_rotated_dimensions().y / 2)
 	
 	if Input.is_action_just_pressed("cancel"):
-		set_picked_up(false)
-		set_invalid(false)
-		global_position = initial_position
-		rotation = Vector3.ZERO
+		cancel_placement()
 	
 	if Input.is_action_just_pressed("place") && can_place && !invalid:
 		set_picked_up(false, true)

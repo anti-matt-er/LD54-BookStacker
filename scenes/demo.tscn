@@ -1,10 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=18 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 [ext_resource type="Material" uid="uid://t4l3d4esyg7" path="res://assets/materials/floor.material" id="2_43mn1"]
 [ext_resource type="PackedScene" uid="uid://c8wjdhe4dtgeh" path="res://assets/prefabs/box.tscn" id="3_m0d3o"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="5_6m5sv"]
+[ext_resource type="Texture2D" uid="uid://c42jltbtq60u4" path="res://assets/textures/arrow.png" id="6_nsu80"]
+[ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
@@ -125,3 +127,59 @@ current = true
 fov = 51.7
 far = 5.0
 script = ExtResource("5_6m5sv")
+
+[node name="UI" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Container" type="VBoxContainer" parent="UI"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Upper" type="MarginContainer" parent="UI/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ShelfArrow" type="TextureRect" parent="UI/Container/Upper"]
+unique_name_in_owner = true
+texture_filter = 4
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 0
+texture = ExtResource("6_nsu80")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("7_k1l32")
+
+[node name="Middle" type="Control" parent="UI/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.0
+mouse_filter = 2
+
+[node name="Bottom" type="MarginContainer" parent="UI/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="BoxArrow" type="TextureRect" parent="UI/Container/Bottom"]
+unique_name_in_owner = true
+texture_filter = 4
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 0
+texture = ExtResource("6_nsu80")
+expand_mode = 3
+stretch_mode = 4
+flip_v = true
+script = ExtResource("7_k1l32")
+active = true

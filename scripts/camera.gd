@@ -12,6 +12,13 @@ const TRANSITION_TIME := 0.5
 var tween
 
 
+func _ready() -> void:
+	await get_tree().process_frame
+	
+	game.shelf_arrow.clicked.connect(switch_to_idle)
+	game.box_arrow.clicked.connect(switch_to_box)
+
+
 func switch_angle_to(angle: Marker3D) -> void:
 	if tween:
 		tween.kill()
@@ -26,11 +33,17 @@ func switch_angle_to(angle: Marker3D) -> void:
 
 func switch_to_idle() -> void:
 	switch_angle_to(idle_angle)
+	game.shelf_arrow.set_active(false)
+	game.box_arrow.set_active(true)
 
 
 func switch_to_box() -> void:
 	switch_angle_to(box_angle)
+	game.shelf_arrow.set_active(true)
+	game.box_arrow.set_active(false)
 
 
 func switch_to_complete() -> void:
 	switch_angle_to(complete_angle)
+	game.shelf_arrow.set_active(false)
+	game.box_arrow.set_active(false)
