@@ -1,6 +1,6 @@
 extends Node3D
 
-const BOX_SIZE := 0.7353
+const BOX_SIZE := 0.4 - 0.00001
 const MAX_RAY_POS := Vector3(BOX_SIZE, 0, BOX_SIZE) / 2
 const CAMERA_RAY_LENGTH := 10.0
 

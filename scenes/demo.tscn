@@ -77,7 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_g0n1l")
 
 [node name="box" parent="Scenery" instance=ExtResource("3_m0d3o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.580219)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.572, 0.58)
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -97,7 +97,7 @@ environment = SubResource("Environment_jl0n7")
 transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
 
 [node name="Box" type="Marker3D" parent="Camera Angles"]
-transform = Transform3D(1, 0, 0, 0, 0.21303, 0.977046, 0, -0.977046, 0.21303, 0, 0.589, 0.783)
+transform = Transform3D(1, 0, 0, 0, 0.21303, 0.977046, 0, -0.977046, 0.21303, 0, 0.164, 0.743)
 
 [node name="Complete" type="Marker3D" parent="Camera Angles"]
 transform = Transform3D(1, 0, 0, 0, 0.932954, 0.359997, 0, -0.359997, 0.932954, 0, 0.179, 1.913)
