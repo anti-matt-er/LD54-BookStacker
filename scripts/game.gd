@@ -7,11 +7,13 @@ const CAMERA_RAY_LENGTH := 10.0
 @onready var camera := $Camera
 @onready var place_ray := $PlaceCast
 @onready var book_ray := $BookRay
+@onready var box := $Scenery/box
 @onready var ray_origin := Vector3(
-	$Scenery/box.global_position.x,
+	box.global_position.x,
 	camera.box_angle.global_position.y,
-	$Scenery/box.global_position.z
+	box.global_position.z
 )
+@onready var box_animation := box.get_node("AnimationPlayer")
 @onready var box_limit := $BoxLimit
 @onready var y_limit: float = box_limit.global_position.y
 @onready var shelf_arrow := %ShelfArrow

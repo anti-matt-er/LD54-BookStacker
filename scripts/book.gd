@@ -200,6 +200,7 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 		collision_layer = 1
 		
 		placed = placing
+		var all_placed = placed
 		if placed:
 
 			for book in shelf.books:
@@ -211,8 +212,15 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 			for book in shelf.books:
 				if book.placed:
 					book.freeze = true
+				else:
+					all_placed = false
 		
-		game.camera.switch_to_idle()
+		if all_placed:
+			game.camera.switch_to_complete()
+			await get_tree().create_timer(game.camera.TRANSITION_TIME)
+			game.box_animation.play("Animation")
+		else:
+			game.camera.switch_to_idle()
 
 
 func set_shapecast() -> void:
