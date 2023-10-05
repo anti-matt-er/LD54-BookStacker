@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://b570co7fvaype"]
+
+[ext_resource type="FontFile" uid="uid://dlqvsdnksc304" path="res://assets/misc/fonts/CrimsonText-Regular.ttf" id="1_6v604"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_m7q4x"]
+color = Color(1, 1, 1, 1)
+grow_begin = -12.0
+grow_end = -12.0
+thickness = 4
+
+[sub_resource type="LabelSettings" id="LabelSettings_a4o4c"]
+line_spacing = 0.0
+font = ExtResource("1_6v604")
+font_size = 120
+outline_size = 2
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_1j6cp"]
+color = Color(1, 1, 1, 1)
+grow_begin = -12.0
+grow_end = -12.0
+thickness = 4
+
+[node name="Cover" type="VBoxContainer"]
+offset_right = 816.0
+offset_bottom = 798.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+alignment = 1
+
+[node name="Top Margin" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+
+[node name="Top Line" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_m7q4x")
+
+[node name="Title" type="Label" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "The Titleeeeee of the Books"
+label_settings = SubResource("LabelSettings_a4o4c")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Bottom Line" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_1j6cp")
+
+[node name="Bottom Margin" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2

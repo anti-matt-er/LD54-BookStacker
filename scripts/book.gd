@@ -26,6 +26,9 @@ var collider: CollisionShape3D
 var spineVP: SubViewport
 var spineDesign: Container
 var spineDecal: Decal
+var coverVP: SubViewport
+var coverDesign: Container
+var coverDecal: Decal
 var title := ""
 var size: Vector3
 var dimensions: Vector3
@@ -39,6 +42,7 @@ var placed := false
 var can_place := false
 var invalid := false
 var font_index: int
+var titleFontSize: int
 
 
 func setup() -> void:
@@ -47,6 +51,9 @@ func setup() -> void:
 	spineVP = $SpineVP
 	spineDesign = $SpineVP/Spine
 	spineDecal = $SpineDecal
+	coverVP = $CoverVP
+	coverDesign = $CoverVP/Cover
+	coverDecal = $CoverDecal
 	
 	collider.shape = collider.shape.duplicate()
 	
@@ -79,6 +86,7 @@ func generate() -> void:
 	
 	modify_mesh()
 	modify_spine()
+	modify_cover()
 
 
 func modify_mesh() -> void:
@@ -129,7 +137,7 @@ func modify_spine() -> void:
 		"breaks": TextServer.BREAK_WORD_BOUND, # Should get this from auto-wrap settings instead
 		"justify": titleLabel.justification_flags
 	}
-	var titleFontSize = titleSettings.font_size
+	titleFontSize = titleSettings.font_size
 	var titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
 	
 	if titleBounds.y > titleBoxSize.y:
@@ -175,6 +183,38 @@ func modify_spine() -> void:
 	spineDecal.size.x = dimensions.y
 	spineDecal.size.z = dimensions.x
 	spineDecal.position.z = dimensions.z / 2.0
+
+
+func modify_cover() -> void:
+	var res = Vector2i(dimensions.z * DPI, dimensions.y * DPI)
+	coverVP.size = res
+	coverVP.size_2d_override = res
+	coverDesign.size = res
+	
+	await get_tree().process_frame
+	
+	var titleLabel = coverDesign.get_node("Title")
+	var titleBoxSize = titleLabel.size
+	var titleSettings = titleLabel.label_settings.duplicate()
+	titleSettings.font = fonts[font_index]
+
+	titleLabel.text = title
+	titleSettings.font_size = titleFontSize
+	titleLabel.label_settings = titleSettings
+	
+	if randi() % 2:
+		coverDesign.get_node("Top Line").hide()
+		coverDesign.get_node("Bottom Line").hide()
+	
+	if randi() % 2:
+		coverDesign.alignment = BoxContainer.ALIGNMENT_BEGIN
+	
+	await RenderingServer.frame_post_draw
+	
+	coverDecal.set_texture(Decal.TEXTURE_ALBEDO, coverVP.get_texture())
+	coverDecal.size.x = dimensions.z
+	coverDecal.size.z = dimensions.y
+	coverDecal.position.x = dimensions.x / 2
 
 
 func rotate_vector3(input: Vector3, rot: Vector3) -> Vector3:

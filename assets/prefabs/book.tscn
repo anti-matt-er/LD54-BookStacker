@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d2s3p3ssht6qb"]
+[gd_scene load_steps=18 format=3 uid="uid://d2s3p3ssht6qb"]
 
 [ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="2_2aste"]
 [ext_resource type="Material" uid="uid://c2upiir03lkkw" path="res://assets/materials/book_hardcover_leather.material" id="2_05fh8"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="5_lsrtr"]
 [ext_resource type="FontFile" uid="uid://1g5hmnbry07r" path="res://assets/misc/fonts/PlayfairDisplay-Medium.ttf" id="6_y0755"]
 [ext_resource type="FontFile" uid="uid://ba1hicndtb3pg" path="res://assets/misc/fonts/Raleway-Medium.ttf" id="7_4vfm7"]
+[ext_resource type="PackedScene" uid="uid://b570co7fvaype" path="res://assets/prefabs/decals/cover.tscn" id="11_co7nk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6tsx5"]
 resource_name = "Cover"
@@ -93,6 +94,14 @@ render_target_update_mode = 1
 
 [node name="Spine" parent="SpineVP" instance=ExtResource("4_6ssbb")]
 
+[node name="CoverVP" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size_2d_override_stretch = true
+render_target_update_mode = 1
+
+[node name="Cover" parent="CoverVP" instance=ExtResource("11_co7nk")]
+
 [node name="SpineDecal" type="Decal" parent="."]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0.111)
 size = Vector3(0.315, 0.001, 0.04)
@@ -100,6 +109,15 @@ texture_orm = SubResource("GradientTexture1D_ytqja")
 modulate = Color(1, 0.815686, 0.215686, 1)
 upper_fade = 1e-05
 lower_fade = 1.34041e-05
+
+[node name="CoverDecal" type="Decal" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.02, 0, 0)
+sorting_offset = 5.0
+size = Vector3(0.222, 0.001, 0.315)
+texture_orm = SubResource("GradientTexture1D_ytqja")
+modulate = Color(1, 0.815686, 0.215686, 1)
+upper_fade = 1e-05
+lower_fade = 1e-05
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_23dpm")
