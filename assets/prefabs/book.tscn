@@ -1,9 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://d2s3p3ssht6qb"]
+[gd_scene load_steps=17 format=3 uid="uid://d2s3p3ssht6qb"]
 
+[ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="2_2aste"]
 [ext_resource type="Material" uid="uid://c2upiir03lkkw" path="res://assets/materials/book_hardcover_leather.material" id="2_05fh8"]
 [ext_resource type="Script" path="res://scripts/book.gd" id="2_jmb4d"]
 [ext_resource type="Material" uid="uid://dyst70q7muxxn" path="res://assets/materials/book_pages.material" id="3_3h4nf"]
+[ext_resource type="FontFile" uid="uid://dlqvsdnksc304" path="res://assets/misc/fonts/CrimsonText-Regular.ttf" id="3_321to"]
 [ext_resource type="PackedScene" uid="uid://buvn3ek0okr6s" path="res://assets/prefabs/decals/spine.tscn" id="4_6ssbb"]
+[ext_resource type="FontFile" uid="uid://dd1myctnnblah" path="res://assets/misc/fonts/DancingScript-SemiBold.ttf" id="4_8ypxb"]
+[ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="5_lsrtr"]
+[ext_resource type="FontFile" uid="uid://1g5hmnbry07r" path="res://assets/misc/fonts/PlayfairDisplay-Medium.ttf" id="6_y0755"]
+[ext_resource type="FontFile" uid="uid://ba1hicndtb3pg" path="res://assets/misc/fonts/Raleway-Medium.ttf" id="7_4vfm7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6tsx5"]
 resource_name = "Cover"
@@ -65,6 +71,8 @@ size = Vector3(0.04, 0.315, 0.222)
 continuous_cd = true
 freeze = true
 script = ExtResource("2_jmb4d")
+fonts = Array[Font]([ExtResource("2_2aste"), ExtResource("3_321to"), ExtResource("4_8ypxb"), ExtResource("5_lsrtr"), ExtResource("6_y0755"), ExtResource("7_4vfm7")])
+font_uppercase_disable = Array[bool]([true, false, true, false, false, false])
 
 [node name="Book" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_ea6ba")

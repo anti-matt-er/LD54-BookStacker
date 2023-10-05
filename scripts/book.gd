@@ -16,6 +16,9 @@ const ROTATION_TIME := 0.35
 const CUBIC_WEIGHT := 1201.0
 const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
 
+@export var fonts: Array[Font]
+@export var font_uppercase_disable: Array[bool]
+
 @onready var game := find_parent("Game")
 
 var mesh: MeshInstance3D
@@ -35,6 +38,7 @@ var picked_up := false
 var placed := false
 var can_place := false
 var invalid := false
+var font_index: int
 
 
 func setup() -> void:
@@ -59,6 +63,9 @@ func generate() -> void:
 	randomize()
 	
 	title = TitleGenerator.generate_title()
+	font_index = randi() % fonts.size()
+	if !font_uppercase_disable[font_index] && randi() % 2:
+		title = title.to_upper()
 	var thickness = randf_range(MIN_RANGE.x, MAX_RANGE.x)
 	var height = randf_range(MIN_RANGE.y, MAX_RANGE.y)
 	var width = clampf((height + randf_range(-WIDTH_VARIANCE, WIDTH_VARIANCE)), MIN_RANGE.z, MAX_RANGE.z)
@@ -115,6 +122,7 @@ func modify_spine() -> void:
 	var titleBoxSize = titleLabel.size
 	titleBoxSize.y -= TITLE_YMARGIN
 	var titleSettings = titleLabel.label_settings.duplicate()
+	titleSettings.font = fonts[font_index]
 	var titleStyle = {
 		"font": titleSettings.font,
 		"halign": titleLabel.horizontal_alignment,

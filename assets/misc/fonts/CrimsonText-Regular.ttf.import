@@ -1,0 +1,38 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://dlqvsdnksc304"
+path="res://.godot/imported/CrimsonText-Regular.ttf-dd848b2e609550af232e5d931d811abe.fontdata"
+
+[deps]
+
+source_file="res://assets/misc/fonts/CrimsonText-Regular.ttf"
+dest_files=["res://.godot/imported/CrimsonText-Regular.ttf-dd848b2e609550af232e5d931d811abe.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=true
+multichannel_signed_distance_field=true
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=0
+subpixel_positioning=1
+oversampling=4.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0)
+}]
+language_support={}
+script_support={}
+opentype_features={}

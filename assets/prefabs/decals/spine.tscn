@@ -1,5 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://buvn3ek0okr6s"]
 
+[ext_resource type="FontFile" uid="uid://dlqvsdnksc304" path="res://assets/misc/fonts/CrimsonText-Regular.ttf" id="1_kdmnt"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0u6u"]
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 16
@@ -14,19 +16,11 @@ grow_end = -4.0
 thickness = 4
 vertical = true
 
-[sub_resource type="SystemFont" id="SystemFont_faqxm"]
-font_names = PackedStringArray("Georgia")
-generate_mipmaps = true
-hinting = 2
-subpixel_positioning = 0
-multichannel_signed_distance_field = true
-oversampling = 4.0
-
 [sub_resource type="LabelSettings" id="LabelSettings_pha1n"]
 line_spacing = 0.0
-font = SubResource("SystemFont_faqxm")
+font = ExtResource("1_kdmnt")
 font_size = 36
-outline_size = 4
+outline_size = 2
 
 [node name="Spine" type="HBoxContainer"]
 offset_right = 666.0
