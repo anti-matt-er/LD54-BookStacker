@@ -12,9 +12,15 @@ const CAMERA_RAY_LENGTH := 10.0
 	camera.box_angle.global_position.y,
 	$Scenery/box.global_position.z
 )
+@onready var box_limit := $BoxLimit
+@onready var y_limit: float = box_limit.global_position.y
 
 var placing := false
 var book_bounds_limit := Vector3.ZERO
+
+
+func _ready() -> void:
+	box_limit.hide()
 
 
 func _physics_process(_delta: float) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=16 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -48,6 +48,9 @@ ssao_enabled = true
 ssil_enabled = true
 sdfgi_enabled = true
 sdfgi_use_occlusion = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nnmpw"]
+size = Vector2(0.4, 0.4)
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_mywg5")
@@ -110,6 +113,11 @@ max_results = 1
 
 [node name="PlaceCast" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -2)
+
+[node name="BoxLimit" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.444, 0.58)
+transparency = 0.75
+mesh = SubResource("PlaneMesh_nnmpw")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)

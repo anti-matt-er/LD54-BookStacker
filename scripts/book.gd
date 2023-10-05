@@ -14,6 +14,7 @@ const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
 const ROTATION_TIME := 0.35
 const CUBIC_WEIGHT := 1201.0
+const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
 
 @onready var game := find_parent("Game")
 
@@ -33,6 +34,7 @@ var rotation_tween: Tween
 var picked_up := false
 var placed := false
 var can_place := false
+var invalid := false
 
 
 func setup() -> void:
@@ -184,6 +186,9 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 	game.book_ray.enabled = state
 	can_place = false
 	
+	if rotation_tween:
+		rotation_tween.kill()
+	
 	if picked_up:
 		collision_layer = 0
 		game.camera.switch_to_box()
@@ -215,9 +220,18 @@ func set_shapecast() -> void:
 	game.book_ray.shape.size = rotated_dimensions
 
 
+func set_invalid(state: bool) -> void:
+	invalid = state
+	if invalid:
+		mesh.material_override = INVALID_MATERIAL
+	else:
+		mesh.material_override = null
+
+
 func pick_up(camera: Node, event: InputEvent, pos: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if !game.placing && !picked_up && !placed && event.is_action_pressed("pick_up"):
 		set_picked_up(true)
+		set_invalid(false)
 
 
 func rotate_by(axis: Vector3, angle: float) -> void:
@@ -245,14 +259,17 @@ func _process(delta) -> void:
 		return
 		
 	global_position = game.book_ray.global_position + game.book_ray.target_position * game.book_ray.get_closest_collision_safe_fraction()
+	set_invalid(global_position.y > game.y_limit - get_rotated_dimensions().y / 2)
 	
 	if Input.is_action_just_pressed("cancel"):
 		set_picked_up(false)
+		set_invalid(false)
 		global_position = initial_position
 		rotation = Vector3.ZERO
 	
-	if Input.is_action_just_pressed("place") && can_place:
+	if Input.is_action_just_pressed("place") && can_place && !invalid:
 		set_picked_up(false, true)
+		set_invalid(false)
 	
 	if Input.is_action_just_pressed("rotate_right"):
 		rotate_by(Vector3.UP, -PI / 2)
