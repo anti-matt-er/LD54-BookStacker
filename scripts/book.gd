@@ -294,6 +294,9 @@ func pick_up(camera: Node, event: InputEvent, pos: Vector3, normal: Vector3, sha
 
 
 func cancel_placement() -> void:
+	if !picked_up:
+		return
+	
 	set_picked_up(false)
 	set_invalid(false)
 	global_position = initial_position
