@@ -18,6 +18,8 @@ const CAMERA_RAY_LENGTH := 10.0
 @onready var y_limit: float = box_limit.global_position.y
 @onready var shelf_arrow := %ShelfArrow
 @onready var box_arrow := %BoxArrow
+@onready var music := $Music
+@onready var stopwatch := %Stopwatch
 
 var placing := false
 var book_bounds_limit := Vector3.ZERO
@@ -25,6 +27,9 @@ var book_bounds_limit := Vector3.ZERO
 
 func _ready() -> void:
 	box_limit.hide()
+	await get_tree().process_frame
+	music.play()
+	stopwatch.set_timer(60, true)
 
 
 func _physics_process(_delta: float) -> void:

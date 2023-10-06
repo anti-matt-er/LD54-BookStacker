@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=20 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 [ext_resource type="Material" uid="uid://t4l3d4esyg7" path="res://assets/materials/floor.material" id="2_43mn1"]
 [ext_resource type="PackedScene" uid="uid://c8wjdhe4dtgeh" path="res://assets/prefabs/box.tscn" id="3_m0d3o"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="5_6m5sv"]
+[ext_resource type="PackedScene" uid="uid://bxuk4hpm6jbhb" path="res://assets/prefabs/stopwatch.tscn" id="6_mr61x"]
 [ext_resource type="Texture2D" uid="uid://c42jltbtq60u4" path="res://assets/textures/arrow.png" id="6_nsu80"]
 [ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
 [ext_resource type="AudioStream" uid="uid://bhgo4y1gjslmv" path="res://assets/music/Coffee_&_Ink.ogg" id="8_4wvrc"]
@@ -91,6 +92,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.572, 0.58)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.143951, 0.992361)
 light_energy = 2.5
 light_size = 0.103
+light_cull_mask = 4294967293
 shadow_enabled = true
 shadow_bias = 0.01
 omni_range = 1.76125
@@ -129,6 +131,17 @@ current = true
 fov = 51.7
 far = 5.0
 script = ExtResource("5_6m5sv")
+
+[node name="Stopwatch" parent="Camera" instance=ExtResource("6_mr61x")]
+unique_name_in_owner = true
+transform = Transform3D(0.0140954, -0.0051303, 2.24253e-10, 0, -6.55671e-10, -0.015, 0.0051303, 0.0140954, -6.16129e-10, 0.1, 0.045, -0.145)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera"]
+layers = 2
+light_energy = 0.1
+light_indirect_energy = 0.0
+light_cull_mask = 4293918722
+shadow_enabled = true
 
 [node name="UI" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -188,5 +201,4 @@ active = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_4wvrc")
-autoplay = true
 bus = &"Music"

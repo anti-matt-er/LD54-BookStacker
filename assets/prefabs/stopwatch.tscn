@@ -1,0 +1,21 @@
+[gd_scene load_steps=7 format=3 uid="uid://bxuk4hpm6jbhb"]
+
+[ext_resource type="PackedScene" uid="uid://crw5yv5kok8ew" path="res://assets/models/stopwatch.glb" id="1_hpu6n"]
+[ext_resource type="Script" path="res://scripts/stopwatch.gd" id="2_b0yd2"]
+[ext_resource type="Material" uid="uid://bc1adgylr7bp4" path="res://assets/materials/watch_glass.material" id="2_gt0tc"]
+[ext_resource type="Material" uid="uid://ccuwoknkc4ecs" path="res://assets/materials/watch_frame.material" id="3_e4jyw"]
+[ext_resource type="Material" uid="uid://cc286n2tif7vf" path="res://assets/materials/watch_face.material" id="4_r32sm"]
+[ext_resource type="Material" uid="uid://s1nhnkfycddf" path="res://assets/materials/watch_hand.material" id="5_3f5d3"]
+
+[node name="Stopwatch" instance=ExtResource("1_hpu6n")]
+script = ExtResource("2_b0yd2")
+
+[node name="Watch" parent="." index="0"]
+layers = 2
+surface_material_override/0 = ExtResource("2_gt0tc")
+surface_material_override/1 = ExtResource("3_e4jyw")
+surface_material_override/2 = ExtResource("4_r32sm")
+
+[node name="Hand" parent="." index="1"]
+layers = 2
+surface_material_override/0 = ExtResource("5_3f5d3")
