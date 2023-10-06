@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=19 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/camera.gd" id="5_6m5sv"]
 [ext_resource type="Texture2D" uid="uid://c42jltbtq60u4" path="res://assets/textures/arrow.png" id="6_nsu80"]
 [ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
+[ext_resource type="AudioStream" uid="uid://bhgo4y1gjslmv" path="res://assets/music/Coffee_&_Ink.ogg" id="8_4wvrc"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
@@ -184,3 +185,8 @@ stretch_mode = 4
 flip_v = true
 script = ExtResource("7_k1l32")
 active = true
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_4wvrc")
+autoplay = true
+bus = &"Music"
