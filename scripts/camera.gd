@@ -24,6 +24,7 @@ func switch_angle_to(angle: Marker3D) -> void:
 		tween.kill()
 	
 	tween = create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_CIRC)
 	tween.set_parallel(true)

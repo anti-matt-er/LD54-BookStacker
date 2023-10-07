@@ -2,6 +2,7 @@ extends Node3D
 
 
 @onready var hand := $Hand
+@onready var max_dimension: float = $Watch.get_aabb().get_longest_axis_size()
 
 var remaining := 0
 var total := 0
