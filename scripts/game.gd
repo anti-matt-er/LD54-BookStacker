@@ -33,7 +33,8 @@ func _ready() -> void:
 	box_limit.hide()
 	await get_tree().process_frame
 	music.play()
-	stopwatch.set_timer(60 * 6, true)
+	stopwatch.set_timer(60, true)
+	stopwatch.running_out.connect(func(): timer_display.set_low(true))
 
 
 func _physics_process(_delta: float) -> void:

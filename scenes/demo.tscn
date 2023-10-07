@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
 [ext_resource type="AudioStream" uid="uid://bhgo4y1gjslmv" path="res://assets/music/Coffee_&_Ink.ogg" id="8_4wvrc"]
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="9_vloi4"]
-[ext_resource type="Script" path="res://scripts/timerdislpay.gd" id="10_bijxn"]
+[ext_resource type="Script" path="res://scripts/timer_display.gd" id="10_saosj"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
@@ -63,6 +63,7 @@ size = Vector2(0.4, 0.4)
 [sub_resource type="LabelSettings" id="LabelSettings_m2owg"]
 font = ExtResource("9_vloi4")
 font_size = 32
+font_color = Color(0.603922, 1, 0.803922, 1)
 shadow_size = 8
 shadow_color = Color(0, 0, 0, 0.5)
 
@@ -230,7 +231,7 @@ size_flags_vertical = 1
 text = "0:00"
 label_settings = SubResource("LabelSettings_m2owg")
 horizontal_alignment = 1
-script = ExtResource("10_bijxn")
+script = ExtResource("10_saosj")
 
 [node name="Middle" type="Control" parent="UI/Container"]
 layout_mode = 2
