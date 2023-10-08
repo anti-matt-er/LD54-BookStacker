@@ -344,7 +344,7 @@ func _process(delta) -> void:
 	if Input.is_action_just_pressed("cancel"):
 		cancel_placement()
 	
-	if Input.is_action_just_pressed("place") && can_place && !invalid && game.box_ready:
+	if Input.is_action_just_pressed("place") && can_place && !invalid && game.box_ready && (!rotation_tween || !rotation_tween.is_running()):
 		set_picked_up(false, true)
 		set_invalid(false)
 	
