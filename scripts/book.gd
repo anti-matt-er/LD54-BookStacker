@@ -276,9 +276,6 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 				else:
 					all_placed = false
 		
-		game.complete_box()
-		return
-		
 		if all_placed:
 			game.complete_box()
 		else:
