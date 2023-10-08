@@ -255,6 +255,7 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 	if picked_up:
 		collision_layer = 0
 		game.camera.switch_to_box()
+		rotation = Vector3.ZERO
 		set_shapecast()
 	else:
 		collision_layer = 1
