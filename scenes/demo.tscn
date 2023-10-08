@@ -16,9 +16,9 @@
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
-start_time = 360
+start_time = 300
 time_decrement = 30
-min_time = 240
+min_time = 180
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
