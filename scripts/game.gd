@@ -79,6 +79,9 @@ func start_stopwatch(time: int) -> void:
 
 func ready_box() -> void:
 	shelf.stack_until_full()
+	
+	await shelf.stacked
+	
 	start_stopwatch(max(difficulty.min_time, difficulty.start_time - difficulty.time_decrement * level))
 	box_ready = true
 

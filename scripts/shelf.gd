@@ -4,11 +4,15 @@ extends MeshInstance3D
 const BOOK_PREFAB := preload("res://assets/prefabs/book.tscn")
 const MARGIN := 0.002
 const DISTANCE_FROM_WALL := 0.02
+const BOOK_PLACE_TRANSITION := 0.25
+const BOOK_PLACE_DELAY := 0.025
 
 @onready var length: float = mesh.size.x
 @onready var remaining_length := length
 
 var books: Array[Book] = []
+
+signal stacked
 
 
 func reset() -> void:
@@ -27,6 +31,12 @@ func stack_until_full() -> void:
 	for book in books:
 		book.position.x += remaining_length / 2
 		book.initial_position = book.global_position
+	
+	for book in books:
+		book.animate_show(BOOK_PLACE_TRANSITION)
+		await get_tree().create_timer(BOOK_PLACE_DELAY).timeout
+	
+	stacked.emit()
 
 
 func stack_new_book() -> void:

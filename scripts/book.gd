@@ -15,6 +15,7 @@ const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
 const ROTATION_TIME := 0.35
 const CUBIC_WEIGHT := 1201.0
 const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
+const OFFSCREEN_Y_OFFSET := 1.0
 
 @export var fonts: Array[Font]
 @export var font_uppercase_disable: Array[bool]
@@ -36,13 +37,15 @@ var initial_position: Vector3
 var shelf: Node3D
 var coverMaterial: StandardMaterial3D
 var target_quaternion := Quaternion.IDENTITY
-var rotation_tween: Tween
+var tween: Tween
 var picked_up := false
 var placed := false
 var can_place := false
 var invalid := false
 var font_index: int
 var titleFontSize: int
+
+signal generated
 
 
 func setup() -> void:
@@ -92,7 +95,7 @@ func generate() -> void:
 	
 	await RenderingServer.frame_post_draw
 	
-	show()
+	generated.emit()
 
 
 func modify_mesh() -> void:
@@ -227,7 +230,23 @@ func modify_cover() -> void:
 	coverDecal.size.z = dimensions.y
 	coverDecal.position.x = dimensions.x / 2
 	coverVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
+
+
+func animate_show(time: float) -> void:
+	position.y += OFFSCREEN_Y_OFFSET
+	show()
 	
+	if tween:
+		tween.kill()
+	
+	if tween:
+		tween.kill()
+		
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(self, "position:y", position.y - OFFSCREEN_Y_OFFSET, time)
+
 
 func rotate_vector3(input: Vector3, rot: Vector3) -> Vector3:
 	return input.rotated(
@@ -249,8 +268,8 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 	game.book_ray.enabled = state
 	can_place = false
 	
-	if rotation_tween:
-		rotation_tween.kill()
+	if tween:
+		tween.kill()
 	
 	if picked_up:
 		collision_layer = 0
@@ -321,15 +340,15 @@ func rotate_by(axis: Vector3, angle: float) -> void:
 	quaternion = target_quaternion
 	target_quaternion = basis.rotated(axis, angle).get_rotation_quaternion()
 	
-	if rotation_tween:
-		rotation_tween.kill()
+	if tween:
+		tween.kill()
 		
-	rotation_tween = create_tween()
-	rotation_tween.set_ease(Tween.EASE_IN_OUT)
-	rotation_tween.set_trans(Tween.TRANS_CIRC)
-	rotation_tween.tween_property(self, "quaternion", target_quaternion, ROTATION_TIME)
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_CIRC)
+	tween.tween_property(self, "quaternion", target_quaternion, ROTATION_TIME)
 	
-	await rotation_tween.finished
+	await tween.finished
 	
 	set_shapecast()
 
@@ -344,7 +363,7 @@ func _process(delta) -> void:
 	if Input.is_action_just_pressed("cancel"):
 		cancel_placement()
 	
-	if Input.is_action_just_pressed("place") && can_place && !invalid && game.box_ready && (!rotation_tween || !rotation_tween.is_running()):
+	if Input.is_action_just_pressed("place") && can_place && !invalid && game.box_ready && (!tween || !tween.is_running()):
 		set_picked_up(false, true)
 		set_invalid(false)
 	
