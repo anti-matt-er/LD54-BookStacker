@@ -4,7 +4,7 @@ class_name AutosizeLabel
 
 const MIN_SIZE := 22
 
-@export var scale_factor := 0.035
+@onready var base_size := label_settings.font_size
 
 
 func _ready() -> void:
@@ -13,4 +13,4 @@ func _ready() -> void:
 
 
 func resize() -> void:
-	label_settings.font_size = maxi(MIN_SIZE, roundi(sqrt(get_viewport_rect().get_area()) * scale_factor))
+	label_settings.font_size = maxi(MIN_SIZE, roundi(base_size * get_viewport_rect().size.length() * Helper.vu))
