@@ -239,9 +239,6 @@ func animate_show(time: float) -> void:
 	if tween:
 		tween.kill()
 	
-	if tween:
-		tween.kill()
-		
 	tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BOUNCE)
