@@ -8,15 +8,11 @@ const DISTANCE_FROM_WALL := 0.02
 @onready var length: float = mesh.size.x
 @onready var remaining_length := length
 
-var books: Array[Book]
-
-
-func _ready() -> void:
-	reset()
-	stack_until_full()
+var books: Array[Book] = []
 
 
 func reset() -> void:
+	remaining_length = length
 	for book in books:
 		remove_child(book)
 		book.queue_free()

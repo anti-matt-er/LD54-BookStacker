@@ -1,16 +1,24 @@
-[gd_scene load_steps=24 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=29 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 [ext_resource type="Material" uid="uid://t4l3d4esyg7" path="res://assets/materials/floor.material" id="2_43mn1"]
+[ext_resource type="Script" path="res://scripts/difficulty.gd" id="2_ns78w"]
 [ext_resource type="PackedScene" uid="uid://c8wjdhe4dtgeh" path="res://assets/prefabs/box.tscn" id="3_m0d3o"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="5_6m5sv"]
 [ext_resource type="PackedScene" uid="uid://bxuk4hpm6jbhb" path="res://assets/prefabs/stopwatch.tscn" id="6_mr61x"]
 [ext_resource type="Texture2D" uid="uid://c42jltbtq60u4" path="res://assets/textures/arrow.png" id="6_nsu80"]
 [ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
 [ext_resource type="AudioStream" uid="uid://bhgo4y1gjslmv" path="res://assets/music/Coffee_&_Ink.ogg" id="8_4wvrc"]
+[ext_resource type="Script" path="res://scripts/autosize_label.gd" id="8_gde5c"]
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="9_vloi4"]
 [ext_resource type="Script" path="res://scripts/timer_display.gd" id="10_saosj"]
+
+[sub_resource type="Resource" id="Resource_jycwh"]
+script = ExtResource("2_ns78w")
+start_time = 360
+time_decrement = 30
+min_time = 240
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
@@ -58,6 +66,20 @@ sdfgi_use_occlusion = true
 [sub_resource type="PlaneMesh" id="PlaneMesh_nnmpw"]
 size = Vector2(0.4, 0.4)
 
+[sub_resource type="LabelSettings" id="LabelSettings_1d5tk"]
+font = ExtResource("9_vloi4")
+font_size = 32
+font_color = Color(0.603922, 1, 0.803922, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ittbn"]
+font = ExtResource("9_vloi4")
+font_size = 48
+font_color = Color(1, 0.882353, 0.278431, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.5)
+
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bnsrc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m2owg"]
@@ -69,6 +91,7 @@ shadow_color = Color(0, 0, 0, 0.5)
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_mywg5")
+difficulty = SubResource("Resource_jycwh")
 
 [node name="Scenery" type="Node3D" parent="."]
 
@@ -179,9 +202,25 @@ size_flags_vertical = 3
 mouse_filter = 2
 alignment = 1
 
-[node name="Left" type="CenterContainer" parent="UI/Container/Upper"]
+[node name="Left" type="HBoxContainer" parent="UI/Container/Upper"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="ScoreLabel" type="Label" parent="UI/Container/Upper/Left"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Score: "
+label_settings = SubResource("LabelSettings_1d5tk")
+script = ExtResource("8_gde5c")
+
+[node name="ScoreValue" type="Label" parent="UI/Container/Upper/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "100"
+label_settings = SubResource("LabelSettings_ittbn")
+script = ExtResource("8_gde5c")
+scale_factor = 0.053
 
 [node name="Middle" type="VBoxContainer" parent="UI/Container/Upper"]
 layout_mode = 2

@@ -46,6 +46,8 @@ var titleFontSize: int
 
 
 func setup() -> void:
+	hide()
+	
 	mesh = $Book
 	collider = $Collider
 	spineVP = $SpineVP
@@ -87,6 +89,10 @@ func generate() -> void:
 	modify_mesh()
 	modify_spine()
 	modify_cover()
+	
+	await RenderingServer.frame_post_draw
+	
+	show()
 
 
 func modify_mesh() -> void:
@@ -177,12 +183,15 @@ func modify_spine() -> void:
 	spineDesign.get_node("Bottom Margin1").custom_minimum_size.x = margin
 	spineDesign.get_node("Bottom Margin2").custom_minimum_size.x = margin
 	
+	spineVP.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	
 	await RenderingServer.frame_post_draw
 	
 	spineDecal.set_texture(Decal.TEXTURE_ALBEDO, spineVP.get_texture())
 	spineDecal.size.x = dimensions.y
 	spineDecal.size.z = dimensions.x
 	spineDecal.position.z = dimensions.z / 2.0
+	coverVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 
 func modify_cover() -> void:
@@ -209,13 +218,16 @@ func modify_cover() -> void:
 	if randi() % 2:
 		coverDesign.alignment = BoxContainer.ALIGNMENT_BEGIN
 	
+	coverVP.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	
 	await RenderingServer.frame_post_draw
 	
 	coverDecal.set_texture(Decal.TEXTURE_ALBEDO, coverVP.get_texture())
 	coverDecal.size.x = dimensions.z
 	coverDecal.size.z = dimensions.y
 	coverDecal.position.x = dimensions.x / 2
-
+	coverVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	
 
 func rotate_vector3(input: Vector3, rot: Vector3) -> Vector3:
 	return input.rotated(
@@ -263,10 +275,11 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 				else:
 					all_placed = false
 		
+		game.complete_box()
+		return
+		
 		if all_placed:
-			game.camera.switch_to_complete()
-			await get_tree().create_timer(game.camera.TRANSITION_TIME)
-			game.box_animation.play("Animation")
+			game.complete_box()
 		else:
 			game.camera.switch_to_idle()
 
@@ -288,7 +301,7 @@ func set_invalid(state: bool) -> void:
 
 
 func pick_up(camera: Node, event: InputEvent, pos: Vector3, normal: Vector3, shape_idx: int) -> void:
-	if !game.placing && !picked_up && event.is_action_pressed("pick_up"):
+	if !game.placing && game.box_ready && !picked_up && event.is_action_pressed("pick_up"):
 		set_picked_up(true)
 		set_invalid(false)
 
@@ -333,7 +346,7 @@ func _process(delta) -> void:
 	if Input.is_action_just_pressed("cancel"):
 		cancel_placement()
 	
-	if Input.is_action_just_pressed("place") && can_place && !invalid:
+	if Input.is_action_just_pressed("place") && can_place && !invalid && game.box_ready:
 		set_picked_up(false, true)
 		set_invalid(false)
 	

@@ -6,6 +6,7 @@ const LOW_TIME := 30
 @onready var hand := $Hand
 @onready var ticker := $Ticker
 @onready var max_dimension: float = $Watch.get_aabb().get_longest_axis_size()
+@onready var timer := Timer.new()
 
 var remaining := 0
 var total := 0
@@ -13,6 +14,12 @@ var low := false
 
 signal finished
 signal running_out
+
+
+func _ready() -> void:
+	add_child(timer)
+	timer.one_shot = true
+	timer.timeout.connect(func(): set_timer(remaining - 1))
 
 
 func set_timer(time: int, start: bool = false) -> void:
@@ -36,4 +43,9 @@ func set_timer(time: int, start: bool = false) -> void:
 	if low:
 		ticker.play()
 	
-	get_tree().create_timer(1).timeout.connect(func(): set_timer(time - 1))
+	timer.start(1)
+
+
+func stop() -> void:
+	timer.stop()
+	ticker.stop()

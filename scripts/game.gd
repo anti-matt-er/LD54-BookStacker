@@ -4,11 +4,18 @@ const BOX_SIZE := 0.4 - 0.00001
 const MAX_RAY_POS := Vector3(BOX_SIZE, 0, BOX_SIZE) / 2
 const CAMERA_RAY_LENGTH := 10.0
 const WATCH_PROJECTION_DEPTH := 0.25
+const TIME_BONUS_MULTIPLIER := 0.1
+const BASE_BOX_SCORE := 100
+const BOX_OFFSCREEN_OFFSET := 2.25
+const BOX_OFFSCREEN_TRANSITION := 0.5
+
+@export var difficulty: Difficulty
 
 @onready var camera: Camera3D = $Camera
 @onready var place_ray := $PlaceCast
 @onready var book_ray := $BookRay
 @onready var box := $Scenery/box
+@onready var shelf := $Scenery/Shelf
 @onready var ray_origin := Vector3(
 	box.global_position.x,
 	camera.box_angle.global_position.y,
@@ -24,17 +31,22 @@ const WATCH_PROJECTION_DEPTH := 0.25
 @onready var stopwatch_scene := %StopwatchScene
 @onready var stopwatch_anchor: Control = %StopwatchAnchor
 @onready var timer_display := %TimerDisplay
+@onready var score_display := %ScoreValue
 
 var placing := false
+var box_ready := false
 var book_bounds_limit := Vector3.ZERO
+var score := 0
+var level := 0
+var tween: Tween
 
 
 func _ready() -> void:
 	box_limit.hide()
 	await get_tree().process_frame
 	music.play()
-	stopwatch.set_timer(60, true)
 	stopwatch.running_out.connect(func(): timer_display.set_low(true))
+	start()
 
 
 func _physics_process(_delta: float) -> void:
@@ -52,6 +64,79 @@ func _physics_process(_delta: float) -> void:
 func _process(_delta: float) -> void:
 	position_stopwatch()
 	timer_display.text = str(floori(stopwatch.remaining / 60)) + ":" + str(stopwatch.remaining % 60).pad_zeros(2)
+
+
+func start() -> void:
+	score = 0
+	update_score()
+	ready_box()
+
+
+func start_stopwatch(time: int) -> void:
+	stopwatch.set_timer(time, true)
+	timer_display.set_low(false)
+
+
+func ready_box() -> void:
+	shelf.stack_until_full()
+	start_stopwatch(max(difficulty.min_time, difficulty.start_time - difficulty.time_decrement * level))
+	box_ready = true
+
+
+func update_score() -> void:
+	score_display.text = str(score)
+
+
+func complete_box() -> void:
+	box_ready = false
+	stopwatch.stop()
+	camera.switch_to_complete()
+	
+	await get_tree().create_timer(camera.TRANSITION_TIME).timeout
+	
+	box_animation.play("Animation")
+	
+	await box_animation.animation_finished
+	
+	shelf.reset()
+	
+	if tween:
+		tween.kill()
+	
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_CIRC)
+	tween.tween_property(box, "position:x", BOX_OFFSCREEN_OFFSET, BOX_OFFSCREEN_TRANSITION)
+	
+	await get_tree().create_timer(BOX_OFFSCREEN_TRANSITION).timeout
+	
+	var bonus_score = floori(stopwatch.remaining * TIME_BONUS_MULTIPLIER)
+	score += BASE_BOX_SCORE + bonus_score
+	update_score()
+	level += 1
+	new_box()
+
+
+func new_box() -> void:
+	if tween:
+		tween.kill()
+	
+	box_animation.play("Animation")
+	box_animation.seek(0)
+	box_animation.stop()
+	box.position.x = -BOX_OFFSCREEN_OFFSET
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_CIRC)
+	tween.tween_property(box, "position:x", 0, BOX_OFFSCREEN_TRANSITION)
+	
+	await get_tree().create_timer(BOX_OFFSCREEN_TRANSITION).timeout
+	
+	camera.switch_to_idle()
+	
+	await get_tree().create_timer(camera.TRANSITION_TIME).timeout
+	
+	ready_box()
 
 
 func position_stopwatch() -> void:
