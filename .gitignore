@@ -3,3 +3,6 @@
 
 # Blender autosaves
 *.blend1
+
+# Builds
+builds/*
