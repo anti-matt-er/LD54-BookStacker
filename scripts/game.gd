@@ -32,6 +32,7 @@ const BOX_OFFSCREEN_TRANSITION := 0.5
 @onready var stopwatch_anchor: Control = %StopwatchAnchor
 @onready var timer_display := %TimerDisplay
 @onready var score_display := %ScoreValue
+@onready var timeout_screen := %Timeout
 
 var placing := false
 var box_ready := false
@@ -46,6 +47,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	music.play()
 	stopwatch.running_out.connect(func(): timer_display.set_low(true))
+	stopwatch.finished.connect(time_over)
 	start()
 
 
@@ -164,3 +166,10 @@ func position_stopwatch() -> void:
 		Vector3.UP, camera.rotation.y
 	), true)
 	stopwatch.scale = Vector3.ONE * anchor_min_dimension / watch_max_dimension
+
+
+func time_over() -> void:
+	timeout_screen.transition_in()
+	music.stop()
+	box_ready = false
+	camera.switch_to_complete()

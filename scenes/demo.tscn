@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=33 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -13,6 +13,9 @@
 [ext_resource type="Script" path="res://scripts/autosize_label.gd" id="8_gde5c"]
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="9_vloi4"]
 [ext_resource type="Script" path="res://scripts/timer_display.gd" id="10_saosj"]
+[ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="13_t3rv7"]
+[ext_resource type="Script" path="res://scripts/timeout_screen.gd" id="13_tpe3r"]
+[ext_resource type="AudioStream" uid="uid://bk22rcg6yin7v" path="res://assets/sfx/jazz_stop.ogg" id="15_svlu3"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
@@ -88,6 +91,13 @@ font_size = 32
 font_color = Color(0.603922, 1, 0.803922, 1)
 shadow_size = 8
 shadow_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4srqo"]
+font = ExtResource("13_t3rv7")
+font_size = 100
+font_color = Color(0.929412, 0.211765, 0.215686, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.35)
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_mywg5")
@@ -205,6 +215,7 @@ alignment = 1
 [node name="Left" type="HBoxContainer" parent="UI/Container/Upper"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="ScoreLabel" type="Label" parent="UI/Container/Upper/Left"]
 layout_mode = 2
@@ -220,10 +231,10 @@ size_flags_vertical = 1
 text = "100"
 label_settings = SubResource("LabelSettings_ittbn")
 script = ExtResource("8_gde5c")
-scale_factor = 0.053
 
 [node name="Middle" type="VBoxContainer" parent="UI/Container/Upper"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ShelfArrow" type="TextureRect" parent="UI/Container/Upper/Middle"]
 unique_name_in_owner = true
@@ -239,24 +250,29 @@ script = ExtResource("7_k1l32")
 [node name="Spacer" type="Control" parent="UI/Container/Upper/Middle"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Right" type="HBoxContainer" parent="UI/Container/Upper"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 alignment = 2
 
 [node name="StopwatchContainer" type="MarginContainer" parent="UI/Container/Upper/Right"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="StopwatchAnchor" type="TextureRect" parent="UI/Container/Upper/Right/StopwatchContainer"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_bnsrc")
 expand_mode = 3
 
 [node name="TimerAnchor" type="Control" parent="UI/Container/Upper/Right/StopwatchContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TimerDisplay" type="Label" parent="UI/Container/Upper/Right/StopwatchContainer/TimerAnchor"]
 unique_name_in_owner = true
@@ -287,13 +303,16 @@ alignment = 1
 [node name="Left" type="CenterContainer" parent="UI/Container/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Middle" type="VBoxContainer" parent="UI/Container/Bottom"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Spacer" type="Control" parent="UI/Container/Bottom/Middle"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="BoxArrow" type="TextureRect" parent="UI/Container/Bottom/Middle"]
 unique_name_in_owner = true
@@ -312,6 +331,41 @@ active = true
 [node name="Right" type="CenterContainer" parent="UI/Container/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Timeout" type="CenterContainer" parent="UI"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("13_tpe3r")
+
+[node name="LabelAnchor" type="Control" parent="UI/Timeout"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="UI/Timeout/LabelAnchor"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -63.0
+offset_right = 150.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Time's Up!"
+label_settings = SubResource("LabelSettings_4srqo")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("8_gde5c")
+
+[node name="SFX" type="AudioStreamPlayer" parent="UI/Timeout"]
+stream = ExtResource("15_svlu3")
+bus = &"SFX"
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_4wvrc")
