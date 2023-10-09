@@ -16,11 +16,15 @@ const ROTATION_TIME := 0.35
 const CUBIC_WEIGHT := 1201.0
 const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
 const OFFSCREEN_Y_OFFSET := 1.0
+const TILT_ANGLE := deg_to_rad(10)
+const TILT_TIME := 0.25
+const TILT_OFFSET := 0.05
 
 @export var fonts: Array[Font]
 @export var font_uppercase_disable: Array[bool]
 
 @onready var game := find_parent("Game")
+@onready var pivot_helper := Node3D.new()
 
 var mesh: MeshInstance3D
 var collider: CollisionShape3D
@@ -44,6 +48,7 @@ var can_place := false
 var invalid := false
 var font_index: int
 var titleFontSize: int
+var tilt_pivot: Vector3
 
 signal generated
 
@@ -66,9 +71,13 @@ func setup() -> void:
 	mesh.set_surface_override_material(0, coverMaterial)
 	
 	input_event.connect(pick_up)
+	mouse_entered.connect(func(): tilt(false))
+	mouse_exited.connect(func(): tilt(true))
 	
 	await get_tree().process_frame
 	game.shelf_arrow.clicked.connect(cancel_placement)
+	game.add_child(pivot_helper)
+	reparent(pivot_helper)
 
 
 func generate() -> void:
@@ -245,6 +254,27 @@ func animate_show(time: float) -> void:
 	tween.tween_property(self, "position:y", position.y - OFFSCREEN_Y_OFFSET, time)
 
 
+func tilt(reverse: bool) -> void:
+	if picked_up || placed || !game.box_ready:
+		return
+	
+	if tween:
+		if tween.is_running():
+			await tween.finished
+		
+		tween.kill()
+	
+	var rot_to = 0 if reverse else TILT_ANGLE
+	var move_to = initial_position.z + dimensions.z / 2 + (0 if reverse else TILT_OFFSET)
+	
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_CIRC)
+	tween.set_parallel(true)
+	tween.tween_property(pivot_helper, "rotation:x", rot_to, TILT_TIME)
+	tween.tween_property(pivot_helper, "global_position:z", move_to, TILT_TIME)
+
+
 func rotate_vector3(input: Vector3, rot: Vector3) -> Vector3:
 	return input.rotated(
 		Vector3.BACK, rot.z
@@ -267,6 +297,8 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 	
 	if tween:
 		tween.kill()
+	
+	pivot_helper.rotation.x = 0
 	
 	if picked_up:
 		collision_layer = 0

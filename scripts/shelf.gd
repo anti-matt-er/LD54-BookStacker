@@ -18,7 +18,7 @@ signal stacked
 func reset() -> void:
 	remaining_length = length
 	for book in books:
-		remove_child(book)
+		book.pivot_helper.remove_child(book)
 		book.queue_free()
 	
 	books = []
@@ -31,6 +31,9 @@ func stack_until_full() -> void:
 	for book in books:
 		book.position.x += remaining_length / 2
 		book.initial_position = book.global_position
+		book.pivot_helper.position = book.initial_position + Vector3(
+			0, -book.dimensions.y / 2, book.dimensions.z / 2
+		)
 	
 	for book in books:
 		book.animate_show(BOOK_PLACE_TRANSITION)
