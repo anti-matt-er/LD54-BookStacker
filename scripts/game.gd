@@ -8,6 +8,10 @@ const TIME_BONUS_MULTIPLIER := 0.1
 const BASE_BOX_SCORE := 100
 const BOX_OFFSCREEN_OFFSET := 2.25
 const BOX_OFFSCREEN_TRANSITION := 0.5
+const FLYTEXT_GROW := Vector2.ONE * 2.0
+const FLYTEXT_GROW_RATIO :=  0.75
+const FLYTEXT_TRANSITION := 0.85
+const FLYTEXT_HOLD := 0.1
 
 @export var difficulty: Difficulty
 
@@ -22,6 +26,7 @@ const BOX_OFFSCREEN_TRANSITION := 0.5
 	box.global_position.z
 )
 @onready var box_animation := box.get_node("AnimationPlayer")
+@onready var box_confetti := box.get_node("Confetti")
 @onready var box_limit := $BoxLimit
 @onready var y_limit: float = box_limit.global_position.y
 @onready var shelf_arrow := %ShelfArrow
@@ -33,6 +38,7 @@ const BOX_OFFSCREEN_TRANSITION := 0.5
 @onready var timer_display := %TimerDisplay
 @onready var score_display := %ScoreValue
 @onready var timeout_screen := %Timeout
+@onready var box_score_flytext := %BoxScore
 
 var placing := false
 var box_ready := false
@@ -40,6 +46,9 @@ var book_bounds_limit := Vector3.ZERO
 var score := 0
 var level := 0
 var tween: Tween
+var flytext_tween: Tween
+
+signal flytext_finished
 
 
 func _ready() -> void:
@@ -66,6 +75,9 @@ func _physics_process(_delta: float) -> void:
 func _process(_delta: float) -> void:
 	position_stopwatch()
 	timer_display.text = str(floori(stopwatch.remaining / 60)) + ":" + str(stopwatch.remaining % 60).pad_zeros(2)
+	
+	if Input.is_action_just_pressed("debug_complete"):
+		complete_box()
 
 
 func start() -> void:
@@ -92,6 +104,50 @@ func update_score() -> void:
 	score_display.text = str(score)
 
 
+func award_score(value: int, bonus: int) -> void:
+	box_confetti.emitting = true
+	
+	animate_flytext(value, camera.unproject_position(box.global_position) - box_score_flytext.size / 2)
+	if bonus > 0:
+		await flytext_finished
+		animate_flytext(bonus, timer_display.get_global_rect().position)
+
+
+func animate_flytext(value: int, start_pos: Vector2) -> void:
+	score += value
+	
+	box_score_flytext.text = "+" + str(value)
+	box_score_flytext.position = start_pos
+	
+	await RenderingServer.frame_post_draw
+	
+	var center_offset = box_score_flytext.size / 2
+	var score_screen_pos = score_display.get_global_rect().position
+	var center_screen_pos = get_viewport().get_visible_rect().size / 2 - center_offset
+	
+	box_score_flytext.modulate.a = 1
+	box_score_flytext.pivot_offset = center_offset
+	box_score_flytext.scale = Vector2.ZERO
+	
+	if flytext_tween:
+		flytext_tween.kill()
+	
+	flytext_tween = create_tween()
+	flytext_tween.set_trans(Tween.TRANS_SINE)
+	flytext_tween.set_ease(Tween.EASE_IN)
+	flytext_tween.tween_property(box_score_flytext, "position", center_screen_pos, FLYTEXT_TRANSITION * FLYTEXT_GROW_RATIO)
+	flytext_tween.parallel().tween_property(box_score_flytext, "scale", FLYTEXT_GROW, FLYTEXT_TRANSITION * FLYTEXT_GROW_RATIO)
+	flytext_tween.tween_interval(FLYTEXT_HOLD)
+	flytext_tween.set_ease(Tween.EASE_OUT)
+	flytext_tween.tween_property(box_score_flytext, "position", score_screen_pos, FLYTEXT_TRANSITION * (1.0 - FLYTEXT_GROW_RATIO))
+	flytext_tween.parallel().tween_property(box_score_flytext, "scale", Vector2.ZERO, FLYTEXT_TRANSITION * (1.0 - FLYTEXT_GROW_RATIO))
+	
+	await flytext_tween.finished
+	box_score_flytext.modulate.a = 0
+	update_score()
+	flytext_finished.emit()
+
+
 func complete_box() -> void:
 	box_ready = false
 	stopwatch.stop()
@@ -100,6 +156,7 @@ func complete_box() -> void:
 	await get_tree().create_timer(camera.TRANSITION_TIME).timeout
 	
 	box_animation.play("Animation")
+	award_score(BASE_BOX_SCORE, floori(stopwatch.remaining * TIME_BONUS_MULTIPLIER))
 	
 	await box_animation.animation_finished
 	
@@ -115,9 +172,6 @@ func complete_box() -> void:
 	
 	await get_tree().create_timer(BOX_OFFSCREEN_TRANSITION).timeout
 	
-	var bonus_score = floori(stopwatch.remaining * TIME_BONUS_MULTIPLIER)
-	score += BASE_BOX_SCORE + bonus_score
-	update_score()
 	level += 1
 	new_box()
 

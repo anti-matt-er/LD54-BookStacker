@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=34 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -98,6 +98,13 @@ font_size = 100
 font_color = Color(0.929412, 0.211765, 0.215686, 1)
 shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.35)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2dig8"]
+font = ExtResource("13_t3rv7")
+font_size = 48
+font_color = Color(1, 0.882353, 0.278431, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.5)
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_mywg5")
@@ -366,6 +373,26 @@ script = ExtResource("8_gde5c")
 [node name="SFX" type="AudioStreamPlayer" parent="UI/Timeout"]
 stream = ExtResource("15_svlu3")
 bus = &"SFX"
+
+[node name="FlyText" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BoxScore" type="Label" parent="FlyText"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 101.0
+offset_bottom = 51.0
+size_flags_horizontal = 4
+text = "+100"
+label_settings = SubResource("LabelSettings_2dig8")
+script = ExtResource("8_gde5c")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_4wvrc")

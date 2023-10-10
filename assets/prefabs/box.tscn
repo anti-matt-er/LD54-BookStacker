@@ -1,12 +1,56 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8wjdhe4dtgeh"]
+[gd_scene load_steps=9 format=3 uid="uid://c8wjdhe4dtgeh"]
 
 [ext_resource type="PackedScene" uid="uid://upc64ankdw4t" path="res://assets/models/box.glb" id="1_2q2a7"]
 [ext_resource type="Material" uid="uid://b8hu7yrt4y8wo" path="res://assets/materials/cardboard_surface.material" id="2_k8vc4"]
 [ext_resource type="Material" uid="uid://cvo6x3agwsorf" path="res://assets/materials/cardboard_edge.material" id="3_1g5pv"]
+[ext_resource type="Shader" path="res://assets/shaders/confetti.gdshader" id="4_afa2x"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ssshi"]
 margin = 0.0
 data = PackedVector3Array(0.2, -0.125, 0.2, -0.2, 0.125, 0.2, -0.2, -0.125, 0.2, 0.2, -0.125, 0.2, 0.2, 0.125, 0.2, -0.2, 0.125, 0.2, -0.2, -0.125, 0.2, -0.2, 0.125, -0.2, -0.2, -0.125, -0.2, -0.2, -0.125, 0.2, -0.2, 0.125, 0.2, -0.2, 0.125, -0.2, -0.2, -0.125, -0.2, 0.2, -0.125, 0.2, -0.2, -0.125, 0.2, -0.2, -0.125, -0.2, 0.2, -0.125, -0.2, 0.2, -0.125, 0.2, 0.2, -0.125, -0.2, 0.2, 0.125, 0.2, 0.2, -0.125, 0.2, 0.2, -0.125, -0.2, 0.2, 0.125, -0.2, 0.2, 0.125, 0.2, -0.2, -0.125, -0.2, 0.2, 0.125, -0.2, 0.2, -0.125, -0.2, -0.2, -0.125, -0.2, -0.2, 0.125, -0.2, 0.2, 0.125, -0.2, 0.205, -0.13, 0.205, -0.205, 0.125, 0.205, 0.205, 0.125, 0.205, 0.205, -0.13, 0.205, -0.205, -0.13, 0.205, -0.205, 0.125, 0.205, -0.205, -0.13, 0.205, -0.205, 0.125, -0.205, -0.205, 0.125, 0.205, -0.205, -0.13, 0.205, -0.205, -0.13, -0.205, -0.205, 0.125, -0.205, -0.205, -0.13, -0.205, 0.205, -0.13, 0.205, 0.205, -0.13, -0.205, -0.205, -0.13, -0.205, -0.205, -0.13, 0.205, 0.205, -0.13, 0.205, 0.205, -0.13, -0.205, 0.205, 0.125, 0.205, 0.205, 0.125, -0.205, 0.205, -0.13, -0.205, 0.205, -0.13, 0.205, 0.205, 0.125, 0.205, -0.205, -0.13, -0.205, 0.205, 0.125, -0.205, -0.205, 0.125, -0.205, -0.205, -0.13, -0.205, 0.205, -0.13, -0.205, 0.205, 0.125, -0.205, -0.2, 0.125, 0.2, -0.205, 0.125, -0.205, -0.2, 0.125, -0.2, -0.2, 0.125, 0.2, -0.205, 0.125, 0.205, -0.205, 0.125, -0.205, -0.2, 0.125, -0.2, 0.205, 0.125, -0.205, 0.2, 0.125, -0.2, -0.2, 0.125, -0.2, -0.205, 0.125, -0.205, 0.205, 0.125, -0.205, 0.2, 0.125, 0.2, -0.205, 0.125, 0.205, -0.2, 0.125, 0.2, 0.2, 0.125, 0.2, 0.205, 0.125, 0.205, -0.205, 0.125, 0.205, 0.2, 0.125, 0.2, 0.205, 0.125, -0.205, 0.205, 0.125, 0.205, 0.2, 0.125, 0.2, 0.2, 0.125, -0.2, 0.205, 0.125, -0.205)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crpf0"]
+shader = ExtResource("4_afa2x")
+shader_parameter/direction = Vector3(0, 1, 0)
+shader_parameter/spread = 45.0
+shader_parameter/flatness = 0.0
+shader_parameter/initial_linear_velocity_min = 2.0
+shader_parameter/initial_angle_min = 0.0
+shader_parameter/angular_velocity_min = 0.0
+shader_parameter/orbit_velocity_min = 0.0
+shader_parameter/linear_accel_min = 0.0
+shader_parameter/radial_accel_min = 0.0
+shader_parameter/tangent_accel_min = 0.0
+shader_parameter/damping_min = 0.0
+shader_parameter/scale_min = 0.5
+shader_parameter/hue_variation_min = 0.0
+shader_parameter/anim_speed_min = 0.0
+shader_parameter/anim_offset_min = 0.0
+shader_parameter/initial_linear_velocity_max = 6.0
+shader_parameter/initial_angle_max = 0.0
+shader_parameter/angular_velocity_max = 0.0
+shader_parameter/orbit_velocity_max = 0.0
+shader_parameter/linear_accel_max = 0.0
+shader_parameter/radial_accel_max = 0.0
+shader_parameter/tangent_accel_max = 0.0
+shader_parameter/damping_max = 0.0
+shader_parameter/scale_max = 1.5
+shader_parameter/hue_variation_max = 1.0
+shader_parameter/anim_speed_max = 0.0
+shader_parameter/anim_offset_max = 0.0
+shader_parameter/lifetime_randomness = 0.0
+shader_parameter/color_value = Color(1, 0, 0, 1)
+shader_parameter/gravity = Vector3(0, -9.8, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4o3vw"]
+cull_mode = 2
+vertex_color_use_as_albedo = true
+metallic = 1.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_giwjt"]
+lightmap_size_hint = Vector2i(2, 2)
+material = SubResource("StandardMaterial3D_4o3vw")
+size = Vector2(0.02, 0.015)
 
 [node name="box" instance=ExtResource("1_2q2a7")]
 
@@ -37,3 +81,13 @@ surface_material_override/1 = ExtResource("3_1g5pv")
 
 [node name="Collider" type="CollisionShape3D" parent="Bounds" index="0"]
 shape = SubResource("ConcavePolygonShape3D_ssshi")
+
+[node name="Confetti" type="GPUParticles3D" parent="." index="7"]
+emitting = false
+amount = 512
+one_shot = true
+explosiveness = 0.8
+randomness = 1.0
+visibility_aabb = AABB(-1, -0.125, -1, 2, 2, 2)
+process_material = SubResource("ShaderMaterial_crpf0")
+draw_pass_1 = SubResource("PlaneMesh_giwjt")
