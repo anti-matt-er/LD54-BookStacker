@@ -24,7 +24,6 @@ const TILT_OFFSET := 0.05
 @export var font_uppercase_disable: Array[bool]
 
 @onready var game := find_parent("Game")
-@onready var pivot_helper := Node3D.new()
 
 var mesh: MeshInstance3D
 var collider: CollisionShape3D
@@ -49,6 +48,7 @@ var invalid := false
 var font_index: int
 var titleFontSize: int
 var tilt_pivot: Vector3
+var pivot_helper: Node3D
 
 signal generated
 
@@ -76,8 +76,6 @@ func setup() -> void:
 	
 	await get_tree().process_frame
 	game.shelf_arrow.clicked.connect(cancel_placement)
-	game.add_child(pivot_helper)
-	reparent(pivot_helper)
 
 
 func generate() -> void:

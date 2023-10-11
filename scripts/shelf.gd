@@ -8,6 +8,7 @@ const BOOK_PLACE_TRANSITION := 0.25
 const BOOK_PLACE_DELAY := 0.025
 
 @onready var length: float = mesh.size.x
+@onready var thickness: float = mesh.size.y
 @onready var remaining_length := length
 
 var books: Array[Book] = []
@@ -19,21 +20,25 @@ func reset() -> void:
 	remaining_length = length
 	for book in books:
 		book.pivot_helper.remove_child(book)
+		remove_child(book.pivot_helper)
 		book.queue_free()
 	
 	books = []
 
 
 func stack_until_full() -> void:
-	while remaining_length > Book.MAX_DIMENSIONS.x + MARGIN:
+	while remaining_length > Book.MAX_DIMENSIONS.x * Book.MAX_RANGE.x + MARGIN:
 		stack_new_book()
 	
 	for book in books:
 		book.position.x += remaining_length / 2
 		book.initial_position = book.global_position
-		book.pivot_helper.position = book.initial_position + Vector3(
+		book.pivot_helper = Node3D.new()
+		add_child(book.pivot_helper)
+		book.pivot_helper.global_position = book.initial_position + Vector3(
 			0, -book.dimensions.y / 2, book.dimensions.z / 2
 		)
+		book.reparent(book.pivot_helper)
 	
 	for book in books:
 		book.animate_show(BOOK_PLACE_TRANSITION)
@@ -52,8 +57,8 @@ func stack_new_book() -> void:
 	book.setup()
 	book.generate()
 	book.global_position = Vector3(
-		(length + book.dimensions.x - 2 * remaining_length + MARGIN) / 2,
-		(book.dimensions.y + mesh.size.y) / 2,
+		length / 2 - remaining_length + book.dimensions.x / 2,
+		book.dimensions.y / 2 + thickness / 2 + global_position.y,
 		-mesh.size.z / 2 + book.dimensions.z / 2 + DISTANCE_FROM_WALL 
 	)
 	remaining_length -= book.dimensions.x + MARGIN
