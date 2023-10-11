@@ -12,7 +12,7 @@ const DPI := 4000
 const TITLE_YMARGIN := 10
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
-const ROTATION_TIME := 0.35
+const ROTATION_TIME := 0.2
 const CUBIC_WEIGHT := 1201.0
 const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
 const OFFSCREEN_Y_OFFSET := 1.0
@@ -39,8 +39,8 @@ var dimensions: Vector3
 var initial_position: Vector3
 var shelf: Node3D
 var coverMaterial: StandardMaterial3D
-var target_quaternion := Quaternion.IDENTITY
 var tween: Tween
+var rotation_queue := []
 var picked_up := false
 var placed := false
 var can_place := false
@@ -301,7 +301,6 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 		collision_layer = 0
 		game.camera.switch_to_box()
 		rotation = Vector3.ZERO
-		target_quaternion = Quaternion.IDENTITY
 		set_shapecast()
 	else:
 		collision_layer = 1
@@ -358,25 +357,33 @@ func cancel_placement() -> void:
 	set_invalid(false)
 	global_position = initial_position
 	rotation = Vector3.ZERO
-	target_quaternion = Quaternion.IDENTITY
 
 
 func rotate_by(axis: Vector3, angle: float) -> void:
 	if !picked_up:
 		return
 	
-	quaternion = target_quaternion
-	target_quaternion = basis.rotated(axis, angle).get_rotation_quaternion()
+	rotation_queue.append([axis, angle])
 	
+	if !tween || !tween.is_running():
+		animate_rotation()
+
+
+func animate_rotation() -> void: 
 	if tween:
 		tween.kill()
-		
+	
+	var target_rotation = rotation_queue.pop_front()
+	
 	tween = create_tween()
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_CIRC)
-	tween.tween_property(self, "quaternion", target_quaternion, ROTATION_TIME)
+	tween.tween_property(self, "quaternion", basis.rotated(target_rotation[0], target_rotation[1]).get_rotation_quaternion(), ROTATION_TIME)
 	
 	await tween.finished
+	
+	if !rotation_queue.is_empty():
+		await animate_rotation()
 	
 	set_shapecast()
 
