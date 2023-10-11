@@ -9,9 +9,9 @@ const BASE_BOX_SCORE := 100
 const BOX_OFFSCREEN_OFFSET := 2.25
 const BOX_OFFSCREEN_TRANSITION := 0.5
 const FLYTEXT_GROW := Vector2.ONE * 2.0
-const FLYTEXT_GROW_RATIO :=  0.75
-const FLYTEXT_TRANSITION := 0.85
-const FLYTEXT_HOLD := 0.1
+const FLYTEXT_GROW_RATIO :=  0.5
+const FLYTEXT_TRANSITION := 0.75
+const FLYTEXT_HOLD := 0.65
 
 @export var difficulty: Difficulty
 
@@ -47,8 +47,7 @@ var score := 0
 var level := 0
 var tween: Tween
 var flytext_tween: Tween
-
-signal flytext_finished
+var score_tween: Tween
 
 
 func _ready() -> void:
@@ -82,7 +81,7 @@ func _process(_delta: float) -> void:
 
 func start() -> void:
 	score = 0
-	update_score()
+	update_score(0)
 	ready_box()
 
 
@@ -100,22 +99,20 @@ func ready_box() -> void:
 	box_ready = true
 
 
-func update_score() -> void:
-	score_display.text = str(score)
-
-
 func award_score(value: int, bonus: int) -> void:
 	box_confetti.emitting = true
 	
-	animate_flytext(value, camera.unproject_position(box.global_position) - box_score_flytext.size / 2)
-	if bonus > 0:
-		await flytext_finished
-		animate_flytext(bonus, timer_display.get_global_rect().position)
-
-
-func animate_flytext(value: int, start_pos: Vector2) -> void:
-	score += value
+	await animate_flytext(value, camera.unproject_position(box.global_position) - box_score_flytext.size / 2)
+	animate_score(value)
 	
+	if bonus > 0:
+		await animate_flytext(bonus, timer_display.get_global_rect().position)
+		animate_score(bonus)
+	
+	return
+
+
+func animate_flytext(value: int, start_pos: Vector2) -> void:	
 	box_score_flytext.text = "+" + str(value)
 	box_score_flytext.position = start_pos
 	
@@ -133,19 +130,39 @@ func animate_flytext(value: int, start_pos: Vector2) -> void:
 		flytext_tween.kill()
 	
 	flytext_tween = create_tween()
-	flytext_tween.set_trans(Tween.TRANS_SINE)
-	flytext_tween.set_ease(Tween.EASE_IN)
+	flytext_tween.set_trans(Tween.TRANS_SPRING)
+	flytext_tween.set_ease(Tween.EASE_OUT)
 	flytext_tween.tween_property(box_score_flytext, "position", center_screen_pos, FLYTEXT_TRANSITION * FLYTEXT_GROW_RATIO)
 	flytext_tween.parallel().tween_property(box_score_flytext, "scale", FLYTEXT_GROW, FLYTEXT_TRANSITION * FLYTEXT_GROW_RATIO)
 	flytext_tween.tween_interval(FLYTEXT_HOLD)
-	flytext_tween.set_ease(Tween.EASE_OUT)
+	flytext_tween.set_trans(Tween.TRANS_QUINT)
+	flytext_tween.set_ease(Tween.EASE_IN)
 	flytext_tween.tween_property(box_score_flytext, "position", score_screen_pos, FLYTEXT_TRANSITION * (1.0 - FLYTEXT_GROW_RATIO))
 	flytext_tween.parallel().tween_property(box_score_flytext, "scale", Vector2.ZERO, FLYTEXT_TRANSITION * (1.0 - FLYTEXT_GROW_RATIO))
 	
 	await flytext_tween.finished
 	box_score_flytext.modulate.a = 0
-	update_score()
-	flytext_finished.emit()
+	return
+
+
+func animate_score(value: int) -> void:
+	score += value
+	
+	if score_tween:
+		score_tween.kill()
+	
+	score_tween = create_tween()
+	score_tween.set_trans(Tween.TRANS_SINE)
+	score_tween.set_ease(Tween.EASE_OUT)
+	score_tween.tween_method(update_score, value, 0, FLYTEXT_TRANSITION + FLYTEXT_HOLD / 2.0)
+
+
+func update_score(value: int) -> void:
+	var to_add = ""
+	if value:
+		to_add = "+ " + str(value)
+	
+	score_display.text = str(score - value) + to_add 
 
 
 func complete_box() -> void:
@@ -156,9 +173,9 @@ func complete_box() -> void:
 	await get_tree().create_timer(camera.TRANSITION_TIME).timeout
 	
 	box_animation.play("Animation")
-	award_score(BASE_BOX_SCORE, floori(stopwatch.remaining * TIME_BONUS_MULTIPLIER))
-	
 	await box_animation.animation_finished
+	
+	await award_score(BASE_BOX_SCORE, floori(stopwatch.remaining * TIME_BONUS_MULTIPLIER))
 	
 	shelf.reset()
 	
