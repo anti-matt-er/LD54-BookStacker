@@ -301,6 +301,7 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 		collision_layer = 0
 		game.camera.switch_to_box()
 		rotation = Vector3.ZERO
+		target_quaternion = Quaternion.IDENTITY
 		set_shapecast()
 	else:
 		collision_layer = 1
@@ -357,6 +358,7 @@ func cancel_placement() -> void:
 	set_invalid(false)
 	global_position = initial_position
 	rotation = Vector3.ZERO
+	target_quaternion = Quaternion.IDENTITY
 
 
 func rotate_by(axis: Vector3, angle: float) -> void:
