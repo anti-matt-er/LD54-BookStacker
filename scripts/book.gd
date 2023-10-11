@@ -135,7 +135,7 @@ func get_text_bounds(text: String, font_size: int, style: Dictionary, width: flo
 
 
 func modify_spine() -> void:
-	var res = Vector2i(dimensions.y * DPI, dimensions.x * DPI)
+	var res = (Vector2(dimensions.y, dimensions.x) * DPI).round()
 	spineVP.size = res
 	spineVP.size_2d_override = res
 	spineDesign.size = res
@@ -205,7 +205,7 @@ func modify_spine() -> void:
 
 
 func modify_cover() -> void:
-	var res = Vector2i(dimensions.z * DPI, dimensions.y * DPI)
+	var res = (Vector2(dimensions.z, dimensions.y) * DPI).round()
 	coverVP.size = res
 	coverVP.size_2d_override = res
 	coverDesign.size = res
@@ -213,7 +213,6 @@ func modify_cover() -> void:
 	await get_tree().process_frame
 	
 	var titleLabel = coverDesign.get_node("Title")
-	var titleBoxSize = titleLabel.size
 	var titleSettings = titleLabel.label_settings.duplicate()
 	titleSettings.font = fonts[font_index]
 
@@ -262,8 +261,8 @@ func tilt(reverse: bool) -> void:
 		
 		tween.kill()
 	
-	var rot_to = 0 if reverse else TILT_ANGLE
-	var move_to = initial_position.z + dimensions.z / 2 + (0 if reverse else TILT_OFFSET)
+	var rot_to = 0.0 if reverse else TILT_ANGLE
+	var move_to = initial_position.z + dimensions.z / 2 + (0.0 if reverse else TILT_OFFSET)
 	
 	tween = create_tween()
 	tween.set_ease(Tween.EASE_IN_OUT)
@@ -344,7 +343,7 @@ func set_invalid(state: bool) -> void:
 		mesh.material_override = null
 
 
-func pick_up(camera: Node, event: InputEvent, pos: Vector3, normal: Vector3, shape_idx: int) -> void:
+func pick_up(_camera: Node, event: InputEvent, _pos: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if !game.placing && game.box_ready && !picked_up && event.is_action_pressed("pick_up"):
 		set_picked_up(true)
 		set_invalid(false)
@@ -380,7 +379,7 @@ func rotate_by(axis: Vector3, angle: float) -> void:
 	set_shapecast()
 
 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if !picked_up:
 		return
 		
