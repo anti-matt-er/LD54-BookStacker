@@ -1,14 +1,18 @@
-[gd_scene load_steps=34 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=37 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
 [ext_resource type="Material" uid="uid://t4l3d4esyg7" path="res://assets/materials/floor.material" id="2_43mn1"]
 [ext_resource type="Script" path="res://scripts/difficulty.gd" id="2_ns78w"]
 [ext_resource type="PackedScene" uid="uid://c8wjdhe4dtgeh" path="res://assets/prefabs/box.tscn" id="3_m0d3o"]
+[ext_resource type="Texture2D" uid="uid://0a7ahbymuoqm" path="res://assets/textures/brocade_a.png" id="4_fce80"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="5_6m5sv"]
+[ext_resource type="Texture2D" uid="uid://xdan7p8mi70s" path="res://assets/textures/brocade_n.png" id="5_eydfr"]
+[ext_resource type="Texture2D" uid="uid://b6ncc4ve8uckd" path="res://assets/textures/brocade_orm.png" id="6_keh7e"]
 [ext_resource type="PackedScene" uid="uid://bxuk4hpm6jbhb" path="res://assets/prefabs/stopwatch.tscn" id="6_mr61x"]
 [ext_resource type="Texture2D" uid="uid://c42jltbtq60u4" path="res://assets/textures/arrow.png" id="6_nsu80"]
 [ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
+[ext_resource type="Material" uid="uid://drb71vudk51uw" path="res://assets/materials/shelf_wood.material" id="8_2it8a"]
 [ext_resource type="AudioStream" uid="uid://bhgo4y1gjslmv" path="res://assets/music/Coffee_&_Ink.ogg" id="8_4wvrc"]
 [ext_resource type="Script" path="res://scripts/autosize_label.gd" id="8_gde5c"]
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="9_vloi4"]
@@ -26,22 +30,12 @@ min_time = 120
 [sub_resource type="PlaneMesh" id="PlaneMesh_6xsok"]
 size = Vector2(5, 5)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_28sp3"]
-frequency = 1.0
-fractal_type = 0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ningb"]
-width = 1024
-height = 1024
-seamless = true
-noise = SubResource("FastNoiseLite_28sp3")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilv47"]
-albedo_color = Color(0.133333, 0.419608, 0.47451, 1)
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_4cn8h"]
+albedo_texture = ExtResource("4_fce80")
+orm_texture = ExtResource("6_keh7e")
 normal_enabled = true
-normal_scale = 0.25
-normal_texture = SubResource("NoiseTexture2D_ningb")
-uv1_scale = Vector3(5, 5, 5)
+normal_texture = ExtResource("5_eydfr")
+uv1_scale = Vector3(25, 25, 25)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fg4nc"]
 size = Vector2(5, 5)
@@ -49,6 +43,9 @@ size = Vector2(5, 5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_g0n1l"]
 margin = 0.0
 size = Vector3(5, 1, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7ea8n"]
+size = Vector3(5, 0.1, 0.025)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyxge"]
 sky_top_color = Color(1, 0.92549, 0.803922, 1)
@@ -114,13 +111,12 @@ difficulty = SubResource("Resource_jycwh")
 
 [node name="Shelf" parent="Scenery" instance=ExtResource("1_r5k3l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
-skeleton = NodePath("../..")
 
 [node name="Wall" type="MeshInstance3D" parent="Scenery"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.125)
 mesh = SubResource("PlaneMesh_6xsok")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_ilv47")
+surface_material_override/0 = SubResource("ORMMaterial3D_4cn8h")
 
 [node name="Floor" type="StaticBody3D" parent="Scenery"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
@@ -133,6 +129,11 @@ surface_material_override/0 = ExtResource("2_43mn1")
 [node name="Collider" type="CollisionShape3D" parent="Scenery/Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_g0n1l")
+
+[node name="Skirting" type="MeshInstance3D" parent="Scenery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.65, -0.112)
+mesh = SubResource("BoxMesh_7ea8n")
+surface_material_override/0 = ExtResource("8_2it8a")
 
 [node name="box" parent="Scenery" instance=ExtResource("3_m0d3o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.572, 0.58)
