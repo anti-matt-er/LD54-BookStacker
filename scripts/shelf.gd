@@ -1,15 +1,16 @@
-extends MeshInstance3D
+extends Node3D
 
 
 const BOOK_PREFAB := preload("res://assets/prefabs/book.tscn")
+const LENGTH := 1.0
+const DEPTH := 0.25
+const THICKNESS := 0.015
 const MARGIN := 0.002
 const DISTANCE_FROM_WALL := 0.02
 const BOOK_PLACE_TRANSITION := 0.25
 const BOOK_PLACE_DELAY := 0.025
 
-@onready var length: float = mesh.size.x
-@onready var thickness: float = mesh.size.y
-@onready var remaining_length := length
+@onready var remaining_length := LENGTH
 
 var books: Array[Book] = []
 
@@ -17,7 +18,7 @@ signal stacked
 
 
 func reset() -> void:
-	remaining_length = length
+	remaining_length = LENGTH
 	for book in books:
 		book.pivot_helper.remove_child(book)
 		remove_child(book.pivot_helper)
@@ -57,8 +58,8 @@ func stack_new_book() -> void:
 	book.setup()
 	book.generate()
 	book.global_position = Vector3(
-		length / 2 - remaining_length + book.dimensions.x / 2,
-		book.dimensions.y / 2 + thickness / 2 + global_position.y,
-		-mesh.size.z / 2 + book.dimensions.z / 2 + DISTANCE_FROM_WALL 
+		LENGTH / 2 - remaining_length + book.dimensions.x / 2,
+		book.dimensions.y / 2 + THICKNESS / 2 + global_position.y,
+		-DEPTH / 2 + book.dimensions.z / 2 + DISTANCE_FROM_WALL 
 	)
 	remaining_length -= book.dimensions.x + MARGIN
