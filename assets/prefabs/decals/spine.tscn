@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://buvn3ek0okr6s"]
+[gd_scene load_steps=6 format=3 uid="uid://buvn3ek0okr6s"]
 
 [ext_resource type="FontFile" uid="uid://dlqvsdnksc304" path="res://assets/misc/fonts/CrimsonText-Regular.ttf" id="1_kdmnt"]
+[ext_resource type="Texture2D" uid="uid://uijvoeedp8bj" path="res://assets/textures/ludum.png" id="2_8m4rx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0u6u"]
 bg_color = Color(1, 1, 1, 1)
@@ -23,12 +24,25 @@ font_size = 36
 outline_size = 2
 
 [node name="Spine" type="HBoxContainer"]
-offset_right = 666.0
-offset_bottom = 170.0
+offset_right = 615.0
+offset_bottom = 199.0
 
 [node name="Top Margin1" type="Control" parent="."]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+
+[node name="LogoContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Logo" type="TextureRect" parent="LogoContainer"]
+layout_mode = 2
+texture = ExtResource("2_8m4rx")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="Top Dot" type="Panel" parent="."]
 custom_minimum_size = Vector2(16, 16)

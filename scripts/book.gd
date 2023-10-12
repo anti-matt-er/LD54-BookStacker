@@ -12,6 +12,13 @@ const DPI := 4000
 const TITLE_YMARGIN := 10
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
+const LOGOS := [
+	preload("res://assets/textures/godot.png"),
+	preload("res://assets/textures/ludum.png")
+]
+const MIN_LOGO_SIZE := 32
+const MAX_LOGO_SIZE := 100
+const LOGO_RATIO := 0.5
 const ROTATION_TIME := 0.2
 const CUBIC_WEIGHT := 1201.0
 const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
@@ -186,6 +193,17 @@ func modify_spine() -> void:
 	if randi() % 2:
 		spineDesign.get_node("Top Line3").hide()
 		spineDesign.get_node("Bottom Line3").hide()
+	
+	var logo_container = spineDesign.get_node("LogoContainer")
+	if randi() % 3:
+		logo_container.hide()
+	else:
+		var logo_size = clampi(roundi(res.y * LOGO_RATIO), MIN_LOGO_SIZE, MAX_LOGO_SIZE)
+		var logo_margin = roundi((res.y - logo_size) / 2.0)
+		spineDesign.get_node("Top Dot").hide()
+		logo_container.get_node("Logo").set_texture(LOGOS.pick_random())
+		logo_container.add_theme_constant_override("margin_top", logo_margin)
+		logo_container.add_theme_constant_override("margin_bottom", logo_margin)
 	
 	var margin = randi_range(0, MAX_MARGIN)
 	spineDesign.get_node("Top Margin1").custom_minimum_size.x = margin
