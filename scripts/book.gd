@@ -12,6 +12,10 @@ const DPI := 4000
 const TITLE_YMARGIN := 10
 const COLOR_SATURATION_RANGE := Vector2(0.05, 0.9)
 const COLOR_VALUE_RANGE := Vector2(0.2, 0.5)
+const DECAL_GOLD_MIN_HSV := Vector3(0.07, 0.5, 0.75)
+const DECAL_GOLD_MAX_HSV := Vector3(0.14, 1.0, 1.0)
+const DECAL_SILVER_MIN_HSV := Vector3(0.0, 0.0, 0.65)
+const DECAL_SILVER_MAX_HSV := Vector3(1.0, 0.1, 1.0)
 const LOGOS := [
 	preload("res://assets/textures/godot.png"),
 	preload("res://assets/textures/ludum.png")
@@ -102,10 +106,23 @@ func generate() -> void:
 		remap(size.z, -1.0, 1.0, MIN_DIMENSIONS.z, MAX_DIMENSIONS.z)
 	)
 	mass = dimensions.x * dimensions.y * dimensions.z
+	var decal_modulate = Color.WHITE
+	if randi() % 2:
+		decal_modulate = Color.from_hsv(
+			randf_range(DECAL_GOLD_MIN_HSV.x, DECAL_GOLD_MAX_HSV.x),
+			randf_range(DECAL_GOLD_MIN_HSV.y, DECAL_GOLD_MAX_HSV.y),
+			randf_range(DECAL_GOLD_MIN_HSV.z, DECAL_GOLD_MAX_HSV.z)
+		)
+	else:
+		decal_modulate = Color.from_hsv(
+			randf_range(DECAL_SILVER_MIN_HSV.x, DECAL_SILVER_MAX_HSV.x),
+			randf_range(DECAL_SILVER_MIN_HSV.y, DECAL_SILVER_MAX_HSV.y),
+			randf_range(DECAL_SILVER_MIN_HSV.z, DECAL_SILVER_MAX_HSV.z)
+		)
 	
 	modify_mesh()
-	modify_spine()
-	modify_cover()
+	modify_spine(decal_modulate)
+	modify_cover(decal_modulate)
 	
 	await RenderingServer.frame_post_draw
 	
@@ -141,7 +158,7 @@ func get_text_bounds(text: String, font_size: int, style: Dictionary, width: flo
 	)
 
 
-func modify_spine() -> void:
+func modify_spine(decal_modulate: Color) -> void:
 	var res = (Vector2(dimensions.y, dimensions.x) * DPI).round()
 	spineVP.size = res
 	spineVP.size_2d_override = res
@@ -219,10 +236,11 @@ func modify_spine() -> void:
 	spineDecal.size.x = dimensions.y
 	spineDecal.size.z = dimensions.x
 	spineDecal.position.z = dimensions.z / 2.0
+	spineDecal.modulate = decal_modulate
 	coverVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 
-func modify_cover() -> void:
+func modify_cover(decal_modulate: Color) -> void:
 	var res = (Vector2(dimensions.z, dimensions.y) * DPI).round()
 	coverVP.size = res
 	coverVP.size_2d_override = res
@@ -253,6 +271,7 @@ func modify_cover() -> void:
 	coverDecal.size.x = dimensions.z
 	coverDecal.size.z = dimensions.y
 	coverDecal.position.x = dimensions.x / 2
+	coverDecal.modulate = decal_modulate
 	coverVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 
