@@ -50,6 +50,7 @@ var dimensions: Vector3
 var initial_position: Vector3
 var shelf: Node3D
 var coverMaterial: StandardMaterial3D
+var pagesMaterial: StandardMaterial3D
 var tween: Tween
 var rotation_queue := []
 var picked_up := false
@@ -79,7 +80,9 @@ func setup() -> void:
 	collider.shape = collider.shape.duplicate()
 	
 	coverMaterial = mesh.get_surface_override_material(0).duplicate()
+	pagesMaterial = mesh.get_surface_override_material(1).duplicate(true)
 	mesh.set_surface_override_material(0, coverMaterial)
+	mesh.set_surface_override_material(1, pagesMaterial)
 	
 	input_event.connect(pick_up)
 	mouse_entered.connect(func(): tilt(false))
@@ -150,6 +153,9 @@ func modify_mesh() -> void:
 		randf_range(COLOR_SATURATION_RANGE.x, COLOR_SATURATION_RANGE.y),
 		randf_range(COLOR_VALUE_RANGE.x, COLOR_VALUE_RANGE.y)
 	)
+	
+	pagesMaterial.albedo_texture.noise.seed = randi()
+	pagesMaterial.normal_texture.noise.seed = randi()
 
 
 func get_text_bounds(text: String, font_size: int, style: Dictionary, width: float) -> Vector2:
