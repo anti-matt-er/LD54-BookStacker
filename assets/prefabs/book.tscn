@@ -1,7 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://d2s3p3ssht6qb"]
 
 [ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="2_2aste"]
-[ext_resource type="Material" uid="uid://c2upiir03lkkw" path="res://assets/materials/book_hardcover_leather.material" id="2_05fh8"]
 [ext_resource type="Script" path="res://scripts/book.gd" id="2_jmb4d"]
 [ext_resource type="Material" uid="uid://dyst70q7muxxn" path="res://assets/materials/book_pages.material" id="3_3h4nf"]
 [ext_resource type="FontFile" uid="uid://dlqvsdnksc304" path="res://assets/misc/fonts/CrimsonText-Regular.ttf" id="3_321to"]
@@ -10,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="5_lsrtr"]
 [ext_resource type="FontFile" uid="uid://1g5hmnbry07r" path="res://assets/misc/fonts/PlayfairDisplay-Medium.ttf" id="6_y0755"]
 [ext_resource type="FontFile" uid="uid://ba1hicndtb3pg" path="res://assets/misc/fonts/Raleway-Medium.ttf" id="7_4vfm7"]
+[ext_resource type="Material" uid="uid://da7lr0b18nh5b" path="res://assets/materials/leather.tres" id="8_haqn1"]
 [ext_resource type="PackedScene" uid="uid://b570co7fvaype" path="res://assets/prefabs/decals/cover.tscn" id="11_co7nk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6tsx5"]
@@ -81,7 +81,7 @@ skeleton = NodePath("")
 blend_shapes/Height = 1.0
 blend_shapes/Thickness = 1.0
 blend_shapes/Width = 1.0
-surface_material_override/0 = ExtResource("2_05fh8")
+surface_material_override/0 = ExtResource("8_haqn1")
 surface_material_override/1 = ExtResource("3_3h4nf")
 
 [node name="SpineVP" type="SubViewport" parent="."]
