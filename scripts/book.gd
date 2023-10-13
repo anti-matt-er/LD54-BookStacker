@@ -193,6 +193,11 @@ func modify_spine(decal_modulate: Color) -> void:
 		if titleBounds.y > titleBoxSize.y:
 			titleFontSize -= 1
 			# When growing, we need to check that it fits once more and adjust accordingly
+	if titleBounds.x > titleBoxSize.x:
+		while titleBounds.x > titleBoxSize.x:
+			titleFontSize -= 1
+			titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+			# Finally, shrink to contain overflowing width
 	
 	titleLabel.text = title
 	titleSettings.font_size = titleFontSize
