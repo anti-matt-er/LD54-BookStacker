@@ -40,6 +40,8 @@ const FLYTEXT_HOLD := 0.65
 @onready var timeout_screen := %Timeout
 @onready var box_score_flytext := %BoxScore
 
+var fullscreen := false
+var fullscreen_hack_firstrun := true
 var placing := false
 var box_ready := false
 var book_bounds_limit := Vector3.ZERO
@@ -52,7 +54,12 @@ var score_tween: Tween
 
 func _ready() -> void:
 	box_limit.hide()
+	
 	await get_tree().process_frame
+	
+	var window_mode = DisplayServer.window_get_mode()
+	fullscreen = (DisplayServer.WINDOW_MODE_FULLSCREEN || window_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	
 	music.play()
 	stopwatch.running_out.connect(func(): timer_display.set_low(true))
 	stopwatch.finished.connect(time_over)
@@ -77,6 +84,23 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("debug_complete"):
 		complete_box()
+	
+	if Input.is_action_just_pressed("toggle_fullscreen"):
+		toggle_fullscreen()
+
+
+func toggle_fullscreen() -> void:
+	if fullscreen:
+		if fullscreen_hack_firstrun:
+			fullscreen_hack_firstrun = false
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+		DisplayServer.window_set_size(Helper.viewport_size)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	
+	fullscreen = !fullscreen
 
 
 func start() -> void:
