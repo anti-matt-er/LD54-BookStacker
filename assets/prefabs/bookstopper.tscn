@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://crt3ijmmlcp4r"]
+
+[ext_resource type="PackedScene" uid="uid://bw3kxp735iaje" path="res://assets/models/bookstopper.glb" id="1_418l5"]
+[ext_resource type="Material" uid="uid://cmspn0ellk7bk" path="res://assets/materials/bookstopper.material" id="2_4fkw6"]
+
+[node name="Bookstopper" instance=ExtResource("1_418l5")]
+
+[node name="Bookstopper" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_4fkw6")

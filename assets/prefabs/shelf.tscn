@@ -1,14 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8nf4p7sc8oj2"]
+[gd_scene load_steps=8 format=3 uid="uid://b8nf4p7sc8oj2"]
 
 [ext_resource type="Script" path="res://scripts/shelf.gd" id="1_ap64c"]
 [ext_resource type="PackedScene" uid="uid://c81ed6e4lcn0u" path="res://assets/models/shelf.glb" id="1_siqkx"]
 [ext_resource type="Material" uid="uid://c3rrmc4ec6d8x" path="res://assets/materials/shelf_nail.material" id="3_bmcv5"]
+[ext_resource type="PackedScene" uid="uid://crt3ijmmlcp4r" path="res://assets/prefabs/bookstopper.tscn" id="3_hbydm"]
 [ext_resource type="Material" uid="uid://bqam0t31ing10" path="res://assets/materials/shelf_support.material" id="4_0l1hh"]
 [ext_resource type="Material" uid="uid://drb71vudk51uw" path="res://assets/materials/shelf_wood.material" id="5_8285b"]
 [ext_resource type="Material" uid="uid://0ph5wuly7o1c" path="res://assets/materials/shelf_brace.material" id="6_ka25t"]
 
 [node name="Shelf" instance=ExtResource("1_siqkx")]
 script = ExtResource("1_ap64c")
+bookstopper_prefab = ExtResource("3_hbydm")
 
 [node name="Shelf" parent="." index="0"]
 surface_material_override/0 = ExtResource("3_bmcv5")
