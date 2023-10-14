@@ -258,10 +258,39 @@ func modify_cover(decal_modulate: Color) -> void:
 	coverDesign.size = res
 	
 	await get_tree().process_frame
-	
+
 	var titleLabel = coverDesign.get_node("Title")
+	var titleBoxSize = titleLabel.size
+	titleBoxSize.y -= TITLE_YMARGIN
 	var titleSettings = titleLabel.label_settings.duplicate()
 	titleSettings.font = fonts[font_index]
+	var titleStyle = {
+		"font": titleSettings.font,
+		"halign": titleLabel.horizontal_alignment,
+		"breaks": TextServer.BREAK_WORD_BOUND, # Should get this from auto-wrap settings instead
+		"justify": titleLabel.justification_flags
+	}
+	titleFontSize = titleSettings.font_size
+	var titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+	
+	if titleBounds.x > titleBoxSize.x:
+		while titleBounds.x > titleBoxSize.x:
+			titleFontSize -= 1
+			titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+			# When shrinking, we should know as soon as it fits
+	elif titleBounds.x < titleBoxSize.x:
+		while titleBounds.x < titleBoxSize.x:
+			titleFontSize += 1
+			titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+		
+		if titleBounds.x > titleBoxSize.x:
+			titleFontSize -= 1
+			# When growing, we need to check that it fits once more and adjust accordingly
+	if titleBounds.y > titleBoxSize.y:
+		while titleBounds.y > titleBoxSize.y:
+			titleFontSize -= 1
+			titleBounds = get_text_bounds(title, titleFontSize, titleStyle, titleBoxSize.x)
+			# Finally, shrink to contain overflowing width
 
 	titleLabel.text = title
 	titleSettings.font_size = titleFontSize
@@ -273,6 +302,9 @@ func modify_cover(decal_modulate: Color) -> void:
 	
 	if randi() % 2:
 		coverDesign.alignment = BoxContainer.ALIGNMENT_BEGIN
+	else:
+		coverDesign.get_node("Top Margin").hide()
+		coverDesign.get_node("Bottom Margin").hide()
 	
 	coverVP.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	

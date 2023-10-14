@@ -28,8 +28,8 @@ size_flags_vertical = 0
 alignment = 1
 
 [node name="Top Margin" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Top Line" type="HSeparator" parent="."]
 layout_mode = 2
@@ -51,5 +51,6 @@ layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_1j6cp")
 
 [node name="Bottom Margin" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
