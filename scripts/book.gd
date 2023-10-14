@@ -435,6 +435,9 @@ func cancel_placement() -> void:
 	
 	set_picked_up(false)
 	set_invalid(false)
+	pivot_helper.global_position = initial_position + Vector3(
+		0, -dimensions.y / 2, dimensions.z / 2
+	)
 	global_position = initial_position
 	rotation = Vector3.ZERO
 
