@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://qau5mo78wrp8"]
+
+[ext_resource type="FontFile" uid="uid://clhan4w7d4jn1" path="res://assets/misc/fonts/RedactedScript.ttf" id="1_akrqv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e7egi"]
+font = ExtResource("1_akrqv")
+font_size = 40
+
+[node name="Back" type="HBoxContainer"]
+offset_right = 816.0
+offset_bottom = 798.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+alignment = 1
+
+[node name="Left Margin" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Blurb" type="Label" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 30.0
+text = "lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd lorem ipsum dolor sit amet blah blah oaiwjdoaiwjdoiawjd "
+label_settings = SubResource("LabelSettings_e7egi")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+clip_text = true
+
+[node name="Right Margin" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3

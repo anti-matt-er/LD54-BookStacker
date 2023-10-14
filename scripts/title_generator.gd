@@ -31,6 +31,7 @@ const TITLE_PATTERNS := {
 
 var nouns: Array[String] = []
 var adjectives: Array[String] = []
+var all_words: Array[String] = []
 var weighted_noun_patterns := {}
 var weighted_title_patterns := {}
 
@@ -40,6 +41,7 @@ func _ready() -> void:
 		nouns.append_array(wordlist_to_array(noun_file))
 	for adjective_file in WORDLIST_SOURCES.adjectives:
 		adjectives.append_array(wordlist_to_array(adjective_file))
+	all_words = nouns + adjectives
 	
 	weighted_noun_patterns = calculate_weighted_dict(NOUN_PATTERNS)
 	weighted_title_patterns = calculate_weighted_dict(TITLE_PATTERNS)
@@ -114,3 +116,12 @@ func generate_title() -> String:
 	title[0] = title[0].to_upper()
 	
 	return title
+
+
+func generate_blurb(word_count: int) -> String:
+	var blurb = []
+	
+	for i in range(0, word_count):
+		blurb.append(all_words.pick_random())
+	
+	return " ".join(blurb)

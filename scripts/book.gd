@@ -23,6 +23,8 @@ const LOGOS := [
 const MIN_LOGO_SIZE := 32
 const MAX_LOGO_SIZE := 100
 const LOGO_RATIO := 0.5
+const MIN_BLURB_COUNT := 5
+const MAX_BLURB_COUNT := 50
 const ROTATION_TIME := 0.2
 const CUBIC_WEIGHT := 1201.0
 const INVALID_MATERIAL := preload("res://assets/materials/invalid.material")
@@ -44,6 +46,9 @@ var spineDecal: Decal
 var coverVP: SubViewport
 var coverDesign: Container
 var coverDecal: Decal
+var backVP: SubViewport
+var backDesign: Container
+var backDecal: Decal
 var title := ""
 var size: Vector3
 var dimensions: Vector3
@@ -76,6 +81,9 @@ func setup() -> void:
 	coverVP = $CoverVP
 	coverDesign = $CoverVP/Cover
 	coverDecal = $CoverDecal
+	backVP = $BackVP
+	backDesign = $BackVP/Back
+	backDecal = $BackDecal
 	
 	collider.shape = collider.shape.duplicate()
 	
@@ -126,6 +134,7 @@ func generate() -> void:
 	modify_mesh()
 	modify_spine(decal_modulate)
 	modify_cover(decal_modulate)
+	modify_back(decal_modulate)
 	
 	await RenderingServer.frame_post_draw
 	
@@ -316,6 +325,30 @@ func modify_cover(decal_modulate: Color) -> void:
 	coverDecal.position.x = dimensions.x / 2
 	coverDecal.modulate = decal_modulate
 	coverVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
+
+
+func modify_back(decal_modulate: Color) -> void:
+	var res = (Vector2(dimensions.z, dimensions.y) * DPI).round()
+	backVP.size = res
+	backVP.size_2d_override = res
+	backDesign.size = res
+	
+	await get_tree().process_frame
+
+	backDesign.get_node("Blurb").text = TitleGenerator.generate_blurb(
+		randi_range(MIN_BLURB_COUNT, MAX_BLURB_COUNT)
+	)
+	
+	backVP.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	
+	await RenderingServer.frame_post_draw
+	
+	backDecal.set_texture(Decal.TEXTURE_ALBEDO, backVP.get_texture())
+	backDecal.size.x = dimensions.z
+	backDecal.size.z = dimensions.y
+	backDecal.position.x = -dimensions.x / 2
+	backDecal.modulate = decal_modulate
+	backVP.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 
 func animate_show(time: float) -> void:

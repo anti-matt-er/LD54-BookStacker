@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d2s3p3ssht6qb"]
+[gd_scene load_steps=19 format=3 uid="uid://d2s3p3ssht6qb"]
 
 [ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="2_2aste"]
 [ext_resource type="Script" path="res://scripts/book.gd" id="2_jmb4d"]
@@ -11,6 +11,7 @@
 [ext_resource type="FontFile" uid="uid://ba1hicndtb3pg" path="res://assets/misc/fonts/Raleway-Medium.ttf" id="7_4vfm7"]
 [ext_resource type="Material" uid="uid://da7lr0b18nh5b" path="res://assets/materials/leather.tres" id="8_haqn1"]
 [ext_resource type="PackedScene" uid="uid://b570co7fvaype" path="res://assets/prefabs/decals/cover.tscn" id="11_co7nk"]
+[ext_resource type="PackedScene" uid="uid://qau5mo78wrp8" path="res://assets/prefabs/decals/back.tscn" id="12_0m2ht"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6tsx5"]
 resource_name = "Cover"
@@ -102,6 +103,14 @@ render_target_update_mode = 0
 
 [node name="Cover" parent="CoverVP" instance=ExtResource("11_co7nk")]
 
+[node name="BackVP" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size_2d_override_stretch = true
+render_target_update_mode = 0
+
+[node name="Back" parent="BackVP" instance=ExtResource("12_0m2ht")]
+
 [node name="SpineDecal" type="Decal" parent="."]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0.111)
 size = Vector3(0.315, 0.001, 0.04)
@@ -112,6 +121,15 @@ lower_fade = 1.34041e-05
 
 [node name="CoverDecal" type="Decal" parent="."]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.02, 0, 0)
+sorting_offset = 5.0
+size = Vector3(0.222, 0.001, 0.315)
+texture_orm = SubResource("GradientTexture1D_ytqja")
+modulate = Color(1, 0.815686, 0.215686, 1)
+upper_fade = 1e-05
+lower_fade = 1e-05
+
+[node name="BackDecal" type="Decal" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, -0.02, 0, 0)
 sorting_offset = 5.0
 size = Vector3(0.222, 0.001, 0.315)
 texture_orm = SubResource("GradientTexture1D_ytqja")
