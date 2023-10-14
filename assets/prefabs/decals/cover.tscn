@@ -35,16 +35,28 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_m7q4x")
 
-[node name="Title" type="Label" parent="."]
+[node name="Title Container" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Left Margin" type="Control" parent="Title Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="Title Container"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+size_flags_stretch_ratio = 30.0
 text = "The Titleeeeee of the Books"
 label_settings = SubResource("LabelSettings_a4o4c")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="Right Margin" type="Control" parent="Title Container"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Bottom Line" type="HSeparator" parent="."]
 layout_mode = 2

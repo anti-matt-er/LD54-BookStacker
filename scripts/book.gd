@@ -259,7 +259,7 @@ func modify_cover(decal_modulate: Color) -> void:
 	
 	await get_tree().process_frame
 
-	var titleLabel = coverDesign.get_node("Title")
+	var titleLabel = coverDesign.get_node("Title Container/Title")
 	var titleBoxSize = titleLabel.size
 	titleBoxSize.y -= TITLE_YMARGIN
 	var titleSettings = titleLabel.label_settings.duplicate()
