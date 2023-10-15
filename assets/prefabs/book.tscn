@@ -139,3 +139,8 @@ lower_fade = 1e-05
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_23dpm")
+
+[node name="SFX" type="AudioStreamPlayer3D" parent="."]
+max_db = 6.0
+panning_strength = 2.0
+bus = &"SFX"

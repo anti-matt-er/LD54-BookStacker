@@ -32,6 +32,22 @@ const OFFSCREEN_Y_OFFSET := 1.0
 const TILT_ANGLE := deg_to_rad(10)
 const TILT_TIME := 0.25
 const TILT_OFFSET := 0.05
+const SFX_VARIATIONS := [
+	preload("res://assets/sfx/book_hits/1.ogg"),
+	preload("res://assets/sfx/book_hits/2.ogg"),
+	preload("res://assets/sfx/book_hits/3.ogg"),
+	preload("res://assets/sfx/book_hits/4.ogg"),
+	preload("res://assets/sfx/book_hits/5.ogg"),
+	preload("res://assets/sfx/book_hits/6.ogg"),
+	preload("res://assets/sfx/book_hits/7.ogg"),
+	preload("res://assets/sfx/book_hits/8.ogg")
+]
+const MIN_SFX_PITCH := 0.75
+const MAX_SFX_PITCH := 1.5
+const MIN_SFX_VOL := 0.0
+const MAX_SFX_VOL := 6.0
+const MIN_HOVER_SFX_VOL := -40.0
+const MAX_HOVER_SFX_VOL := -20.0
 
 @export var fonts: Array[Font]
 @export var font_uppercase_disable: Array[bool]
@@ -49,6 +65,7 @@ var coverDecal: Decal
 var backVP: SubViewport
 var backDesign: Container
 var backDecal: Decal
+var sfx: AudioStreamPlayer3D
 var title := ""
 var size: Vector3
 var dimensions: Vector3
@@ -84,6 +101,7 @@ func setup() -> void:
 	backVP = $BackVP
 	backDesign = $BackVP/Back
 	backDecal = $BackDecal
+	sfx = $SFX
 	
 	collider.shape = collider.shape.duplicate()
 	
@@ -362,11 +380,25 @@ func animate_show(time: float) -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BOUNCE)
 	tween.tween_property(self, "position:y", position.y - OFFSCREEN_Y_OFFSET, time)
+	
+	await tween.finished
+	
+	play_sfx(false)
+
+
+func play_sfx(hover: bool) -> void:
+	sfx.stream = SFX_VARIATIONS.pick_random()
+	sfx.volume_db = randf_range(MIN_HOVER_SFX_VOL, MAX_HOVER_SFX_VOL) if hover else randf_range(MIN_SFX_VOL, MAX_SFX_VOL)
+	sfx.pitch_scale = randf_range(MIN_SFX_PITCH, MAX_SFX_PITCH)
+	sfx.play()
 
 
 func tilt(reverse: bool) -> void:
 	if picked_up || placed || !game.box_ready:
 		return
+	
+	if !reverse:
+		play_sfx(true)
 	
 	if tween:
 		if tween.is_running():
@@ -409,6 +441,8 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 		tween.kill()
 	
 	pivot_helper.rotation.x = 0
+	
+	play_sfx(false)
 	
 	if picked_up:
 		collision_layer = 0
