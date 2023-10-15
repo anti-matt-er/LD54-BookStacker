@@ -9,9 +9,7 @@ const WORDLIST_SOURCES := {
 		"mostly-plural-nouns"
 	],
 	"adjectives": [
-		"mostly-adjectives",
-		"ly-adverbs",
-		"mostly-adverbs"
+		"mostly-adjectives"
 	]
 }
 const NOUN_PATTERNS := {
