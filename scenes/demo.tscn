@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=39 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -20,6 +20,8 @@
 [ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="13_t3rv7"]
 [ext_resource type="Script" path="res://scripts/timeout_screen.gd" id="13_tpe3r"]
 [ext_resource type="AudioStream" uid="uid://bk22rcg6yin7v" path="res://assets/sfx/jazz_stop.ogg" id="15_svlu3"]
+[ext_resource type="AudioStream" uid="uid://isexcmwcrbyf" path="res://assets/sfx/box_complete.ogg" id="21_q45sr"]
+[ext_resource type="AudioStream" uid="uid://cb36omid4e2jy" path="res://assets/sfx/score_increment.ogg" id="22_67nwp"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
@@ -398,3 +400,13 @@ script = ExtResource("8_gde5c")
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_4wvrc")
 bus = &"Music"
+
+[node name="BoxCompleteSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_q45sr")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="ScoreIncrementSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_67nwp")
+volume_db = -4.0
+bus = &"SFX"

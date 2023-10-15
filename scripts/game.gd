@@ -32,6 +32,8 @@ const FLYTEXT_HOLD := 0.65
 @onready var shelf_arrow := %ShelfArrow
 @onready var box_arrow := %BoxArrow
 @onready var music := $Music
+@onready var box_complete_sfx := $BoxCompleteSFX
+@onready var score_increment_sfx := $ScoreIncrementSFX
 @onready var stopwatch := %Stopwatch
 @onready var stopwatch_scene := %StopwatchScene
 @onready var stopwatch_anchor: Control = %StopwatchAnchor
@@ -46,6 +48,7 @@ var placing := false
 var box_ready := false
 var book_bounds_limit := Vector3.ZERO
 var score := 0
+var last_score_update := 0
 var level := 0
 var tween: Tween
 var flytext_tween: Tween
@@ -125,6 +128,7 @@ func ready_box() -> void:
 
 func award_score(value: int, bonus: int) -> void:
 	box_confetti.emitting = true
+	box_complete_sfx.play()
 	
 	await animate_flytext(value, camera.unproject_position(box.global_position) - box_score_flytext.size / 2)
 	animate_score(value)
@@ -178,7 +182,7 @@ func animate_score(value: int) -> void:
 	score_tween = create_tween()
 	score_tween.set_trans(Tween.TRANS_SINE)
 	score_tween.set_ease(Tween.EASE_OUT)
-	score_tween.tween_method(update_score, value, 0, FLYTEXT_TRANSITION + FLYTEXT_HOLD / 2.0)
+	score_tween.tween_method(update_score_from_tween, value, 0, FLYTEXT_TRANSITION + FLYTEXT_HOLD / 2.0)
 
 
 func update_score(value: int) -> void:
@@ -186,7 +190,14 @@ func update_score(value: int) -> void:
 	if value:
 		to_add = "+ " + str(value)
 	
-	score_display.text = str(score - value) + to_add 
+	score_display.text = str(score - value) + to_add
+
+
+func update_score_from_tween(value: int) -> void:
+	if value != last_score_update:
+		update_score(value)
+		score_increment_sfx.play()
+		last_score_update = value
 
 
 func complete_box() -> void:
