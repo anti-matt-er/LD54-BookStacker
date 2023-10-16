@@ -175,6 +175,7 @@ func animate_flytext(value: int, start_pos: Vector2) -> void:
 
 func animate_score(value: int) -> void:
 	score += value
+	last_score_update = 0
 	
 	if score_tween:
 		score_tween.kill()
