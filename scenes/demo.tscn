@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=55 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -14,14 +14,22 @@
 [ext_resource type="Script" path="res://scripts/arrow.gd" id="7_k1l32"]
 [ext_resource type="Material" uid="uid://drb71vudk51uw" path="res://assets/materials/shelf_wood.material" id="8_2it8a"]
 [ext_resource type="AudioStream" uid="uid://bhgo4y1gjslmv" path="res://assets/music/Coffee_&_Ink.ogg" id="8_4wvrc"]
-[ext_resource type="Script" path="res://scripts/autosize_label.gd" id="8_gde5c"]
 [ext_resource type="FontFile" uid="uid://bdw3epbaodyuy" path="res://assets/misc/fonts/JosefinSans-Light.ttf" id="9_vloi4"]
 [ext_resource type="Script" path="res://scripts/timer_display.gd" id="10_saosj"]
+[ext_resource type="Shader" path="res://assets/shaders/blur.gdshader" id="12_3q52f"]
+[ext_resource type="Script" path="res://scripts/blur.gd" id="13_o45kq"]
 [ext_resource type="FontFile" uid="uid://51l0r3n2n13w" path="res://assets/misc/fonts/BebasNeue-Regular.ttf" id="13_t3rv7"]
 [ext_resource type="Script" path="res://scripts/timeout_screen.gd" id="13_tpe3r"]
 [ext_resource type="AudioStream" uid="uid://bk22rcg6yin7v" path="res://assets/sfx/jazz_stop.ogg" id="15_svlu3"]
+[ext_resource type="Script" path="res://scripts/simple_fade.gd" id="20_1prjh"]
+[ext_resource type="Texture2D" uid="uid://dxopnueccdymw" path="res://assets/textures/logo.png" id="20_f3loo"]
 [ext_resource type="AudioStream" uid="uid://isexcmwcrbyf" path="res://assets/sfx/box_complete.ogg" id="21_q45sr"]
 [ext_resource type="AudioStream" uid="uid://cb36omid4e2jy" path="res://assets/sfx/score_increment.ogg" id="22_67nwp"]
+[ext_resource type="Shader" path="res://assets/shaders/blurred_panel.gdshader" id="22_rno4m"]
+[ext_resource type="Script" path="res://scripts/buttons/play_game.gd" id="23_2du8q"]
+[ext_resource type="FontFile" uid="uid://dxjkdtlrxpg5s" path="res://assets/misc/fonts/AmaticSC-Bold.ttf" id="23_uswty"]
+[ext_resource type="Script" path="res://scripts/buttons/options.gd" id="24_bld54"]
+[ext_resource type="Script" path="res://scripts/buttons/quit.gd" id="25_vyt50"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
@@ -67,6 +75,92 @@ sdfgi_use_occlusion = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nnmpw"]
 size = Vector2(0.4, 0.4)
+
+[sub_resource type="Animation" id="Animation_m8qlr"]
+resource_name = "pulse"
+length = 8.0
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0.758, 2, 1, 0, 1, 0.783, 4, 1, 0, 1, 0.808, 6, 1, 0, 1, 0.783, 8, 1, 0, 1, 0.758)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_osiae"]
+_data = {
+"pulse": SubResource("Animation_m8qlr")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0baqc"]
+shader = ExtResource("12_3q52f")
+shader_parameter/blur = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1kf42"]
+shader = ExtResource("22_rno4m")
+shader_parameter/background_color = Color(0.247059, 0.337255, 0.34902, 0.25098)
+shader_parameter/border_color = Color(0.956863, 0.858824, 0.443137, 1)
+shader_parameter/shadow_color = Color(0, 0, 0, 0.25098)
+shader_parameter/blur = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v46qj"]
+content_margin_left = 16.0
+content_margin_top = 24.0
+content_margin_right = 16.0
+content_margin_bottom = 32.0
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 8
+border_width_top = 24
+border_width_right = 8
+border_width_bottom = 24
+border_color = Color(0, 0, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+corner_detail = 20
+shadow_color = Color(0, 1, 0, 1)
+shadow_size = 24
+shadow_offset = Vector2(6, 6)
+anti_aliasing_size = 1.25
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6v8ul"]
+shader = ExtResource("22_rno4m")
+shader_parameter/background_color = Color(0.329412, 0.454902, 0.458824, 0.25098)
+shader_parameter/border_color = Color(1, 0.956863, 0.913725, 1)
+shader_parameter/shadow_color = Color(0, 0, 0, 0.25098)
+shader_parameter/blur = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8o"]
+content_margin_left = 6.0
+content_margin_top = 16.0
+content_margin_right = 6.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 6
+border_width_top = 16
+border_width_right = 6
+border_width_bottom = 12
+border_color = Color(0, 0, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+corner_detail = 20
+shadow_color = Color(0, 1, 0, 1)
+shadow_size = 8
+shadow_offset = Vector2(2, 2)
+anti_aliasing_size = 1.25
+
+[sub_resource type="LabelSettings" id="LabelSettings_4o477"]
+font = ExtResource("23_uswty")
+font_size = 50
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
 
 [sub_resource type="LabelSettings" id="LabelSettings_1d5tk"]
 font = ExtResource("9_vloi4")
@@ -156,6 +250,9 @@ environment = SubResource("Environment_jl0n7")
 
 [node name="Camera Angles" type="Node3D" parent="."]
 
+[node name="Menu" type="Marker3D" parent="Camera Angles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.783)
+
 [node name="Idle" type="Marker3D" parent="Camera Angles"]
 transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
 
@@ -167,6 +264,7 @@ transform = Transform3D(1, 0, 0, 0, 0.932954, 0.359997, 0, -0.359997, 0.932954, 
 
 [node name="StopwatchScene" type="Node3D" parent="."]
 unique_name_in_owner = true
+visible = false
 
 [node name="Stopwatch" parent="StopwatchScene" instance=ExtResource("6_mr61x")]
 unique_name_in_owner = true
@@ -194,11 +292,27 @@ transparency = 0.75
 mesh = SubResource("PlaneMesh_nnmpw")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.877983, 0.478692, 0, -0.478692, 0.877983, 0, 0.449, 0.783)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.758)
 current = true
 fov = 51.7
 far = 5.0
 script = ExtResource("5_6m5sv")
+
+[node name="MenuAnimation" type="AnimationPlayer" parent="Camera"]
+libraries = {
+"": SubResource("AnimationLibrary_osiae")
+}
+
+[node name="Blur" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0baqc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("13_o45kq")
 
 [node name="UI" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -212,41 +326,177 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Container" type="VBoxContainer" parent="UI"]
+[node name="StartScreen" type="HBoxContainer" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+script = ExtResource("20_1prjh")
+
+[node name="SpacerLeft" type="Control" parent="UI/StartScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Center" type="VBoxContainer" parent="UI/StartScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.03
+
+[node name="Panel" type="PanelContainer" parent="UI/StartScreen/Center"]
+material = SubResource("ShaderMaterial_1kf42")
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_v46qj")
+
+[node name="Container" type="VBoxContainer" parent="UI/StartScreen/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogoContainer" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 12.0
+
+[node name="SpacerLeft" type="Control" parent="UI/StartScreen/Center/Panel/Container/LogoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Logo" type="TextureRect" parent="UI/StartScreen/Center/Panel/Container/LogoContainer"]
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("20_f3loo")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="SpacerRight" type="Control" parent="UI/StartScreen/Center/Panel/Container/LogoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpacerMiddle" type="Control" parent="UI/StartScreen/Center/Panel/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="ButtonsPanel" type="PanelContainer" parent="UI/StartScreen/Center/Panel/Container"]
+material = SubResource("ShaderMaterial_6v8ul")
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 12.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dwi8o")
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Play" type="Label" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Arcade Mode"
+label_settings = SubResource("LabelSettings_4o477")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("23_2du8q")
+
+[node name="ButtonSpacer1" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Options" type="Label" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Options"
+label_settings = SubResource("LabelSettings_4o477")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("24_bld54")
+
+[node name="ButtonSpacer2" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.5
+
+[node name="Quit" type="Label" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Quit Game"
+label_settings = SubResource("LabelSettings_4o477")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("25_vyt50")
+
+[node name="SpacerBottom" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SpacerBottom" type="Control" parent="UI/StartScreen/Center"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.03
+
+[node name="SpacerRight" type="Control" parent="UI/StartScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="GameUI" type="VBoxContainer" parent="UI"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 mouse_filter = 2
+script = ExtResource("20_1prjh")
 
-[node name="Upper" type="HBoxContainer" parent="UI/Container"]
+[node name="Upper" type="HBoxContainer" parent="UI/GameUI"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 alignment = 1
 
-[node name="Left" type="HBoxContainer" parent="UI/Container/Upper"]
+[node name="Left" type="HBoxContainer" parent="UI/GameUI/Upper"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="ScoreLabel" type="Label" parent="UI/Container/Upper/Left"]
+[node name="ScoreLabel" type="Label" parent="UI/GameUI/Upper/Left"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Score: "
 label_settings = SubResource("LabelSettings_1d5tk")
-script = ExtResource("8_gde5c")
 
-[node name="ScoreValue" type="Label" parent="UI/Container/Upper/Left"]
+[node name="ScoreValue" type="Label" parent="UI/GameUI/Upper/Left"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "100"
 label_settings = SubResource("LabelSettings_ittbn")
-script = ExtResource("8_gde5c")
 
-[node name="Middle" type="VBoxContainer" parent="UI/Container/Upper"]
+[node name="Middle" type="VBoxContainer" parent="UI/GameUI/Upper"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ShelfArrow" type="TextureRect" parent="UI/Container/Upper/Middle"]
+[node name="ShelfArrow" type="TextureRect" parent="UI/GameUI/Upper/Middle"]
 unique_name_in_owner = true
 texture_filter = 4
 layout_mode = 2
@@ -257,22 +507,22 @@ expand_mode = 3
 stretch_mode = 4
 script = ExtResource("7_k1l32")
 
-[node name="Spacer" type="Control" parent="UI/Container/Upper/Middle"]
+[node name="Spacer" type="Control" parent="UI/GameUI/Upper/Middle"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Right" type="HBoxContainer" parent="UI/Container/Upper"]
+[node name="Right" type="HBoxContainer" parent="UI/GameUI/Upper"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 alignment = 2
 
-[node name="StopwatchContainer" type="MarginContainer" parent="UI/Container/Upper/Right"]
+[node name="StopwatchContainer" type="MarginContainer" parent="UI/GameUI/Upper/Right"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="StopwatchAnchor" type="TextureRect" parent="UI/Container/Upper/Right/StopwatchContainer"]
+[node name="StopwatchAnchor" type="TextureRect" parent="UI/GameUI/Upper/Right/StopwatchContainer"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
@@ -280,11 +530,11 @@ mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_bnsrc")
 expand_mode = 3
 
-[node name="TimerAnchor" type="Control" parent="UI/Container/Upper/Right/StopwatchContainer"]
+[node name="TimerAnchor" type="Control" parent="UI/GameUI/Upper/Right/StopwatchContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TimerDisplay" type="Label" parent="UI/Container/Upper/Right/StopwatchContainer/TimerAnchor"]
+[node name="TimerDisplay" type="Label" parent="UI/GameUI/Upper/Right/StopwatchContainer/TimerAnchor"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
@@ -298,33 +548,33 @@ label_settings = SubResource("LabelSettings_m2owg")
 horizontal_alignment = 1
 script = ExtResource("10_saosj")
 
-[node name="Middle" type="Control" parent="UI/Container"]
+[node name="Middle" type="Control" parent="UI/GameUI"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 mouse_filter = 2
 
-[node name="Bottom" type="HBoxContainer" parent="UI/Container"]
+[node name="Bottom" type="HBoxContainer" parent="UI/GameUI"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 alignment = 1
 
-[node name="Left" type="CenterContainer" parent="UI/Container/Bottom"]
+[node name="Left" type="CenterContainer" parent="UI/GameUI/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Middle" type="VBoxContainer" parent="UI/Container/Bottom"]
+[node name="Middle" type="VBoxContainer" parent="UI/GameUI/Bottom"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Spacer" type="Control" parent="UI/Container/Bottom/Middle"]
+[node name="Spacer" type="Control" parent="UI/GameUI/Bottom/Middle"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="BoxArrow" type="TextureRect" parent="UI/Container/Bottom/Middle"]
+[node name="BoxArrow" type="TextureRect" parent="UI/GameUI/Bottom/Middle"]
 unique_name_in_owner = true
 texture_filter = 4
 layout_mode = 2
@@ -338,7 +588,7 @@ flip_v = true
 script = ExtResource("7_k1l32")
 active = true
 
-[node name="Right" type="CenterContainer" parent="UI/Container/Bottom"]
+[node name="Right" type="CenterContainer" parent="UI/GameUI/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -371,7 +621,6 @@ text = "Time's Up!"
 label_settings = SubResource("LabelSettings_4srqo")
 horizontal_alignment = 1
 vertical_alignment = 2
-script = ExtResource("8_gde5c")
 
 [node name="SFX" type="AudioStreamPlayer" parent="UI/Timeout"]
 stream = ExtResource("15_svlu3")
@@ -395,7 +644,6 @@ offset_bottom = 51.0
 size_flags_horizontal = 4
 text = "+100"
 label_settings = SubResource("LabelSettings_2dig8")
-script = ExtResource("8_gde5c")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_4wvrc")

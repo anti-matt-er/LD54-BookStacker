@@ -1,4 +1,4 @@
-extends AutosizeLabel
+extends Label
 
 
 const NORMAL_COLOR := Color.WHITE

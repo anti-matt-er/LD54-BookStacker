@@ -32,6 +32,19 @@ func switch_angle_to(angle: Marker3D) -> void:
 	tween.tween_property(self, "rotation", angle.rotation, TRANSITION_TIME)
 
 
+func start_idle(time: float) -> void:
+	if tween:
+		tween.kill()
+	
+	tween = create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_parallel(true)
+	tween.tween_property(self, "position", idle_angle.position, time)
+	tween.tween_property(self, "rotation", idle_angle.rotation, time)
+
+
 func switch_to_idle() -> void:
 	switch_angle_to(idle_angle)
 	game.shelf_arrow.set_active(false)

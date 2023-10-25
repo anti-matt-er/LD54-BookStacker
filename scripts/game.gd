@@ -12,9 +12,15 @@ const FLYTEXT_GROW := Vector2.ONE * 2.0
 const FLYTEXT_GROW_RATIO :=  0.5
 const FLYTEXT_TRANSITION := 0.75
 const FLYTEXT_HOLD := 0.65
+const MENU_TRANSITION := 1.5
+const START_CAMERA_TRANSITION := 2.5
 
 @export var difficulty: Difficulty
 
+@onready var start_screen := %StartScreen
+@onready var game_ui := %GameUI
+@onready var timeout_screen := %Timeout
+@onready var blur := %Blur
 @onready var camera: Camera3D = $Camera
 @onready var place_ray := $PlaceCast
 @onready var book_ray := $BookRay
@@ -39,8 +45,8 @@ const FLYTEXT_HOLD := 0.65
 @onready var stopwatch_anchor: Control = %StopwatchAnchor
 @onready var timer_display := %TimerDisplay
 @onready var score_display := %ScoreValue
-@onready var timeout_screen := %Timeout
 @onready var box_score_flytext := %BoxScore
+@onready var menu_animation := $Camera/MenuAnimation
 
 var fullscreen := false
 var fullscreen_hack_firstrun := true
@@ -64,9 +70,9 @@ func _ready() -> void:
 	fullscreen = (DisplayServer.WINDOW_MODE_FULLSCREEN || window_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	
 	music.play()
+	menu_animation.play("pulse")
 	stopwatch.running_out.connect(func(): timer_display.set_low(true))
 	stopwatch.finished.connect(time_over)
-	start()
 
 
 func _physics_process(_delta: float) -> void:
@@ -109,7 +115,23 @@ func toggle_fullscreen() -> void:
 func start() -> void:
 	score = 0
 	update_score(0)
+	
+	menu_animation.stop(true)
+	start_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	camera.start_idle(START_CAMERA_TRANSITION)
+	start_screen.animate(0.0, MENU_TRANSITION)
+	blur.animate(0.0, MENU_TRANSITION)
+	
+	await get_tree().create_timer(START_CAMERA_TRANSITION).timeout
+	
 	ready_box()
+	
+	await get_tree().process_frame
+	
+	game_ui.animate(1.0, MENU_TRANSITION)
+	stopwatch_scene.show()
+	position_stopwatch()
 
 
 func start_stopwatch(time: int) -> void:
@@ -252,6 +274,9 @@ func new_box() -> void:
 
 
 func position_stopwatch() -> void:
+	if !stopwatch_scene.visible:
+		return
+	
 	var anchor_rect = stopwatch_anchor.get_global_rect()
 	
 	var top_left = camera.project_position(anchor_rect.position, WATCH_PROJECTION_DEPTH)
