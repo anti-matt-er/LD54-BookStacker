@@ -22,8 +22,11 @@ func get_volume() -> float:
 
 
 func set_volume(volume: float) -> void:
-	SaveManager.options[bus_option] = volume
 	AudioServer.set_bus_volume_db(bus_index, 20.0 * log(volume / 100) / log(10))
 	AudioServer.set_bus_mute(bus_index, is_zero_approx(volume))
-	
+
+
+func ui_set_volume(volume: float) -> void:
+	SaveManager.options[bus_option] = volume
+	set_volume(volume)
 	ui_click.play()
