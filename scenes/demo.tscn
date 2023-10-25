@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=67 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -158,6 +158,16 @@ shadow_color = Color(0, 1, 0, 1)
 shadow_size = 8
 shadow_offset = Vector2(2, 2)
 anti_aliasing_size = 1.25
+
+[sub_resource type="LabelSettings" id="LabelSettings_6ay5e"]
+font = ExtResource("23_uswty")
+font_size = 42
+font_color = Color(0.8, 0.756863, 0.721569, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
 
 [sub_resource type="LabelSettings" id="LabelSettings_4o477"]
 font = ExtResource("23_uswty")
@@ -477,6 +487,21 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="Career" type="Label" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Career Mode (Coming Soon!)"
+label_settings = SubResource("LabelSettings_6ay5e")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ButtonSpacer1" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
 [node name="Play" type="Label" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -488,9 +513,9 @@ horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("23_2du8q")
 
-[node name="ButtonSpacer1" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
+[node name="ButtonSpacer2" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 6
 size_flags_stretch_ratio = 0.5
 
 [node name="Options" type="Label" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
@@ -504,7 +529,7 @@ horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("24_bld54")
 
-[node name="ButtonSpacer2" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
+[node name="ButtonSpacer3" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_vertical = 6
 size_flags_stretch_ratio = 0.5
