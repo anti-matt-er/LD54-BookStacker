@@ -14,6 +14,7 @@ const FLYTEXT_TRANSITION := 0.75
 const FLYTEXT_HOLD := 0.65
 const MENU_TRANSITION := 1.5
 const START_CAMERA_TRANSITION := 2.5
+const FULLSCREEN_MODE := DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 
 @export var difficulty: Difficulty
 
@@ -71,7 +72,9 @@ func _ready() -> void:
 		set_fullscreen(fullscreen)
 	else:
 		var window_mode = DisplayServer.window_get_mode()
-		fullscreen = (DisplayServer.WINDOW_MODE_FULLSCREEN || window_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		fullscreen = (window_mode == DisplayServer.WINDOW_MODE_FULLSCREEN || window_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		if fullscreen && window_mode != FULLSCREEN_MODE:
+			set_fullscreen(true)
 		SaveManager.options["fullscreen"] = fullscreen
 	
 	music.play()
@@ -105,7 +108,7 @@ func _process(_delta: float) -> void:
 
 func set_fullscreen(state: bool) -> void:
 	if state:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		DisplayServer.window_set_mode(FULLSCREEN_MODE)
 	else:
 		if fullscreen_hack_firstrun:
 			fullscreen_hack_firstrun = false
