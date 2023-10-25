@@ -8,3 +8,4 @@ extends TextButton
 func action() -> void:
 	options_screen.hide()
 	main_screen.show()
+	SaveManager.save_options()

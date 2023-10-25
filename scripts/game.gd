@@ -66,8 +66,13 @@ func _ready() -> void:
 	
 	await get_tree().process_frame
 	
-	var window_mode = DisplayServer.window_get_mode()
-	fullscreen = (DisplayServer.WINDOW_MODE_FULLSCREEN || window_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	if "fullscreen" in SaveManager.options:
+		fullscreen = SaveManager.options.fullscreen
+		set_fullscreen(fullscreen)
+	else:
+		var window_mode = DisplayServer.window_get_mode()
+		fullscreen = (DisplayServer.WINDOW_MODE_FULLSCREEN || window_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		SaveManager.options["fullscreen"] = fullscreen
 	
 	music.play()
 	menu_animation.play("pulse")
@@ -98,18 +103,23 @@ func _process(_delta: float) -> void:
 		toggle_fullscreen()
 
 
-func toggle_fullscreen() -> void:
-	if fullscreen:
+func set_fullscreen(state: bool) -> void:
+	if state:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
 		if fullscreen_hack_firstrun:
 			fullscreen_hack_firstrun = false
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 		DisplayServer.window_set_size(Helper.viewport_size)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	
-	fullscreen = !fullscreen
+	fullscreen = state
+	SaveManager.options.fullscreen = fullscreen
+
+
+func toggle_fullscreen() -> void:
+	set_fullscreen(!fullscreen)
 
 
 func start() -> void:
