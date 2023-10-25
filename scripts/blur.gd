@@ -23,7 +23,8 @@ func animate(blur: float, time: float) -> void:
 	
 	await tween.finished
 	
-	visible = !is_zero_approx(blur)
+	# Waiting on https://github.com/godotengine/godot/issues/83939
+	#visible = !is_zero_approx(blur)
 
 
 func set_blur(amount: float) -> void:
