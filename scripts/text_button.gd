@@ -8,6 +8,8 @@ const TRANSITION_TIME := 0.2
 @export_color_no_alpha var click_color := Color("c1272d")
 @export var hover_scale := 1.25
 
+@onready var game := find_parent("Game")
+@onready var sfx := game.get_node("UIClickSFX")
 @onready var idle_color := label_settings.font_color
 
 var hovered := false
@@ -22,6 +24,7 @@ func _ready() -> void:
 	
 	mouse_entered.connect(set_hover.bind(true))
 	mouse_exited.connect(set_hover.bind(false))
+	game.start_screen.menu_enabled.connect(set_enabled)
 
 
 func set_hover(state: bool) -> void:
@@ -29,6 +32,9 @@ func set_hover(state: bool) -> void:
 		return
 	
 	hovered = state
+	
+	if hovered:
+		sfx.play()
 	
 	if tween:
 		tween.kill()
@@ -46,6 +52,10 @@ func set_hover(state: bool) -> void:
 		tween.tween_property(self, "scale", Vector2.ONE, TRANSITION_TIME)
 
 
+func set_enabled(enabled: bool) -> void:
+	mouse_filter = MOUSE_FILTER_STOP if enabled else MOUSE_FILTER_IGNORE
+
+
 func _gui_input(event: InputEvent) -> void:
 	if !hovered:
 		return
@@ -58,7 +68,6 @@ func _gui_input(event: InputEvent) -> void:
 		scale = Vector2.ONE * hover_scale
 		
 	if event.is_action_released("ui_click"):
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
 		action()
 
 

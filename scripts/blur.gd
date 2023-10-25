@@ -20,6 +20,10 @@ func animate(blur: float, time: float) -> void:
 	tween.set_trans(Tween.TRANS_CIRC)
 	
 	tween.tween_method(set_blur, current, blur, time)
+	
+	await tween.finished
+	
+	visible = !is_zero_approx(blur)
 
 
 func set_blur(amount: float) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=66 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -23,13 +23,19 @@
 [ext_resource type="AudioStream" uid="uid://bk22rcg6yin7v" path="res://assets/sfx/jazz_stop.ogg" id="15_svlu3"]
 [ext_resource type="Script" path="res://scripts/simple_fade.gd" id="20_1prjh"]
 [ext_resource type="Texture2D" uid="uid://dxopnueccdymw" path="res://assets/textures/logo.png" id="20_f3loo"]
+[ext_resource type="Texture2D" uid="uid://8esa0n8av2sl" path="res://assets/textures/grabber_idle.png" id="21_45yy3"]
 [ext_resource type="AudioStream" uid="uid://isexcmwcrbyf" path="res://assets/sfx/box_complete.ogg" id="21_q45sr"]
+[ext_resource type="Texture2D" uid="uid://csvi67hggw3cv" path="res://assets/textures/grabber_hover.png" id="22_7am5n"]
 [ext_resource type="AudioStream" uid="uid://cb36omid4e2jy" path="res://assets/sfx/score_increment.ogg" id="22_67nwp"]
 [ext_resource type="Shader" path="res://assets/shaders/blurred_panel.gdshader" id="22_rno4m"]
 [ext_resource type="Script" path="res://scripts/buttons/play_game.gd" id="23_2du8q"]
+[ext_resource type="Script" path="res://scripts/mixer.gd" id="23_r4w12"]
+[ext_resource type="Script" path="res://scripts/buttons/toggle_fullscreen.gd" id="23_s6c8x"]
 [ext_resource type="FontFile" uid="uid://dxjkdtlrxpg5s" path="res://assets/misc/fonts/AmaticSC-Bold.ttf" id="23_uswty"]
 [ext_resource type="Script" path="res://scripts/buttons/options.gd" id="24_bld54"]
+[ext_resource type="Script" path="res://scripts/buttons/return_from_options.gd" id="25_4ggoa"]
 [ext_resource type="Script" path="res://scripts/buttons/quit.gd" id="25_vyt50"]
+[ext_resource type="AudioStream" uid="uid://ciy6whgfhuxi6" path="res://assets/sfx/ui_click.ogg" id="36_po0xd"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
@@ -156,6 +162,73 @@ anti_aliasing_size = 1.25
 [sub_resource type="LabelSettings" id="LabelSettings_4o477"]
 font = ExtResource("23_uswty")
 font_size = 50
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_uq763"]
+font = ExtResource("23_uswty")
+font_size = 80
+font_color = Color(0.956863, 0.858824, 0.443137, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sucw7"]
+font = ExtResource("23_uswty")
+font_size = 42
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_78oi7"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.137255, 0.109804, 0.101961, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.956863, 0.913725, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_top = 12.0
+expand_margin_bottom = 12.0
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_size = 6
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7j52n"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.756863, 0.152941, 0.176471, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.956863, 0.913725, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_top = 12.0
+expand_margin_bottom = 12.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_3ncef"]
+font = ExtResource("23_uswty")
+font_size = 42
 outline_size = 5
 outline_color = Color(0.137255, 0.109804, 0.101961, 1)
 shadow_size = 6
@@ -354,25 +427,25 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_v46qj")
 
-[node name="Container" type="VBoxContainer" parent="UI/StartScreen/Center/Panel"]
+[node name="Main" type="VBoxContainer" parent="UI/StartScreen/Center/Panel"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Container"]
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Main"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LogoContainer" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Container"]
+[node name="LogoContainer" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Main"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 12.0
 
-[node name="SpacerLeft" type="Control" parent="UI/StartScreen/Center/Panel/Container/LogoContainer"]
+[node name="SpacerLeft" type="Control" parent="UI/StartScreen/Center/Panel/Main/LogoContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Logo" type="TextureRect" parent="UI/StartScreen/Center/Panel/Container/LogoContainer"]
+[node name="Logo" type="TextureRect" parent="UI/StartScreen/Center/Panel/Main/LogoContainer"]
 texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 3
@@ -380,31 +453,31 @@ texture = ExtResource("20_f3loo")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="SpacerRight" type="Control" parent="UI/StartScreen/Center/Panel/Container/LogoContainer"]
+[node name="SpacerRight" type="Control" parent="UI/StartScreen/Center/Panel/Main/LogoContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SpacerMiddle" type="Control" parent="UI/StartScreen/Center/Panel/Container"]
+[node name="SpacerMiddle" type="Control" parent="UI/StartScreen/Center/Panel/Main"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="ButtonsPanel" type="PanelContainer" parent="UI/StartScreen/Center/Panel/Container"]
+[node name="ButtonsPanel" type="PanelContainer" parent="UI/StartScreen/Center/Panel/Main"]
 material = SubResource("ShaderMaterial_6v8ul")
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 12.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dwi8o")
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel"]
 layout_mode = 2
 alignment = 1
 
-[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Play" type="Label" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="Play" type="Label" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -415,12 +488,12 @@ horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("23_2du8q")
 
-[node name="ButtonSpacer1" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="ButtonSpacer1" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Options" type="Label" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="Options" type="Label" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -431,12 +504,12 @@ horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("24_bld54")
 
-[node name="ButtonSpacer2" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="ButtonSpacer2" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_vertical = 6
 size_flags_stretch_ratio = 0.5
 
-[node name="Quit" type="Label" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="Quit" type="Label" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -447,9 +520,193 @@ horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("25_vyt50")
 
-[node name="SpacerBottom" type="Control" parent="UI/StartScreen/Center/Panel/Container/ButtonsPanel/ButtonsContainer"]
+[node name="SpacerBottom" type="Control" parent="UI/StartScreen/Center/Panel/Main/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="Options" type="VBoxContainer" parent="UI/StartScreen/Center/Panel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Options"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Label" type="Label" parent="UI/StartScreen/Center/Panel/Options"]
+layout_mode = 2
+text = "Options"
+label_settings = SubResource("LabelSettings_uq763")
+horizontal_alignment = 1
+
+[node name="SpacerMiddle" type="Control" parent="UI/StartScreen/Center/Panel/Options"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="ButtonsPanel" type="PanelContainer" parent="UI/StartScreen/Center/Panel/Options"]
+material = SubResource("ShaderMaterial_6v8ul")
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 12.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dwi8o")
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpacerTop" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="MusicVolume" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/MusicVolume"]
+custom_minimum_size = Vector2(163, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Music"
+label_settings = SubResource("LabelSettings_sucw7")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Spacer2" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Slider" type="HSlider" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+theme_override_constants/center_grabber = 1
+theme_override_constants/grabber_offset = 0
+theme_override_icons/grabber = ExtResource("21_45yy3")
+theme_override_icons/grabber_highlight = ExtResource("22_7am5n")
+theme_override_styles/slider = SubResource("StyleBoxFlat_78oi7")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_7j52n")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_7j52n")
+value = 50.0
+script = ExtResource("23_r4w12")
+bus = "Music"
+
+[node name="Spacer3" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="SFXVolume" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/SFXVolume"]
+custom_minimum_size = Vector2(163, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Sound Effects"
+label_settings = SubResource("LabelSettings_sucw7")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Spacer2" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Slider" type="HSlider" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = ExtResource("21_45yy3")
+theme_override_icons/grabber_highlight = ExtResource("22_7am5n")
+theme_override_styles/slider = SubResource("StyleBoxFlat_78oi7")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_7j52n")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_7j52n")
+value = 50.0
+script = ExtResource("23_r4w12")
+bus = "SFX"
+
+[node name="Spacer3" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Fullscreen" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/Fullscreen"]
+custom_minimum_size = Vector2(163, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+mouse_filter = 0
+text = "Full Screen"
+label_settings = SubResource("LabelSettings_sucw7")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Spacer2" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Value" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+mouse_filter = 0
+text = "On"
+label_settings = SubResource("LabelSettings_sucw7")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("23_s6c8x")
+
+[node name="Spacer3" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Return" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 10
+mouse_filter = 0
+text = "Return"
+label_settings = SubResource("LabelSettings_3ncef")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("25_4ggoa")
+
+[node name="SpacerBottom" type="Control" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
 
 [node name="SpacerBottom" type="Control" parent="UI/StartScreen/Center"]
 layout_mode = 2
@@ -657,4 +914,8 @@ bus = &"SFX"
 [node name="ScoreIncrementSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("22_67nwp")
 volume_db = -4.0
+bus = &"SFX"
+
+[node name="UIClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("36_po0xd")
 bus = &"SFX"

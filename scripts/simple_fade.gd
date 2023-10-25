@@ -3,11 +3,16 @@ extends CanvasItem
 var tween: Tween
 
 
+signal menu_enabled(enabled: bool)
+
+
 func animate(alpha: float, time: float) -> void:
 	var current = modulate.a
 	
 	if is_equal_approx(current, alpha):
 		return
+	
+	menu_enabled.emit(!is_zero_approx(alpha))
 	
 	if tween:
 		tween.kill()
@@ -17,3 +22,7 @@ func animate(alpha: float, time: float) -> void:
 	tween.set_trans(Tween.TRANS_CIRC)
 	
 	tween.tween_property(self, "modulate:a", alpha, time)
+	
+	await tween.finished
+	
+	visible = !is_zero_approx(alpha)
