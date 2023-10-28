@@ -122,12 +122,13 @@ func _process(_delta: float) -> void:
 	position_stopwatch()
 	timer_display.text = str(floori(stopwatch.remaining / 60)) + ":" + str(stopwatch.remaining % 60).pad_zeros(2)
 	
-	if Input.is_action_just_pressed("debug_complete"):
-		complete_box()
-	
-	if Input.is_action_just_pressed("debug_timeout"):
-		stopwatch.set_timer(0)
-		stopwatch.stop()
+	if OS.is_debug_build():
+		if Input.is_action_just_pressed("debug_complete"):
+			complete_box()
+		
+		if Input.is_action_just_pressed("debug_timeout"):
+			stopwatch.set_timer(0)
+			stopwatch.stop()
 	
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		toggle_fullscreen()
