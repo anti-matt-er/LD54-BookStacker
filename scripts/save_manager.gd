@@ -5,10 +5,12 @@ var options := {
 	"music_volume": 52.3299114681495,
 	"sfx_volume": 100
 }
+var highscore := 0
 
 
 func _ready() -> void:
 	load_options()
+	load_score()
 
 
 func save_data(data: Dictionary, filename: String) -> void:
@@ -41,3 +43,14 @@ func load_options() -> void:
 	
 	if !loaded_options.is_empty():
 		options = loaded_options
+
+
+func save_score() -> void:
+	save_data({"highscore": highscore}, "highscore")
+
+
+func load_score() -> void:
+	var loaded_score = load_data("highscore")
+	
+	if !loaded_score.is_empty():
+		highscore = loaded_score.highscore

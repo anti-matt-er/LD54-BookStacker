@@ -24,7 +24,7 @@ func _ready() -> void:
 	
 	mouse_entered.connect(set_hover.bind(true))
 	mouse_exited.connect(set_hover.bind(false))
-	game.start_screen.menu_enabled.connect(set_enabled)
+	game.menu_enabled.connect(set_enabled)
 
 
 func set_hover(state: bool) -> void:

@@ -37,3 +37,17 @@ func transition_in() -> void:
 	tween.set_parallel(true)
 	tween.tween_property(label, "rotation", 0, TRANSITION_ROTATION_TIME)
 	tween.tween_property(label, "scale", Vector2.ONE, TRANSITION_SCALE_TIME)
+
+
+func transition_out() -> void:
+	if tween:
+		tween.kill()
+	
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_ELASTIC)
+	tween.tween_property(label, "scale", Vector2.ZERO, TRANSITION_SCALE_TIME)
+	
+	await tween.finished
+	
+	modulate.a = 0

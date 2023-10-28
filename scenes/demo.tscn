@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=80 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -35,6 +35,8 @@
 [ext_resource type="Script" path="res://scripts/buttons/options.gd" id="24_bld54"]
 [ext_resource type="Script" path="res://scripts/buttons/return_from_options.gd" id="25_4ggoa"]
 [ext_resource type="Script" path="res://scripts/buttons/quit.gd" id="25_vyt50"]
+[ext_resource type="Shader" path="res://assets/shaders/rainbow_text.gdshader" id="33_umk2w"]
+[ext_resource type="Script" path="res://scripts/buttons/main_menu.gd" id="34_1k5q7"]
 [ext_resource type="AudioStream" uid="uid://ciy6whgfhuxi6" path="res://assets/sfx/ui_click.ogg" id="36_po0xd"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
@@ -274,6 +276,108 @@ font_size = 100
 font_color = Color(0.929412, 0.211765, 0.215686, 1)
 shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.35)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h4nbv"]
+shader = ExtResource("22_rno4m")
+shader_parameter/background_color = Color(0.247059, 0.337255, 0.34902, 0.25098)
+shader_parameter/border_color = Color(0.956863, 0.858824, 0.443137, 1)
+shader_parameter/shadow_color = Color(0, 0, 0, 0.25098)
+shader_parameter/blur = 4.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_n6imj"]
+font = ExtResource("23_uswty")
+font_size = 60
+font_color = Color(0.956863, 0.858824, 0.443137, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gw3en"]
+content_margin_left = 6.0
+content_margin_top = 16.0
+content_margin_right = 6.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 6
+border_width_top = 16
+border_width_right = 6
+border_width_bottom = 16
+border_color = Color(0, 0, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+corner_detail = 20
+shadow_color = Color(0, 1, 0, 1)
+shadow_size = 8
+shadow_offset = Vector2(2, 2)
+anti_aliasing_size = 1.25
+
+[sub_resource type="LabelSettings" id="LabelSettings_61c2k"]
+font = ExtResource("23_uswty")
+font_size = 32
+font_color = Color(1, 0.956863, 0.913725, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nd61b"]
+font = ExtResource("23_uswty")
+font_size = 32
+font_color = Color(0.956863, 0.858824, 0.443137, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_w8uyi"]
+font = ExtResource("23_uswty")
+font_size = 36
+font_color = Color(0.956863, 0.858824, 0.443137, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fu8ou"]
+font = ExtResource("23_uswty")
+font_size = 48
+font_color = Color(1, 0.956863, 0.913725, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vix11"]
+font = ExtResource("23_uswty")
+font_size = 48
+font_color = Color(0.956863, 0.858824, 0.443137, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="Gradient" id="Gradient_66rxe"]
+offsets = PackedFloat32Array(0, 0.167, 0.333, 0.5, 0.667, 0.833, 1)
+colors = PackedColorArray(1, 0.52549, 0.631373, 1, 0.835294, 0.643137, 0, 1, 0.364706, 0.760784, 0, 1, 0, 0.752941, 0.698039, 1, 0.188235, 0.709804, 1, 1, 0.92549, 0.505882, 1, 1, 1, 0.52549, 0.631373, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xs1qb"]
+gradient = SubResource("Gradient_66rxe")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u15q2"]
+shader = ExtResource("33_umk2w")
+shader_parameter/stretch = 5.0
+shader_parameter/angle = 22.5
+shader_parameter/speed = 1.75
+shader_parameter/rainbowTexture = SubResource("GradientTexture2D_xs1qb")
 
 [sub_resource type="LabelSettings" id="LabelSettings_2dig8"]
 font = ExtResource("13_t3rv7")
@@ -907,6 +1011,186 @@ vertical_alignment = 2
 [node name="SFX" type="AudioStreamPlayer" parent="UI/Timeout"]
 stream = ExtResource("15_svlu3")
 bus = &"SFX"
+
+[node name="ResultsScreen" type="HBoxContainer" parent="UI"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+script = ExtResource("20_1prjh")
+
+[node name="SpacerLeft" type="Control" parent="UI/ResultsScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Center" type="VBoxContainer" parent="UI/ResultsScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="SpacerTop" type="Control" parent="UI/ResultsScreen/Center"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.03
+
+[node name="Panel" type="PanelContainer" parent="UI/ResultsScreen/Center"]
+material = SubResource("ShaderMaterial_h4nbv")
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_v46qj")
+
+[node name="Container" type="VBoxContainer" parent="UI/ResultsScreen/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Header" type="Label" parent="UI/ResultsScreen/Center/Panel/Container"]
+layout_mode = 2
+text = "Results"
+label_settings = SubResource("LabelSettings_n6imj")
+horizontal_alignment = 1
+
+[node name="ResultsPanel" type="PanelContainer" parent="UI/ResultsScreen/Center/Panel/Container"]
+material = SubResource("ShaderMaterial_6v8ul")
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 12.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gw3en")
+
+[node name="ResultsContainer" type="VBoxContainer" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="SpacerTop" type="Control" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BoxesComplete" type="HBoxContainer" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/BoxesComplete"]
+layout_mode = 2
+text = "Boxes Complete: "
+label_settings = SubResource("LabelSettings_61c2k")
+horizontal_alignment = 1
+
+[node name="BoxesValue" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/BoxesComplete"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_nd61b")
+horizontal_alignment = 1
+
+[node name="Multiplier" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/BoxesComplete"]
+layout_mode = 2
+text = " x  100"
+label_settings = SubResource("LabelSettings_w8uyi")
+horizontal_alignment = 1
+
+[node name="TimeBonus" type="HBoxContainer" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/TimeBonus"]
+layout_mode = 2
+text = "Time Bonus: "
+label_settings = SubResource("LabelSettings_61c2k")
+horizontal_alignment = 1
+
+[node name="TimeBonusValue" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/TimeBonus"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "10"
+label_settings = SubResource("LabelSettings_nd61b")
+horizontal_alignment = 1
+
+[node name="Total" type="HBoxContainer" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/Total"]
+layout_mode = 2
+text = "Total: "
+label_settings = SubResource("LabelSettings_fu8ou")
+horizontal_alignment = 1
+
+[node name="TotalValue" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer/Total"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "110"
+label_settings = SubResource("LabelSettings_vix11")
+horizontal_alignment = 1
+
+[node name="NewHighScore" type="RichTextLabel" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_u15q2")
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25)
+theme_override_colors/font_outline_color = Color(0.25, 0.25, 0.25, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 6
+theme_override_constants/outline_size = 5
+theme_override_fonts/normal_font = ExtResource("23_uswty")
+theme_override_font_sizes/normal_font_size = 42
+bbcode_enabled = true
+text = "[center][wave amp=10.0 freq=6.0 connected=0][shake rate=10.0 level=3 connected=0][font_size=30]✦[/font_size] New High Score! [font_size=30]✦[/font_size][/shake][/wave][/center]"
+fit_content = true
+
+[node name="SpacerBottom" type="Control" parent="UI/ResultsScreen/Center/Panel/Container/ResultsPanel/ResultsContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="UI/ResultsScreen/Center/Panel/Container"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="UI/ResultsScreen/Center/Panel/Container"]
+layout_mode = 2
+
+[node name="MainMenu" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 10
+mouse_filter = 0
+text = "Main Menu"
+label_settings = SubResource("LabelSettings_3ncef")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("34_1k5q7")
+
+[node name="PlayAgain" type="Label" parent="UI/ResultsScreen/Center/Panel/Container/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 10
+mouse_filter = 0
+text = "Play Again"
+label_settings = SubResource("LabelSettings_3ncef")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("23_2du8q")
+
+[node name="SpacerBottom" type="Control" parent="UI/ResultsScreen/Center"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.03
+
+[node name="SpacerRight" type="Control" parent="UI/ResultsScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
 
 [node name="FlyText" type="Control" parent="."]
 layout_mode = 3

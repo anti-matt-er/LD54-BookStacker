@@ -13,7 +13,7 @@ const FLYTEXT_GROW_RATIO :=  0.5
 const FLYTEXT_TRANSITION := 0.75
 const FLYTEXT_HOLD := 0.65
 const MENU_TRANSITION := 1.5
-const START_CAMERA_TRANSITION := 2.5
+const TIMEOUT_HOLD := 2.0
 const FULLSCREEN_MODE := DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 
 @export var difficulty: Difficulty
@@ -21,6 +21,7 @@ const FULLSCREEN_MODE := DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 @onready var start_screen := %StartScreen
 @onready var game_ui := %GameUI
 @onready var timeout_screen := %Timeout
+@onready var results_screen := %ResultsScreen
 @onready var blur := %Blur
 @onready var camera: Camera3D = $Camera
 @onready var place_ray := $PlaceCast
@@ -48,6 +49,10 @@ const FULLSCREEN_MODE := DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 @onready var score_display := %ScoreValue
 @onready var box_score_flytext := %BoxScore
 @onready var menu_animation := $Camera/MenuAnimation
+@onready var results_boxes := %BoxesValue
+@onready var results_timebonus := %TimeBonusValue
+@onready var results_total := %TotalValue
+@onready var results_highscore := %NewHighScore
 
 var fullscreen := false
 var fullscreen_hack_firstrun := true
@@ -57,9 +62,12 @@ var book_bounds_limit := Vector3.ZERO
 var score := 0
 var last_score_update := 0
 var level := 0
+var total_time_bonus := 0
 var tween: Tween
 var flytext_tween: Tween
 var score_tween: Tween
+
+signal menu_enabled(enabled: bool)
 
 
 func _ready() -> void:
@@ -77,7 +85,6 @@ func _ready() -> void:
 			set_fullscreen(true)
 		SaveManager.options["fullscreen"] = fullscreen
 	
-	music.play()
 	menu_animation.play("pulse")
 	stopwatch.running_out.connect(func(): timer_display.set_low(true))
 	stopwatch.finished.connect(time_over)
@@ -101,6 +108,10 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("debug_complete"):
 		complete_box()
+	
+	if Input.is_action_just_pressed("debug_timeout"):
+		stopwatch.set_timer(0)
+		stopwatch.stop()
 	
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		toggle_fullscreen()
@@ -127,16 +138,21 @@ func toggle_fullscreen() -> void:
 
 func start() -> void:
 	score = 0
+	level = 0
+	total_time_bonus = 0
 	update_score(0)
+	music.play()
 	
 	menu_animation.stop(true)
 	start_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	menu_enabled.emit(false)
 	
-	camera.start_idle(START_CAMERA_TRANSITION)
+	camera.start()
 	start_screen.animate(0.0, MENU_TRANSITION)
+	results_screen.animate(0.0, MENU_TRANSITION)
 	blur.animate(0.0, MENU_TRANSITION)
 	
-	await get_tree().create_timer(START_CAMERA_TRANSITION).timeout
+	await get_tree().create_timer(camera.SLOW_PAN_TIME).timeout
 	
 	ready_box()
 	
@@ -162,6 +178,8 @@ func ready_box() -> void:
 
 
 func award_score(value: int, bonus: int) -> void:
+	total_time_bonus += bonus
+	
 	box_confetti.emitting = true
 	box_complete_sfx.play()
 	
@@ -318,3 +336,48 @@ func time_over() -> void:
 	music.stop()
 	box_ready = false
 	camera.switch_to_complete()
+	
+	await get_tree().create_timer(TIMEOUT_HOLD).timeout
+	
+	timeout_screen.transition_out()
+	
+	show_results()
+
+
+func show_results() -> void:
+	results_boxes.text = str(level)
+	results_timebonus.text = str(total_time_bonus)
+	results_total.text = str(score)
+	
+	if score > SaveManager.highscore:
+		results_highscore.show()
+		SaveManager.highscore = score
+		SaveManager.save_score()
+	else:
+		results_highscore.hide()
+	
+	menu_enabled.emit(true)
+	
+	results_screen.animate(1.0, MENU_TRANSITION)
+	game_ui.animate(0.0, MENU_TRANSITION)
+	blur.animate(1.0, MENU_TRANSITION)
+	
+	await get_tree().create_timer(MENU_TRANSITION).timeout
+	
+	stopwatch_scene.hide()
+	shelf.reset()
+
+
+func main_menu() -> void:
+	start_screen.mouse_filter = Control.MOUSE_FILTER_PASS
+	menu_enabled.emit(true)
+	
+	camera.end()
+	start_screen.animate(1.0, MENU_TRANSITION)
+	results_screen.animate(0.0, MENU_TRANSITION)
+	game_ui.animate(0.0, MENU_TRANSITION)
+	blur.animate(1.0, MENU_TRANSITION)
+	
+	await get_tree().create_timer(camera.SLOW_PAN_TIME).timeout
+	
+	menu_animation.play("pulse")

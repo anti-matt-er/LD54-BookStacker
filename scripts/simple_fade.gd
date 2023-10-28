@@ -3,16 +3,11 @@ extends CanvasItem
 var tween: Tween
 
 
-signal menu_enabled(enabled: bool)
-
-
 func animate(alpha: float, time: float) -> void:
 	var current = modulate.a
 	
 	if is_equal_approx(current, alpha):
 		return
-	
-	menu_enabled.emit(!is_zero_approx(alpha))
 	
 	if tween:
 		tween.kill()
