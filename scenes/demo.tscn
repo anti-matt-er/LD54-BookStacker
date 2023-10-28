@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=93 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -42,6 +42,8 @@
 [ext_resource type="AudioStream" uid="uid://ciy6whgfhuxi6" path="res://assets/sfx/ui_click.ogg" id="36_po0xd"]
 [ext_resource type="Script" path="res://scripts/pause_screen.gd" id="37_cj5oc"]
 [ext_resource type="Script" path="res://scripts/buttons/resume.gd" id="37_msvrj"]
+[ext_resource type="AudioStream" uid="uid://blxdpsehh0u71" path="res://assets/music/Through_a_Window.ogg" id="40_dtxcb"]
+[ext_resource type="AudioStream" uid="uid://bfl0k1y6tnexq" path="res://assets/music/Through_a_Window_(loop).ogg" id="41_u55dv"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
@@ -1431,6 +1433,16 @@ script = ExtResource("25_vyt50")
 [node name="Music" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("8_4wvrc")
+bus = &"Music"
+
+[node name="TitleMusicIntro" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("40_dtxcb")
+bus = &"Music"
+
+[node name="TitleMusic" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("41_u55dv")
 bus = &"Music"
 
 [node name="BoxCompleteSFX" type="AudioStreamPlayer" parent="."]

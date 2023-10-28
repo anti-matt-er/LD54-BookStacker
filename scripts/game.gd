@@ -47,6 +47,8 @@ const TUTORIALS := {
 @onready var shelf_arrow := %ShelfArrow
 @onready var box_arrow := %BoxArrow
 @onready var music := $Music
+@onready var title_music_intro := $TitleMusicIntro
+@onready var title_music := $TitleMusic
 @onready var box_complete_sfx := $BoxCompleteSFX
 @onready var score_increment_sfx := $ScoreIncrementSFX
 @onready var stopwatch := %Stopwatch
@@ -100,6 +102,8 @@ func _ready() -> void:
 	menu_animation.play("pulse")
 	stopwatch.running_out.connect(func(): timer_display.set_low(true))
 	stopwatch.finished.connect(time_over)
+	title_music_intro.finished.connect(title_music.play)
+	title_music_intro.play()
 
 
 func _physics_process(_delta: float) -> void:
@@ -153,6 +157,8 @@ func start() -> void:
 	level = 0
 	total_time_bonus = 0
 	update_score(0)
+	title_music_intro.stop()
+	title_music.stop()
 	music.play()
 	
 	menu_animation.stop(true)
@@ -425,6 +431,7 @@ func main_menu() -> void:
 	shelf.reset()
 	start_screen.mouse_filter = Control.MOUSE_FILTER_PASS
 	menu_enabled.emit(true)
+	title_music_intro.play()
 	
 	camera.end()
 	start_screen.animate(1.0, MENU_TRANSITION)
