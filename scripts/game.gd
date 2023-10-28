@@ -62,7 +62,9 @@ const TUTORIALS := {
 @onready var results_highscore := %NewHighScore
 @onready var tutorial_box := %Tutorial
 @onready var tutorial_text := %TutorialText
+@onready var pause_screen := %PauseScreen
 
+var started := false
 var fullscreen := false
 var fullscreen_hack_firstrun := true
 var placing := false
@@ -164,6 +166,7 @@ func start() -> void:
 	
 	await get_tree().create_timer(camera.SLOW_PAN_TIME).timeout
 	
+	started = true
 	ready_box()
 	
 	await get_tree().process_frame
@@ -369,10 +372,19 @@ func position_stopwatch() -> void:
 	stopwatch.scale = Vector3.ONE * anchor_min_dimension / watch_max_dimension
 
 
-func time_over() -> void:
-	timeout_screen.transition_in()
+func end_game() -> void:
+	if pause_screen.paused:
+		pause_screen.toggle_pause(true)
+	
+	started = false
 	music.stop()
 	box_ready = false
+
+
+func time_over() -> void:
+	end_game()
+	
+	timeout_screen.transition_in()
 	camera.switch_to_complete()
 	
 	await get_tree().create_timer(TIMEOUT_HOLD).timeout
@@ -407,6 +419,10 @@ func show_results() -> void:
 
 
 func main_menu() -> void:
+	end_game()
+	
+	stopwatch_scene.hide()
+	shelf.reset()
 	start_screen.mouse_filter = Control.MOUSE_FILTER_PASS
 	menu_enabled.emit(true)
 	

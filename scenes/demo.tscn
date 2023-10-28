@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=91 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -40,6 +40,8 @@
 [ext_resource type="Script" path="res://scripts/buttons/main_menu.gd" id="34_1k5q7"]
 [ext_resource type="Script" path="res://scripts/simple_slide.gd" id="35_rn1y8"]
 [ext_resource type="AudioStream" uid="uid://ciy6whgfhuxi6" path="res://assets/sfx/ui_click.ogg" id="36_po0xd"]
+[ext_resource type="Script" path="res://scripts/pause_screen.gd" id="37_cj5oc"]
+[ext_resource type="Script" path="res://scripts/buttons/resume.gd" id="37_msvrj"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
 script = ExtResource("2_ns78w")
@@ -428,6 +430,52 @@ font_size = 48
 font_color = Color(1, 0.882353, 0.278431, 1)
 shadow_size = 8
 shadow_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kngky"]
+shader = ExtResource("22_rno4m")
+shader_parameter/background_color = Color(0.247059, 0.337255, 0.34902, 0.25098)
+shader_parameter/border_color = Color(1, 0.956863, 0.913725, 1)
+shader_parameter/shadow_color = Color(0, 0, 0, 0.25098)
+shader_parameter/blur = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58vqu"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 32.0
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 6
+border_width_top = 16
+border_width_right = 6
+border_width_bottom = 16
+border_color = Color(0, 0, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+corner_detail = 20
+shadow_color = Color(0, 1, 0, 1)
+shadow_size = 24
+shadow_offset = Vector2(6, 6)
+anti_aliasing_size = 1.25
+
+[sub_resource type="LabelSettings" id="LabelSettings_noxoa"]
+font = ExtResource("23_uswty")
+font_size = 32
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_q6251"]
+font = ExtResource("23_uswty")
+font_size = 32
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_mywg5")
@@ -1301,7 +1349,87 @@ size_flags_horizontal = 4
 text = "+100"
 label_settings = SubResource("LabelSettings_2dig8")
 
+[node name="PauseScreen" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("37_cj5oc")
+
+[node name="Panel" type="PanelContainer" parent="PauseScreen"]
+material = SubResource("ShaderMaterial_kngky")
+custom_minimum_size = Vector2(452.3, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_58vqu")
+
+[node name="Container" type="VBoxContainer" parent="PauseScreen/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Header" type="Label" parent="PauseScreen/Panel/Container"]
+layout_mode = 2
+text = "Paused"
+label_settings = SubResource("LabelSettings_n6imj")
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="PauseScreen/Panel/Container"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="PauseScreen/Panel/Container"]
+layout_mode = 2
+alignment = 1
+
+[node name="MainMenu" type="Label" parent="PauseScreen/Panel/Container/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+mouse_filter = 0
+text = "Main Menu"
+label_settings = SubResource("LabelSettings_noxoa")
+vertical_alignment = 2
+script = ExtResource("34_1k5q7")
+
+[node name="Resume" type="Label" parent="PauseScreen/Panel/Container/ButtonsContainer"]
+custom_minimum_size = Vector2(103, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+mouse_filter = 0
+text = "Resume"
+label_settings = SubResource("LabelSettings_3ncef")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("37_msvrj")
+
+[node name="Quit" type="Label" parent="PauseScreen/Panel/Container/ButtonsContainer"]
+custom_minimum_size = Vector2(103, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+mouse_filter = 0
+text = "Quit Game"
+label_settings = SubResource("LabelSettings_q6251")
+horizontal_alignment = 2
+vertical_alignment = 2
+script = ExtResource("25_vyt50")
+
 [node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("8_4wvrc")
 bus = &"Music"
 
@@ -1316,5 +1444,6 @@ volume_db = -4.0
 bus = &"SFX"
 
 [node name="UIClickSFX" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("36_po0xd")
 bus = &"SFX"

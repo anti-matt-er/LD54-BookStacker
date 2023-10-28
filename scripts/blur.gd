@@ -16,6 +16,7 @@ func animate(blur: float, time: float) -> void:
 		tween.kill()
 	
 	tween = create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_CIRC)
 	
