@@ -445,10 +445,24 @@ func set_picked_up(state: bool, placing: bool = false) -> void:
 	play_sfx(false)
 	
 	if picked_up:
+		game.complete_tutorial("pickup")
+		
 		collision_layer = 0
 		game.camera.switch_to_box()
 		rotation = Vector3.ZERO
 		set_shapecast()
+		
+		await get_tree().create_timer(game.camera.TRANSITION_TIME).timeout
+		
+		if invalid && !SaveManager.tutorials["rotate"]:
+			game.show_tutorial("rotate")
+		else:
+			if SaveManager.tutorials["cancel"]:
+				game.show_tutorial("rotate")
+			elif SaveManager.tutorials["place"]:
+				game.show_tutorial("cancel")
+			else:
+				game.show_tutorial("place")
 	else:
 		collision_layer = 1
 		
@@ -503,6 +517,7 @@ func cancel_placement() -> void:
 	if !picked_up:
 		return
 	
+	game.complete_tutorial("cancel")
 	set_picked_up(false)
 	set_invalid(false)
 	pivot_helper.global_position = initial_position + Vector3(
@@ -516,10 +531,13 @@ func rotate_by(axis: Vector3, angle: float) -> void:
 	if !picked_up:
 		return
 	
+	game.complete_tutorial("rotate")
 	rotation_queue.append([axis, angle])
 	
 	if !tween || !tween.is_running():
-		animate_rotation()
+		await animate_rotation()
+		
+		game.show_tutorial("place")
 
 
 func animate_rotation() -> void: 
@@ -554,6 +572,7 @@ func _process(_delta) -> void:
 	if Input.is_action_just_pressed("place") && can_place && !invalid && game.box_ready && (!tween || !tween.is_running()):
 		set_picked_up(false, true)
 		set_invalid(false)
+		game.complete_tutorial("place")
 	
 	if Input.is_action_just_pressed("rotate_right"):
 		rotate_by(Vector3.UP, -PI / 2)

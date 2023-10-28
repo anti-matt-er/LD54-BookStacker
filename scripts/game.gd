@@ -14,7 +14,14 @@ const FLYTEXT_TRANSITION := 0.75
 const FLYTEXT_HOLD := 0.65
 const MENU_TRANSITION := 1.5
 const TIMEOUT_HOLD := 2.0
+const TUTORIAL_TRANSITION := 0.5
 const FULLSCREEN_MODE := DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
+const TUTORIALS := {
+	"pickup": "Click a book on the shelf to pick it up!",
+	"place": "Click anywhere in the bounds of the box to place the book!",
+	"cancel": "Right click, or click the upwards arrow to cancel placement!",
+	"rotate": "Use the WASD keys to rotate the book!"
+}
 
 @export var difficulty: Difficulty
 
@@ -53,6 +60,8 @@ const FULLSCREEN_MODE := DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 @onready var results_timebonus := %TimeBonusValue
 @onready var results_total := %TotalValue
 @onready var results_highscore := %NewHighScore
+@onready var tutorial_box := %Tutorial
+@onready var tutorial_text := %TutorialText
 
 var fullscreen := false
 var fullscreen_hack_firstrun := true
@@ -66,6 +75,7 @@ var total_time_bonus := 0
 var tween: Tween
 var flytext_tween: Tween
 var score_tween: Tween
+var active_tutorial: String
 
 signal menu_enabled(enabled: bool)
 
@@ -161,6 +171,34 @@ func start() -> void:
 	game_ui.animate(1.0, MENU_TRANSITION)
 	stopwatch_scene.show()
 	position_stopwatch()
+	
+	await get_tree().create_timer(MENU_TRANSITION).timeout
+	
+	show_tutorial("pickup")
+
+
+func show_tutorial(tutorial: String) -> void:
+	if tutorial_box.onscreen || SaveManager.tutorials[tutorial]:
+		return
+	
+	if tutorial_box.tween && tutorial_box.tween.is_running():
+		await tutorial_box.tween.finished
+	
+	active_tutorial = tutorial
+	tutorial_text.text = TUTORIALS[tutorial]
+	tutorial_box.animate(true, TUTORIAL_TRANSITION)
+
+
+func complete_tutorial(tutorial: String) -> void:
+	if !tutorial_box.onscreen || tutorial != active_tutorial || SaveManager.tutorials[tutorial]:
+		return
+
+	if tutorial_box.tween && tutorial_box.tween.is_running():
+		await tutorial_box.tween.finished
+	
+	SaveManager.tutorials[tutorial] = true
+	SaveManager.save_tutorials()
+	tutorial_box.animate(false, TUTORIAL_TRANSITION)
 
 
 func start_stopwatch(time: int) -> void:

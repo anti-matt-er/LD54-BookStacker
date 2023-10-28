@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://dkal2h2dwlesw"]
+[gd_scene load_steps=85 format=3 uid="uid://dkal2h2dwlesw"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_mywg5"]
 [ext_resource type="PackedScene" uid="uid://b8nf4p7sc8oj2" path="res://assets/prefabs/shelf.tscn" id="1_r5k3l"]
@@ -34,9 +34,11 @@
 [ext_resource type="FontFile" uid="uid://dxjkdtlrxpg5s" path="res://assets/misc/fonts/AmaticSC-Bold.ttf" id="23_uswty"]
 [ext_resource type="Script" path="res://scripts/buttons/options.gd" id="24_bld54"]
 [ext_resource type="Script" path="res://scripts/buttons/return_from_options.gd" id="25_4ggoa"]
+[ext_resource type="Script" path="res://scenes/Reset.gd" id="25_srd0j"]
 [ext_resource type="Script" path="res://scripts/buttons/quit.gd" id="25_vyt50"]
 [ext_resource type="Shader" path="res://assets/shaders/rainbow_text.gdshader" id="33_umk2w"]
 [ext_resource type="Script" path="res://scripts/buttons/main_menu.gd" id="34_1k5q7"]
+[ext_resource type="Script" path="res://scripts/simple_slide.gd" id="35_rn1y8"]
 [ext_resource type="AudioStream" uid="uid://ciy6whgfhuxi6" path="res://assets/sfx/ui_click.ogg" id="36_po0xd"]
 
 [sub_resource type="Resource" id="Resource_jycwh"]
@@ -378,6 +380,47 @@ shader_parameter/stretch = 5.0
 shader_parameter/angle = 22.5
 shader_parameter/speed = 1.75
 shader_parameter/rainbowTexture = SubResource("GradientTexture2D_xs1qb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0k6fr"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 1.0
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 3
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 3
+border_color = Color(0, 0, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 32
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 20
+shadow_color = Color(0, 1, 0, 1)
+shadow_size = 8
+shadow_offset = Vector2(2, 2)
+anti_aliasing_size = 1.25
+
+[sub_resource type="LabelSettings" id="LabelSettings_hqyam"]
+font = ExtResource("23_uswty")
+font_size = 32
+font_color = Color(0.956863, 0.858824, 0.443137, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jvgfl"]
+font = ExtResource("23_uswty")
+font_size = 26
+font_color = Color(1, 0.956863, 0.913725, 1)
+outline_size = 5
+outline_color = Color(0.137255, 0.109804, 0.101961, 1)
+shadow_size = 6
+shadow_color = Color(0.137255, 0.109804, 0.101961, 0.25098)
+shadow_offset = Vector2(2, 2)
 
 [sub_resource type="LabelSettings" id="LabelSettings_2dig8"]
 font = ExtResource("13_t3rv7")
@@ -821,6 +864,21 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 
+[node name="Tutorials" type="HBoxContainer" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
+layout_mode = 2
+
+[node name="Reset" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer/Tutorials"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+mouse_filter = 0
+text = "Reset Tutorials"
+label_settings = SubResource("LabelSettings_sucw7")
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("25_srd0j")
+
 [node name="Return" type="Label" parent="UI/StartScreen/Center/Panel/Options/ButtonsPanel/ButtonsContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
@@ -1191,6 +1249,38 @@ size_flags_stretch_ratio = 0.03
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.25
+
+[node name="Tutorial" type="MarginContainer" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = -110
+script = ExtResource("35_rn1y8")
+
+[node name="Panel" type="PanelContainer" parent="UI/Tutorial"]
+material = SubResource("ShaderMaterial_6v8ul")
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_0k6fr")
+
+[node name="Container" type="VBoxContainer" parent="UI/Tutorial/Panel"]
+layout_mode = 2
+theme_override_constants/separation = -4
+alignment = 1
+
+[node name="Header" type="Label" parent="UI/Tutorial/Panel/Container"]
+layout_mode = 2
+text = "Tutorial"
+label_settings = SubResource("LabelSettings_hqyam")
+horizontal_alignment = 1
+
+[node name="TutorialText" type="Label" parent="UI/Tutorial/Panel/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Do the thing just like the thing and git gud!"
+label_settings = SubResource("LabelSettings_jvgfl")
+horizontal_alignment = 1
 
 [node name="FlyText" type="Control" parent="."]
 layout_mode = 3

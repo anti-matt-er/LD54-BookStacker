@@ -5,12 +5,19 @@ var options := {
 	"music_volume": 52.3299114681495,
 	"sfx_volume": 100
 }
+var tutorials := {
+	"pickup": false,
+	"place": false,
+	"cancel": false,
+	"rotate": false
+}
 var highscore := 0
 
 
 func _ready() -> void:
 	load_options()
 	load_score()
+	load_tutorials()
 
 
 func save_data(data: Dictionary, filename: String) -> void:
@@ -43,6 +50,17 @@ func load_options() -> void:
 	
 	if !loaded_options.is_empty():
 		options = loaded_options
+
+
+func save_tutorials() -> void:
+	save_data(tutorials, "tutorials")
+
+
+func load_tutorials() -> void:
+	var loaded_tutorials = load_data("tutorials")
+	
+	if !loaded_tutorials.is_empty():
+		tutorials = loaded_tutorials
 
 
 func save_score() -> void:
